@@ -1,0 +1,11 @@
+Program
+  Function
+    TypeId
+    IdDecl
+    List
+    Block
+      List
+        WhileStmt
+          TrueCond
+          Block
+            List

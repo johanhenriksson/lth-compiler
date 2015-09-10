@@ -1,0 +1,103 @@
+%class "LangParser";
+%package "lang.ast";
+
+%embed {:
+	static public class SyntaxError extends RuntimeException { public SyntaxError(String msg) {super(msg);}}
+	// Disable syntax error recovery
+	protected void recoverFromError(Symbol token, TokenStream in) {
+		throw new SyntaxError("Cannot recover from the syntax error");
+	}
+:};
+
+%terminals ID, INT;
+%terminals COMMA, SEMICOLON, LPARAM, RPARAM, LBRACE, RBRACE; 
+%terminals ASSIGN, PLUS, MINUS, MULT, DIV, NOT, EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER;
+%terminals IF, ELSE, WHILE, TRUE, FALSE;
+
+%typeof program     = "Program";
+%typeof function    = "Function";
+%typeof type_id     = "TypeId";
+%typeof id_use      = "IdUse";
+%typeof id_decl     = "IdDecl";
+%typeof arg_list    = "List";
+%typeof arg_def     = "ArgDef";
+%typeof block       = "Block";
+%typeof stmt        = "Statement";
+%typeof stmt_list   = "List";
+%typeof assign_stmt = "AssignStmt";
+%typeof decl_stmt   = "DeclareStmt";
+%typeof while_stmt  = "WhileStmt";
+%typeof if_stmt     = "IfStmt";
+
+%typeof cond        = "Condition";
+%typeof expr        = "Expr";
+%typeof term        = "Term";
+%typeof factor      = "Factor";
+%typeof numeral     = "Numeral";
+
+%goal program;
+
+program = function.main {: return new Program(main); :};
+
+/* Types */
+type_id = ID.name {: return new TypeId(name); :};
+
+/* Identifiers */
+id_use  = ID.id {: return new IdUse(id); :};
+id_decl = ID.id {: return new IdDecl(id); :};
+
+/* Function */
+function = type_id.type id_decl.id LPARAM arg_list.args RPARAM block.block {: return new Function(type,id,args,block); :};
+
+arg_def = type_id.type id_decl.name {: return new ArgDef(type,name); :};
+arg_list = 
+         /* E */ {: return new List(); :}
+         | arg_def.a {: return new List().add(a); :}
+         | arg_list.list COMMA arg_def.a {: return list.add(a); :};
+
+
+/* Blocks */
+stmt_list = 
+    /* E */ {: return new List(); :}
+    | stmt.s {: return new List().add(s); :}
+    | stmt_list.list stmt.s {: return list.add(s); :};
+
+block = LBRACE stmt_list.list RBRACE {: return new Block(list); :};
+
+/* Statements */
+stmt = block | if_stmt | while_stmt | assign_stmt | decl_stmt;
+
+decl_stmt = type_id.type id_decl.name SEMICOLON {: return new DeclareStmt(type,name); :};
+assign_stmt = id_use.name ASSIGN expr.exp SEMICOLON {: return new AssignStmt(name,exp); :};
+
+/* While */
+while_stmt = WHILE LPARAM cond.c RPARAM stmt.s {: return new WhileStmt(c,s); :};
+if_stmt = IF LPARAM cond.c RPARAM stmt.s {: return new IfStmt(c,s,new ElseStmt(new EmptyStmt())); :}
+        | IF LPARAM cond.c RPARAM stmt.th ELSE stmt.el {: return new IfStmt(c,th,new ElseStmt(el)); :};
+          
+
+/* Expressions */
+cond = TRUE {: return new TrueCond(); :}
+     | FALSE {: return new FalseCond(); :}
+     | expr.e  {: return new ExprCond(e); :}
+     | NOT cond.c {: return new NotCond(c); :}
+     | cond.c EQUALS expr.e {: return new EqualsCond(c, e); :}
+     | cond.c NOTEQ expr.e
+     | cond.c LESS expr.e
+     | cond.c GREATER expr.e
+     | cond.c LEQUAL expr.e
+     | cond.c GEQUAL expr.e;
+
+expr = term.t {: return new UnaryExpr(t); :}
+     | expr.e PLUS term.t {: return new AddExpr(e,t); :}
+     | expr.e MINUS term.t {: return new SubExpr(e,t); :};
+
+term = factor.f {: return new UnaryTerm(f); :}
+     | term.t MULT factor.f {: return new MultTerm(t,f); :}
+     | term.t DIV factor.f {: return new DivTerm(t,f); :};
+
+factor = id_use.id {: return new IdFactor(id); :}
+       | numeral.num {: return new NumFactor(num); :}
+       | LPARAM cond.c RPARAM {: return new CondFactor(c); :};
+
+numeral = INT.i {: return new Numeral(i); :};

@@ -1,0 +1,13 @@
+Program
+  Function
+    TypeId
+    IdDecl
+    List
+    Block
+      List
+        IfStmt
+          TrueCond
+          Block
+            List
+          ElseStmt
+            EmptyStmt

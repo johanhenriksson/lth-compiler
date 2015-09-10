@@ -1,0 +1,42 @@
+Program ::= Function;
+
+IdUse ::= <ID:String>;
+IdDecl ::= <ID:String>;
+TypeId ::= <ID:String>;
+
+Numeral ::= <NUM:String>;
+
+Function ::= TypeId IdDecl List Block;
+ArgDef ::= TypeId IdDecl;
+
+abstract Statement;
+Block: Statement ::= List;
+EmptyStmt: Statement;
+AssignStmt: Statement ::= IdUse Expr;
+DeclareStmt: Statement ::= TypeId IdDecl;
+WhileStmt: Statement ::= Condition Statement;
+IfStmt: Statement ::= Condition Statement ElseStmt;
+ElseStmt: Statement ::= Statement;
+
+abstract Condition;
+ExprCond: Condition ::= Expr;
+TrueCond: Condition ::= ;
+FalseCond: Condition ::= ;
+NotCond: Condition ::= Condition;
+EqualsCond: Condition ::= Condition Expr;
+NotEqualCond: Condition  ::= Condition Expr;
+
+abstract Expr;
+UnaryExpr: Expr ::= Term;
+AddExpr: Expr ::= Expr Term;
+SubExpr: Expr ::= Expr Term;
+
+abstract Term;
+UnaryTerm: Term ::= Factor;
+MultTerm: Term ::= Term Factor;
+DivTerm: Term ::= Term Factor;
+
+abstract Factor;
+IdFactor: Factor ::= IdUse;
+NumFactor: Factor ::= Numeral;
+CondFactor: Factor ::= Condition;

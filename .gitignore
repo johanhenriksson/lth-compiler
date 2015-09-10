@@ -1,0 +1,6 @@
+lib/
+ant-bin/
+
+src/gen/
+
+*.out

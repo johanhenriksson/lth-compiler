@@ -1,0 +1,16 @@
+Program
+  Function
+    TypeId
+    IdDecl
+    List
+    Block
+      List
+        DeclareStmt
+          TypeId
+          IdDecl
+        AssignStmt
+          IdUse
+          UnaryExpr
+            UnaryTerm
+              NumFactor
+                Numeral

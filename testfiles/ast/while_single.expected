@@ -1,0 +1,15 @@
+Program
+  Function
+    TypeId
+    IdDecl
+    List
+    Block
+      List
+        WhileStmt
+          TrueCond
+          AssignStmt
+            IdUse
+            UnaryExpr
+              UnaryTerm
+                NumFactor
+                  Numeral
