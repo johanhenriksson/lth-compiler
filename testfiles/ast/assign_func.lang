@@ -1,0 +1,4 @@
+int main() {
+    var1 = square(2);
+    var2 = print("string");
+}

@@ -1,7 +1,8 @@
 Program
-  Function
-    TypeId
-    IdDecl
-    List
-    Block
+  List
+    Function
+      TypeId
+      IdDecl
       List
+      Block
+        List

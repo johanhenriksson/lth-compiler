@@ -1,10 +1,11 @@
 Program
-  Function
-    TypeId
-    IdDecl
-    List
-    Block
+  List
+    Function
+      TypeId
+      IdDecl
       List
-        AssignStmt
-          IdUse
-          StringLiteral
+      Block
+        List
+          AssignStmt
+            IdUse
+            StringLiteral

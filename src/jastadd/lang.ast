@@ -1,4 +1,4 @@
-Program ::= Function;
+Program ::= List;
 
 Function ::= TypeId IdDecl List Block;
 ArgDef ::= TypeId IdDecl;
@@ -6,15 +6,23 @@ ArgDef ::= TypeId IdDecl;
 abstract Statement;
 Block: Statement ::= List;
 AssignStmt: Statement ::= IdUse Expr;
-DeclareStmt: Statement ::= TypeId IdDecl;
+DeclareStmt: Statement ::= TypeId IdDecl [Expr];
 WhileStmt: Statement ::= Expr Statement;
 IfStmt: Statement ::= Expr Then:Statement [Else:Statement];
+CallStmt: Statement ::= FuncExpr;
+ReturnStmt: Statement ::= [Expr];
 
 /* Expressions */
 abstract Expr;
 IdExpr: Expr ::= IdUse;
+FuncExpr: Expr ::= IdUse List;
+
 UnaryExpr: Expr ::= Expr;
 BinExpr: Expr ::= Left:Expr Right:Expr;
+
+/* Logical */
+AndExpr: BinExpr ::= ;
+OrExpr: BinExpr ::= ;
 
 /* Comparison */
 NotExpr: UnaryExpr ::=;
@@ -30,6 +38,7 @@ AddExpr: BinExpr ::=;
 SubExpr: BinExpr ::=;
 MulExpr: BinExpr ::=;
 DivExpr: BinExpr ::=;
+ModExpr: BinExpr ::=;
 
 /* Literals */
 abstract Literal: Expr;

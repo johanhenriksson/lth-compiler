@@ -28,14 +28,16 @@ import lang.ast.LangParser.SyntaxError;
 
 // macros
 WhiteSpace = [ ] | \t | \f | \n | \r
-ID = [a-zA-Z]+
+ID = [a-zA-Z][a-zA-Z0-9]*
 Int = [0-9]+
 String = \"[^\"]*\"
+Comment = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 
 %%
 
 // discard whitespace information
 {WhiteSpace}    { }
+{Comment}       { }
 
 // token definitions
 "if"            { return sym(Terminals.IF); }
@@ -43,6 +45,7 @@ String = \"[^\"]*\"
 "while"         { return sym(Terminals.WHILE); }
 "true"          { return sym(Terminals.TRUE); }
 "false"         { return sym(Terminals.FALSE); }
+"return"        { return sym(Terminals.RETURN); }
 ","             { return sym(Terminals.COMMA); }
 ";"             { return sym(Terminals.SEMICOLON); }
 "("             { return sym(Terminals.LPARAM); }
@@ -50,7 +53,6 @@ String = \"[^\"]*\"
 "{"             { return sym(Terminals.LBRACE); }
 "}"             { return sym(Terminals.RBRACE); }
 "="             { return sym(Terminals.ASSIGN); }
-"!"             { return sym(Terminals.NOT); }
 "=="            { return sym(Terminals.EQUALS); }
 "!="            { return sym(Terminals.NOTEQ); }
 "<="            { return sym(Terminals.LEQUAL); }
@@ -61,6 +63,9 @@ String = \"[^\"]*\"
 "-"             { return sym(Terminals.MINUS); }
 "*"             { return sym(Terminals.MULT); }
 "/"             { return sym(Terminals.DIV); }
+"%"             { return sym(Terminals.MOD); }
+"&&"            { return sym(Terminals.AND); }
+"||"            { return sym(Terminals.OR); }
 
 {Int}           { return sym(Terminals.INT); }
 {String}        { return sym(Terminals.STRING); }

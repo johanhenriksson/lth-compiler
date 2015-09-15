@@ -1,0 +1,23 @@
+Program
+  List
+    Function
+      TypeId
+      IdDecl
+      List
+      Block
+        List
+          CallStmt
+            FuncExpr
+              IdUse
+              List
+          CallStmt
+            FuncExpr
+              IdUse
+              List
+                Numeral
+          CallStmt
+            FuncExpr
+              IdUse
+              List
+                Numeral
+                Numeral

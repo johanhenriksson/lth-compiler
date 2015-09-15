@@ -1,0 +1,20 @@
+Program
+  List
+    Function
+      TypeId
+      IdDecl
+      List
+      Block
+        List
+          AssignStmt
+            IdUse
+            FuncExpr
+              IdUse
+              List
+                Numeral
+          AssignStmt
+            IdUse
+            FuncExpr
+              IdUse
+              List
+                StringLiteral

@@ -4,6 +4,12 @@ Program
       TypeId
       IdDecl
       List
+      Block
+        List
+    Function
+      TypeId
+      IdDecl
+      List
         ArgDef
           TypeId
           IdDecl

@@ -1,17 +1,19 @@
 Program
-  Function
-    TypeId
-    IdDecl
-    List
-    Block
+  List
+    Function
+      TypeId
+      IdDecl
       List
-        DeclareStmt
-          TypeId
-          IdDecl
-        AssignStmt
-          IdUse
-          AddExpr
-            Numeral
-            MulExpr
+      Block
+        List
+          DeclareStmt
+            TypeId
+            IdDecl
+            Opt
+          AssignStmt
+            IdUse
+            AddExpr
               Numeral
-              Numeral
+              MulExpr
+                Numeral
+                Numeral

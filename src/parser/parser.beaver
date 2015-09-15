@@ -11,16 +11,20 @@
 
 %terminals ID, INT;
 %terminals COMMA, SEMICOLON, LPARAM, RPARAM, LBRACE, RBRACE; 
-%terminals ASSIGN, PLUS, MINUS, MULT, DIV, NOT, EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER;
-%terminals IF, ELSE, WHILE, TRUE, FALSE, STRING;
+%terminals ASSIGN, PLUS, MINUS, MULT, DIV, MOD;
+%terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
+%terminals IF, ELSE, WHILE, RETURN, TRUE, FALSE, STRING;
 
 %typeof program     = "Program";
+%typeof functions   = "List";
 %typeof function    = "Function";
+%typeof func_call   = "FuncExpr";
 %typeof type_id     = "TypeId";
 %typeof id_use      = "IdUse";
 %typeof id_decl     = "IdDecl";
 %typeof arg_list    = "List";
 %typeof arg_def     = "ArgDef";
+%typeof param_list  = "List";
 %typeof block       = "Block";
 %typeof stmt        = "Statement";
 %typeof stmt_list   = "List";
@@ -28,16 +32,23 @@
 %typeof decl_stmt   = "DeclareStmt";
 %typeof while_stmt  = "WhileStmt";
 %typeof if_stmt     = "IfStmt";
+%typeof else_stmt   = "Opt<Statement>";
+%typeof call_stmt   = "CallStmt";
 
-%typeof cond        = "Expr";
-%typeof expr        = "Expr";
+%typeof expr1       = "Expr";
+%typeof expr2       = "Expr";
+%typeof expr3       = "Expr";
 %typeof factor      = "Expr";
 %typeof term        = "Expr";
 %typeof literal     = "Literal";
 
 %goal program;
 
-program = function.main {: return new Program(main); :};
+program = functions.list {: return new Program(list); :};
+
+functions = function.f {: return new List().add(f); :}
+          | functions.list function.f {: return list.add(f); :}
+          ;
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :};
@@ -55,46 +66,59 @@ arg_list =
          | arg_def.a {: return new List().add(a); :}
          | arg_list.list COMMA arg_def.a {: return list.add(a); :};
 
+func_call = id_use.f LPARAM param_list.params RPARAM {: return new FuncExpr(f, params); :};
+param_list = 
+           /* E */ {: return new List(); :}
+           | expr1.e {: return new List().add(e); :}
+           | param_list.list COMMA expr1.e {: return list.add(e); :};
 
 /* Blocks */
-stmt_list = 
-    /* E */ {: return new List(); :}
-    | stmt.s {: return new List().add(s); :}
-    | stmt_list.list stmt.s {: return list.add(s); :};
+stmt_list = stmt.s {: return new List().add(s); :}
+          | stmt_list.list stmt.s {: return list.add(s); :};
 
-block = LBRACE stmt_list.list RBRACE {: return new Block(list); :};
+block = LBRACE RBRACE {: return new Block(new List()); :}
+      | LBRACE stmt_list.list RBRACE {: return new Block(list); :};
 
 /* Statements */
-stmt = block | if_stmt | while_stmt | assign_stmt | decl_stmt;
+stmt = block | if_stmt | while_stmt | assign_stmt | decl_stmt | call_stmt | return_stmt;
 
-decl_stmt = type_id.type id_decl.name SEMICOLON {: return new DeclareStmt(type,name); :};
-assign_stmt = id_use.name ASSIGN expr.exp SEMICOLON {: return new AssignStmt(name,exp); :};
-
-/* While */
-while_stmt = WHILE LPARAM cond.c RPARAM stmt.s {: return new WhileStmt(c,s); :};
-if_stmt = IF LPARAM cond.c RPARAM stmt.s {: return new IfStmt(c,s,new Opt<Statement>()); :}
-        | IF LPARAM cond.c RPARAM stmt.th ELSE stmt.el {: return new IfStmt(c,th,new Opt<Statement>(el)); :};
+decl_stmt = type_id.type id_decl.name SEMICOLON {: return new DeclareStmt(type,name,new Opt<Expr>()); :}
+          | type_id.type id_decl.name ASSIGN expr1.e SEMICOLON {: return new DeclareStmt(type,name,new Opt<Expr>(e)); :};
+assign_stmt = id_use.name ASSIGN expr1.exp SEMICOLON {: return new AssignStmt(name,exp); :};
+call_stmt = func_call.call SEMICOLON {: return new CallStmt(call); :};
+while_stmt = WHILE LPARAM expr1.c RPARAM stmt.s {: return new WhileStmt(c,s); :};
+if_stmt = IF LPARAM expr1.c RPARAM stmt.s else_stmt.e {: return new IfStmt(c,s,e); :};
+else_stmt = /* E */ {: return new Opt<Statement>(); :}
+          | ELSE stmt.el {: return new Opt<Statement>(el); :};
+return_stmt = RETURN SEMICOLON {: return new ReturnStmt(new Opt<Expr>()); :}
+            | RETURN expr1.e SEMICOLON {: return new ReturnStmt(new Opt<Expr>(e)); :};
 
 /* Expressions */
-cond = expr.e 
-     | cond.c EQUALS expr.e {: return new EqualsExpr(c, e); :}
-     | cond.c NOTEQ expr.e {: return new NotEqualsExpr(c, e); :}
-     | cond.c LESS expr.e {: return new LessExpr(c, e); :}
-     | cond.c GREATER expr.e {: return new GreaterExpr(c, e); :}
-     | cond.c LEQUAL expr.e {: return new LessEqualExpr(c, e); :}
-     | cond.c GEQUAL expr.e {: return new GreaterEqualExpr(c, e); :}
-     | NOT cond.c {: return new NotExpr(c); :};
+expr1 = expr2
+      | expr1.e1 AND expr2.e2 {: return new AndExpr(e1,e2); :}
+      | expr1.e1 OR expr2.e2 {: return new OrExpr(e1,e2); :}
+      ;
 
-expr = term.t 
-     | expr.e PLUS term.t {: return new AddExpr(e,t); :}
-     | expr.e MINUS term.t {: return new SubExpr(e,t); :};
+expr2 = expr3.e 
+     | expr2.c EQUALS expr3.e {: return new EqualsExpr(c, e); :}
+     | expr2.c NOTEQ expr3.e {: return new NotEqualsExpr(c, e); :}
+     | expr2.c LESS expr3.e {: return new LessExpr(c, e); :}
+     | expr2.c GREATER expr3.e {: return new GreaterExpr(c, e); :}
+     | expr2.c LEQUAL expr3.e {: return new LessEqualExpr(c, e); :}
+     | expr2.c GEQUAL expr3.e {: return new GreaterEqualExpr(c, e); :};
+
+expr3 = term.t 
+      | expr3.e PLUS term.t {: return new AddExpr(e,t); :}
+      | expr3.e MINUS term.t {: return new SubExpr(e,t); :};
 
 term = factor.f 
      | term.t MULT factor.f {: return new MulExpr(t,f); :}
-     | term.t DIV factor.f {: return new DivExpr(t,f); :};
+     | term.t DIV factor.f {: return new DivExpr(t,f); :}
+     | term.t MOD factor.f {: return new ModExpr(t,f); :};
 
 factor = id_use.id {: return new IdExpr(id); :}
-       | LPARAM cond RPARAM
+       | func_call
+       | LPARAM expr1.e RPARAM {: return e; :}
        | literal;
 
 literal = TRUE.i {: return new TrueLiteral(i); :}

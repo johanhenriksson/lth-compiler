@@ -1,11 +1,12 @@
 Program
-  Function
-    TypeId
-    IdDecl
-    List
-    Block
+  List
+    Function
+      TypeId
+      IdDecl
       List
-        WhileStmt
-          TrueLiteral
-          Block
-            List
+      Block
+        List
+          WhileStmt
+            TrueLiteral
+            Block
+              List

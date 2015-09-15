@@ -1,14 +1,15 @@
 Program
-  Function
-    TypeId
-    IdDecl
-    List
-    Block
+  List
+    Function
+      TypeId
+      IdDecl
       List
-        IfStmt
-          FalseLiteral
-          Block
-            List
-          Opt
+      Block
+        List
+          IfStmt
+            FalseLiteral
             Block
               List
+            Opt
+              Block
+                List
