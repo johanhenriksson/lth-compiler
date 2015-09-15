@@ -12,4 +12,4 @@ Program
             Opt
           AssignStmt
             IdUse
-            Numeral
+            IntLiteral

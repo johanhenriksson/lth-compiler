@@ -1,39 +1,42 @@
 Program ::= List;
 
+/* Functions */
 Function ::= TypeId IdDecl List Block;
-ArgDef ::= TypeId IdDecl;
+ArgDef   ::= TypeId IdDecl;
 
+/* Statements */
 abstract Statement;
-Block: Statement ::= List;
-AssignStmt: Statement ::= IdUse Expr;
-DeclareStmt: Statement ::= TypeId IdDecl [Expr];
-WhileStmt: Statement ::= Expr Statement;
-IfStmt: Statement ::= Expr Then:Statement [Else:Statement];
-CallStmt: Statement ::= FuncExpr;
-ReturnStmt: Statement ::= [Expr];
+
+Block       : Statement ::= List;
+AssignStmt  : Statement ::= IdUse Expr;
+DeclareStmt : Statement ::= TypeId IdDecl [Expr];
+WhileStmt   : Statement ::= Expr Statement;
+IfStmt      : Statement ::= Expr Then:Statement [Else:Statement];
+CallStmt    : Statement ::= FuncExpr;
+ReturnStmt  : Statement ::= [Expr];
 
 /* Expressions */
 abstract Expr;
-IdExpr: Expr ::= IdUse;
-FuncExpr: Expr ::= IdUse List;
+BinExpr  : Expr ::= Left:Expr Right:Expr;
 
-UnaryExpr: Expr ::= Expr;
-BinExpr: Expr ::= Left:Expr Right:Expr;
+/* Variables & Function calls */
+IdExpr   : Expr ::= IdUse;
+FuncExpr : Expr ::= IdUse List;
 
-/* Logical */
-AndExpr: BinExpr ::= ;
-OrExpr: BinExpr ::= ;
+/* Logical operators */
+NotExpr : Expr    ::=;
+AndExpr : BinExpr ::=;
+OrExpr  : BinExpr ::=;
 
-/* Comparison */
-NotExpr: UnaryExpr ::=;
-EqualsExpr: BinExpr ::=;
-NotEqualsExpr: BinExpr ::=;
-LessExpr: BinExpr ::=;
-LessEqualExpr: BinExpr ::=;
-GreaterEqualExpr: BinExpr ::=;
-GreaterExpr: BinExpr ::=;
+/* Comparison operators */
+EqualsExpr       : BinExpr ::=;
+NotEqualsExpr    : BinExpr ::=;
+LessExpr         : BinExpr ::=;
+LessEqualExpr    : BinExpr ::=;
+GreaterEqualExpr : BinExpr ::=;
+GreaterExpr      : BinExpr ::=;
 
-/* Arithmetic */
+/* Arithmetic operators */
 AddExpr: BinExpr ::=;
 SubExpr: BinExpr ::=;
 MulExpr: BinExpr ::=;
@@ -42,11 +45,15 @@ ModExpr: BinExpr ::=;
 
 /* Literals */
 abstract Literal: Expr;
-Numeral: Literal ::= <NUM:String>;
-TrueLiteral: Literal ::= <TRUE:String>;
-FalseLiteral: Literal ::= <FALSE:String>;
-StringLiteral: Literal ::= <STRING:String>;
 
-IdUse ::= <ID:String>;
+IntLiteral    : Literal ::= <INT:String>;
+BoolLiteral   : Literal ::= <BOOL:String>;
+FloatLiteral  : Literal ::= <FLOAT:String>;
+StringLiteral : Literal ::= <STRING:String>;
+
+/* Identifiers */
+IdUse  ::= <ID:String>;
 IdDecl ::= <ID:String>;
+
+/* Type Names */
 TypeId ::= <ID:String>;

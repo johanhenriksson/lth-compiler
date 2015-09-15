@@ -7,6 +7,6 @@ Program
       Block
         List
           WhileStmt
-            TrueLiteral
+            BoolLiteral
             Block
               List

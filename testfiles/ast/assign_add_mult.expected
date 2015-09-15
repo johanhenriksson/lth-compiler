@@ -13,7 +13,7 @@ Program
           AssignStmt
             IdUse
             AddExpr
-              Numeral
+              IntLiteral
               MulExpr
-                Numeral
-                Numeral
+                IntLiteral
+                IntLiteral

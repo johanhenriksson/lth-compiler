@@ -1,9 +1,11 @@
 int main() {
-    if (a)
-        if (b)
+    if (a) {
+        if (b) {
             b = 2;
-        else
+        } else {
             c = 3;
-    else
+        }
+    } else {
         d = 4;
+    }
 }

@@ -7,7 +7,7 @@ Program
       Block
         List
           IfStmt
-            TrueLiteral
+            BoolLiteral
             Block
               List
             Opt

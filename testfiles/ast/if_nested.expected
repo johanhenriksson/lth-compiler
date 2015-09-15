@@ -9,17 +9,25 @@ Program
           IfStmt
             IdExpr
               IdUse
-            IfStmt
-              IdExpr
-                IdUse
-              AssignStmt
-                IdUse
-                Numeral
-              Opt
-                AssignStmt
-                  IdUse
-                  Numeral
+            Block
+              List
+                IfStmt
+                  IdExpr
+                    IdUse
+                  Block
+                    List
+                      AssignStmt
+                        IdUse
+                        IntLiteral
+                  Opt
+                    Block
+                      List
+                        AssignStmt
+                          IdUse
+                          IntLiteral
             Opt
-              AssignStmt
-                IdUse
-                Numeral
+              Block
+                List
+                  AssignStmt
+                    IdUse
+                    IntLiteral

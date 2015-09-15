@@ -7,7 +7,7 @@ Program
       Block
         List
           WhileStmt
-            TrueLiteral
+            BoolLiteral
             AssignStmt
               IdUse
-              Numeral
+              IntLiteral

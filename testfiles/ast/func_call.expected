@@ -14,10 +14,10 @@ Program
             FuncExpr
               IdUse
               List
-                Numeral
+                IntLiteral
           CallStmt
             FuncExpr
               IdUse
               List
-                Numeral
-                Numeral
+                IntLiteral
+                IntLiteral

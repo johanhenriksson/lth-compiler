@@ -11,7 +11,7 @@ Program
             FuncExpr
               IdUse
               List
-                Numeral
+                IntLiteral
           AssignStmt
             IdUse
             FuncExpr

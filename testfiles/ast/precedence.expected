@@ -9,25 +9,27 @@ Program
           IfStmt
             AndExpr
               EqualsExpr
-                Numeral
-                Numeral
+                IntLiteral
+                IntLiteral
               EqualsExpr
-                Numeral
+                IntLiteral
                 AddExpr
-                  Numeral
-                  Numeral
-            AssignStmt
-              IdUse
-              AddExpr
-                Numeral
-                MulExpr
-                  Numeral
-                  Numeral
+                  IntLiteral
+                  IntLiteral
+            Block
+              List
+                AssignStmt
+                  IdUse
+                  AddExpr
+                    IntLiteral
+                    MulExpr
+                      IntLiteral
+                      IntLiteral
             Opt
           AssignStmt
             IdUse
             MulExpr
               AddExpr
-                Numeral
-                Numeral
-              Numeral
+                IntLiteral
+                IntLiteral
+              IntLiteral

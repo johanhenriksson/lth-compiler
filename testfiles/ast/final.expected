@@ -65,7 +65,7 @@ Program
             EqualsExpr
               IdExpr
                 IdUse
-              Numeral
+              IntLiteral
             Block
               List
                 ReturnStmt
@@ -158,4 +158,4 @@ Program
                   IdUse
           ReturnStmt
             Opt
-              Numeral
+              IntLiteral
