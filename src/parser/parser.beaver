@@ -9,12 +9,22 @@
 	}
 :};
 
+/* Names & Variables */
 %terminals ID, INT, FLOAT, STRING, TRUE, FALSE;
-%terminals COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE; 
-%terminals ASSIGN, PLUS, MINUS, MULT, DIV, MOD;
+
+/* Punctuation */
+%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE; 
+
+/* Arithmetic */
+%terminals PLUS, MINUS, MULT, DIV, MOD;
+
+/* Boolean operators */
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
+
+/* Keywords */
 %terminals IF, ELSE, WHILE, RETURN;
 
+/* AST Classes */
 %typeof program     = "Program";
 %typeof functions   = "List";
 %typeof function    = "Function";
@@ -125,13 +135,13 @@ expr1 = expr2
       ;
 
 expr2 = expr3.e 
-     | expr2.c EQUALS  expr3.e {: return new EqualsExpr(c, e); :}
-     | expr2.c NOTEQ   expr3.e {: return new NotEqualsExpr(c, e); :}
-     | expr2.c LESS    expr3.e {: return new LessExpr(c, e); :}
-     | expr2.c GREATER expr3.e {: return new GreaterExpr(c, e); :}
-     | expr2.c LEQUAL  expr3.e {: return new LessEqualExpr(c, e); :}
-     | expr2.c GEQUAL  expr3.e {: return new GreaterEqualExpr(c, e); :}
-     ;
+      | expr2.c EQUALS  expr3.e {: return new EqualsExpr(c, e); :}
+      | expr2.c NOTEQ   expr3.e {: return new NotEqualsExpr(c, e); :}
+      | expr2.c LESS    expr3.e {: return new LessExpr(c, e); :}
+      | expr2.c GREATER expr3.e {: return new GreaterExpr(c, e); :}
+      | expr2.c LEQUAL  expr3.e {: return new LessEqualExpr(c, e); :}
+      | expr2.c GEQUAL  expr3.e {: return new GreaterEqualExpr(c, e); :}
+      ;
 
 expr3 = term.t 
       | expr3.e PLUS  term.t {: return new AddExpr(e,t); :}

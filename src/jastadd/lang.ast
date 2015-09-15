@@ -1,4 +1,7 @@
-Program ::= List;
+/* 
+ * Goal: Program
+ */
+Program  ::= List;
 
 /* Functions */
 Function ::= TypeId IdDecl List Block;
@@ -9,11 +12,11 @@ abstract Statement;
 
 Block       : Statement ::= List;
 AssignStmt  : Statement ::= IdUse Expr;
-DeclareStmt : Statement ::= TypeId IdDecl [Expr];
+DeclareStmt : Statement ::= TypeId IdDecl [ Expr ];
 WhileStmt   : Statement ::= Expr Statement;
-IfStmt      : Statement ::= Expr Then:Statement [Else:Statement];
+IfStmt      : Statement ::= Expr Then:Statement [ Else:Statement ];
 CallStmt    : Statement ::= FuncExpr;
-ReturnStmt  : Statement ::= [Expr];
+ReturnStmt  : Statement ::= [ Expr ];
 
 /* Expressions */
 abstract Expr;
@@ -37,14 +40,14 @@ GreaterEqualExpr : BinExpr ::=;
 GreaterExpr      : BinExpr ::=;
 
 /* Arithmetic operators */
-AddExpr: BinExpr ::=;
-SubExpr: BinExpr ::=;
-MulExpr: BinExpr ::=;
-DivExpr: BinExpr ::=;
-ModExpr: BinExpr ::=;
+AddExpr : BinExpr ::=;
+SubExpr : BinExpr ::=;
+MulExpr : BinExpr ::=;
+DivExpr : BinExpr ::=;
+ModExpr : BinExpr ::=;
 
 /* Literals */
-abstract Literal: Expr;
+abstract Literal : Expr;
 
 IntLiteral    : Literal ::= <INT:String>;
 BoolLiteral   : Literal ::= <BOOL:String>;

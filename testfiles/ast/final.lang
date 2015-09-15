@@ -1,3 +1,5 @@
+// single line comment
+
 int gcd1(int a, int b) {
     while (a != b) {
         if (a > b) {
@@ -6,6 +8,7 @@ int gcd1(int a, int b) {
             b = b - a;
         }
     }
+
     return a;
 }
 
@@ -13,6 +16,7 @@ int gcd2(int a, int b) {
     if (b == 0) {
         return a;
     }
+
     return gcd2(b, a % b);
 }
 
@@ -22,10 +26,12 @@ int gcd2(int a, int b) {
 int main() {
     int a;
     int b;
+
     a = read();
     b = read();
     print(gcd1(a, b));
     print(gcd2(a, b));
+
     int diff = gcd1(a, b) - gcd2(a, b);
     print(diff);
     return 0;
