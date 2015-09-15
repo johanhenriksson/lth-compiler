@@ -6,8 +6,7 @@ Program
     Block
       List
         IfStmt
-          TrueCond
+          TrueLiteral
           Block
             List
-          ElseStmt
-            EmptyStmt
+          Opt

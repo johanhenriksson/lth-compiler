@@ -30,6 +30,7 @@ import lang.ast.LangParser.SyntaxError;
 WhiteSpace = [ ] | \t | \f | \n | \r
 ID = [a-zA-Z]+
 Int = [0-9]+
+String = \"[^\"]*\"
 
 %%
 
@@ -62,6 +63,7 @@ Int = [0-9]+
 "/"             { return sym(Terminals.DIV); }
 
 {Int}           { return sym(Terminals.INT); }
+{String}        { return sym(Terminals.STRING); }
 {ID}            { return sym(Terminals.ID); }
 <<EOF>>         { return sym(Terminals.EOF); }
 

@@ -6,6 +6,6 @@ Program
     Block
       List
         WhileStmt
-          TrueCond
+          TrueLiteral
           Block
             List

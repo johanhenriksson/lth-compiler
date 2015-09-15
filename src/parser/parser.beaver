@@ -12,7 +12,7 @@
 %terminals ID, INT;
 %terminals COMMA, SEMICOLON, LPARAM, RPARAM, LBRACE, RBRACE; 
 %terminals ASSIGN, PLUS, MINUS, MULT, DIV, NOT, EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER;
-%terminals IF, ELSE, WHILE, TRUE, FALSE;
+%terminals IF, ELSE, WHILE, TRUE, FALSE, STRING;
 
 %typeof program     = "Program";
 %typeof function    = "Function";
@@ -29,11 +29,11 @@
 %typeof while_stmt  = "WhileStmt";
 %typeof if_stmt     = "IfStmt";
 
-%typeof cond        = "Condition";
+%typeof cond        = "Expr";
 %typeof expr        = "Expr";
-%typeof term        = "Term";
-%typeof factor      = "Factor";
-%typeof numeral     = "Numeral";
+%typeof factor      = "Expr";
+%typeof term        = "Expr";
+%typeof literal     = "Literal";
 
 %goal program;
 
@@ -72,32 +72,32 @@ assign_stmt = id_use.name ASSIGN expr.exp SEMICOLON {: return new AssignStmt(nam
 
 /* While */
 while_stmt = WHILE LPARAM cond.c RPARAM stmt.s {: return new WhileStmt(c,s); :};
-if_stmt = IF LPARAM cond.c RPARAM stmt.s {: return new IfStmt(c,s,new ElseStmt(new EmptyStmt())); :}
-        | IF LPARAM cond.c RPARAM stmt.th ELSE stmt.el {: return new IfStmt(c,th,new ElseStmt(el)); :};
-          
+if_stmt = IF LPARAM cond.c RPARAM stmt.s {: return new IfStmt(c,s,new Opt<Statement>()); :}
+        | IF LPARAM cond.c RPARAM stmt.th ELSE stmt.el {: return new IfStmt(c,th,new Opt<Statement>(el)); :};
 
 /* Expressions */
-cond = TRUE {: return new TrueCond(); :}
-     | FALSE {: return new FalseCond(); :}
-     | expr.e  {: return new ExprCond(e); :}
-     | NOT cond.c {: return new NotCond(c); :}
-     | cond.c EQUALS expr.e {: return new EqualsCond(c, e); :}
-     | cond.c NOTEQ expr.e
-     | cond.c LESS expr.e
-     | cond.c GREATER expr.e
-     | cond.c LEQUAL expr.e
-     | cond.c GEQUAL expr.e;
+cond = expr.e 
+     | cond.c EQUALS expr.e {: return new EqualsExpr(c, e); :}
+     | cond.c NOTEQ expr.e {: return new NotEqualsExpr(c, e); :}
+     | cond.c LESS expr.e {: return new LessExpr(c, e); :}
+     | cond.c GREATER expr.e {: return new GreaterExpr(c, e); :}
+     | cond.c LEQUAL expr.e {: return new LessEqualExpr(c, e); :}
+     | cond.c GEQUAL expr.e {: return new GreaterEqualExpr(c, e); :}
+     | NOT cond.c {: return new NotExpr(c); :};
 
-expr = term.t {: return new UnaryExpr(t); :}
+expr = term.t 
      | expr.e PLUS term.t {: return new AddExpr(e,t); :}
      | expr.e MINUS term.t {: return new SubExpr(e,t); :};
 
-term = factor.f {: return new UnaryTerm(f); :}
-     | term.t MULT factor.f {: return new MultTerm(t,f); :}
-     | term.t DIV factor.f {: return new DivTerm(t,f); :};
+term = factor.f 
+     | term.t MULT factor.f {: return new MulExpr(t,f); :}
+     | term.t DIV factor.f {: return new DivExpr(t,f); :};
 
-factor = id_use.id {: return new IdFactor(id); :}
-       | numeral.num {: return new NumFactor(num); :}
-       | LPARAM cond.c RPARAM {: return new CondFactor(c); :};
+factor = id_use.id {: return new IdExpr(id); :}
+       | LPARAM cond RPARAM
+       | literal;
 
-numeral = INT.i {: return new Numeral(i); :};
+literal = TRUE.i {: return new TrueLiteral(i); :}
+        | FALSE.i {: return new FalseLiteral(i); :}
+        | INT.i {: return new Numeral(i); :}
+        | STRING.s {: return new StringLiteral(s); :};

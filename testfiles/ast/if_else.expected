@@ -6,9 +6,9 @@ Program
     Block
       List
         IfStmt
-          FalseCond
+          FalseLiteral
           Block
             List
-          ElseStmt
+          Opt
             Block
               List

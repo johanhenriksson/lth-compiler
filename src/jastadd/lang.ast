@@ -1,42 +1,43 @@
 Program ::= Function;
 
-IdUse ::= <ID:String>;
-IdDecl ::= <ID:String>;
-TypeId ::= <ID:String>;
-
-Numeral ::= <NUM:String>;
-
 Function ::= TypeId IdDecl List Block;
 ArgDef ::= TypeId IdDecl;
 
 abstract Statement;
 Block: Statement ::= List;
-EmptyStmt: Statement;
 AssignStmt: Statement ::= IdUse Expr;
 DeclareStmt: Statement ::= TypeId IdDecl;
-WhileStmt: Statement ::= Condition Statement;
-IfStmt: Statement ::= Condition Statement ElseStmt;
-ElseStmt: Statement ::= Statement;
+WhileStmt: Statement ::= Expr Statement;
+IfStmt: Statement ::= Expr Then:Statement [Else:Statement];
 
-abstract Condition;
-ExprCond: Condition ::= Expr;
-TrueCond: Condition ::= ;
-FalseCond: Condition ::= ;
-NotCond: Condition ::= Condition;
-EqualsCond: Condition ::= Condition Expr;
-NotEqualCond: Condition  ::= Condition Expr;
-
+/* Expressions */
 abstract Expr;
-UnaryExpr: Expr ::= Term;
-AddExpr: Expr ::= Expr Term;
-SubExpr: Expr ::= Expr Term;
+IdExpr: Expr ::= IdUse;
+UnaryExpr: Expr ::= Expr;
+BinExpr: Expr ::= Left:Expr Right:Expr;
 
-abstract Term;
-UnaryTerm: Term ::= Factor;
-MultTerm: Term ::= Term Factor;
-DivTerm: Term ::= Term Factor;
+/* Comparison */
+NotExpr: UnaryExpr ::=;
+EqualsExpr: BinExpr ::=;
+NotEqualsExpr: BinExpr ::=;
+LessExpr: BinExpr ::=;
+LessEqualExpr: BinExpr ::=;
+GreaterEqualExpr: BinExpr ::=;
+GreaterExpr: BinExpr ::=;
 
-abstract Factor;
-IdFactor: Factor ::= IdUse;
-NumFactor: Factor ::= Numeral;
-CondFactor: Factor ::= Condition;
+/* Arithmetic */
+AddExpr: BinExpr ::=;
+SubExpr: BinExpr ::=;
+MulExpr: BinExpr ::=;
+DivExpr: BinExpr ::=;
+
+/* Literals */
+abstract Literal: Expr;
+Numeral: Literal ::= <NUM:String>;
+TrueLiteral: Literal ::= <TRUE:String>;
+FalseLiteral: Literal ::= <FALSE:String>;
+StringLiteral: Literal ::= <STRING:String>;
+
+IdUse ::= <ID:String>;
+IdDecl ::= <ID:String>;
+TypeId ::= <ID:String>;

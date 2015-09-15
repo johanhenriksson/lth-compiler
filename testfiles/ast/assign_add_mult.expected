@@ -11,13 +11,7 @@ Program
         AssignStmt
           IdUse
           AddExpr
-            UnaryExpr
-              UnaryTerm
-                NumFactor
-                  Numeral
-            MultTerm
-              UnaryTerm
-                NumFactor
-                  Numeral
-              NumFactor
-                Numeral
+            Numeral
+            MulExpr
+              Numeral
+              Numeral
