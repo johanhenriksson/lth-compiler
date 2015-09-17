@@ -22,14 +22,19 @@
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
 
 /* Keywords */
-%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE;
+%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE, STRUCT;
 
 /* AST Classes */
 %typeof program     = "Program";
 %typeof unit        = "Unit";
 %typeof units       = "List";
-%typeof func_unit   = "FunctionUnit";
-%typeof var_unit    = "VariableUnit";
+%typeof global      = "Global";
+
+%typeof struct      = "Struct";
+%typeof struct_block = "List";
+%typeof struct_list = "List";
+%typeof struct_decl = "StructDecl";
+%typeof struct_func = "StructFunc";
 
 %typeof function    = "Function";
 %typeof func_call   = "FuncExpr";
@@ -67,9 +72,18 @@ program = units.list {: return new Program(list); :};
 units = unit.u {: return new List().add(u); :}
       | units.list unit.u {: return list.add(u); :};
 
-unit = func_unit | var_unit;
-func_unit = function.f {: return new FunctionUnit(f); :};
-var_unit  = decl_stmt.d {: return new VariableUnit(d); :};
+unit = function | global | struct;
+global  = decl_stmt.d {: return new VariableUnit(d); :};
+
+/* Struct */
+struct = STRUCT id_decl.id struct_block.b {: return new Struct(id, b); :};
+struct_block = LBRACE RBRACE {: return new List(); :}
+             | LBRACE struct_list.list RBRACE {: return list; :};
+struct_list = struct_decl.d {: return new List().add(d); :}
+            | struct_list.list struct_decl.d {: return list.add(d); :};
+struct_decl = struct_var | struct_func;
+struct_var = type_id.type id_decl.id SEMI {: return new StructVar(type,id); :};
+struct_func = function.f {: return new StructFunc(f); :};
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :};

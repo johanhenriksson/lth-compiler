@@ -1,20 +1,19 @@
 Program
   List
-    FunctionUnit
-      Function
-        TypeId
-        IdDecl
+    Function
+      TypeId
+      IdDecl
+      List
+      Block
         List
-        Block
-          List
-            DeclareStmt
-              TypeId
-              IdDecl
-              Opt
-            AssignStmt
-              IdUse
-              AddExpr
+          DeclareStmt
+            TypeId
+            IdDecl
+            Opt
+          AssignStmt
+            IdUse
+            AddExpr
+              IntLiteral
+              MulExpr
                 IntLiteral
-                MulExpr
-                  IntLiteral
-                  IntLiteral
+                IntLiteral

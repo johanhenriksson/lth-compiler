@@ -1,0 +1,14 @@
+struct Hello {
+    int a;
+    float b;
+
+    int hello() {
+        a = b;
+    }
+
+    int hello2() { }
+}
+
+int main() {
+    Hello c;
+}

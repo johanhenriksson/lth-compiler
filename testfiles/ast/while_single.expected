@@ -1,14 +1,13 @@
 Program
   List
-    FunctionUnit
-      Function
-        TypeId
-        IdDecl
+    Function
+      TypeId
+      IdDecl
+      List
+      Block
         List
-        Block
-          List
-            WhileStmt
-              BoolLiteral
-              AssignStmt
-                IdUse
-                IntLiteral
+          WhileStmt
+            BoolLiteral
+            AssignStmt
+              IdUse
+              IntLiteral

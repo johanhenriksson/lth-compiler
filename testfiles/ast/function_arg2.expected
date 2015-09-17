@@ -1,15 +1,14 @@
 Program
   List
-    FunctionUnit
-      Function
-        TypeId
-        IdDecl
+    Function
+      TypeId
+      IdDecl
+      List
+        ArgDef
+          TypeId
+          IdDecl
+        ArgDef
+          TypeId
+          IdDecl
+      Block
         List
-          ArgDef
-            TypeId
-            IdDecl
-          ArgDef
-            TypeId
-            IdDecl
-        Block
-          List

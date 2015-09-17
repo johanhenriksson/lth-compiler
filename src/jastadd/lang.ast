@@ -4,11 +4,16 @@
 Program  ::= List;
 
 abstract Unit;
-FunctionUnit : Unit ::= Function;
-VariableUnit : Unit ::= DeclareStmt;
+Global : Unit ::= DeclareStmt;
+
+/* Structs */
+Struct : Unit ::= IdDecl List;
+abstract StructDecl;
+StructVar : StructDecl ::= TypeId IdDecl;
+StructFunc : StructDecl ::= Function;
 
 /* Functions */
-Function ::= TypeId IdDecl List Block;
+Function : Unit ::= TypeId IdDecl List Block;
 ArgDef   ::= TypeId IdDecl;
 
 /* Statements */
@@ -21,8 +26,8 @@ WhileStmt    : Statement ::= Expr Statement;
 IfStmt       : Statement ::= Expr Then:Statement [ Else:Statement ];
 CallStmt     : Statement ::= FuncExpr;
 ReturnStmt   : Statement ::= [ Expr ];
-BreakStmt    : Statement ::=;
-ContinueStmt : Statement ::=;
+BreakStmt    : Statement;
+ContinueStmt : Statement;
 
 /* Expressions */
 abstract Expr;
@@ -32,24 +37,24 @@ BinExpr  : Expr ::= Left:Expr Right:Expr;
 FuncExpr : Expr ::= IdUse List;
 
 /* Logical operators */
-NotExpr : Expr    ::= Expr;
-AndExpr : BinExpr ::=;
-OrExpr  : BinExpr ::=;
+NotExpr : Expr ::= Expr;
+AndExpr : BinExpr;
+OrExpr  : BinExpr;
 
 /* Comparison operators */
-EqualsExpr       : BinExpr ::=;
-NotEqualsExpr    : BinExpr ::=;
-LessExpr         : BinExpr ::=;
-LessEqualExpr    : BinExpr ::=;
-GreaterEqualExpr : BinExpr ::=;
-GreaterExpr      : BinExpr ::=;
+EqualsExpr       : BinExpr;
+NotEqualsExpr    : BinExpr;
+LessExpr         : BinExpr;
+LessEqualExpr    : BinExpr;
+GreaterEqualExpr : BinExpr;
+GreaterExpr      : BinExpr;
 
 /* Arithmetic operators */
-AddExpr : BinExpr ::=;
-SubExpr : BinExpr ::=;
-MulExpr : BinExpr ::=;
-DivExpr : BinExpr ::=;
-ModExpr : BinExpr ::=;
+AddExpr : BinExpr;
+SubExpr : BinExpr;
+MulExpr : BinExpr;
+DivExpr : BinExpr;
+ModExpr : BinExpr;
 
 /* Literals */
 abstract Literal : Expr;

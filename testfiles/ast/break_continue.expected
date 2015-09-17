@@ -1,16 +1,15 @@
 Program
   List
-    FunctionUnit
-      Function
-        TypeId
-        IdDecl
+    Function
+      TypeId
+      IdDecl
+      List
+      Block
         List
-        Block
-          List
-            WhileStmt
-              NotExpr
-                BoolLiteral
-              Block
-                List
-                  ContinueStmt
-                  BreakStmt
+          WhileStmt
+            NotExpr
+              BoolLiteral
+            Block
+              List
+                ContinueStmt
+                BreakStmt

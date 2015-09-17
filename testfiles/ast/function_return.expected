@@ -1,17 +1,16 @@
 Program
   List
-    FunctionUnit
-      Function
-        TypeId
-        IdDecl
+    Function
+      TypeId
+      IdDecl
+      List
+        ArgDef
+          TypeId
+          IdDecl
+      Block
         List
-          ArgDef
-            TypeId
-            IdDecl
-        Block
-          List
-            ReturnStmt
-              Opt
-                MulExpr
-                  IdUse
-                  IdUse
+          ReturnStmt
+            Opt
+              MulExpr
+                IdUse
+                IdUse
