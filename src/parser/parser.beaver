@@ -13,7 +13,7 @@
 %terminals ID, INT, FLOAT, STRING, TRUE, FALSE;
 
 /* Punctuation */
-%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE; 
+%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT; 
 
 /* Arithmetic */
 %terminals PLUS, MINUS, MULT, DIV, MOD;
@@ -22,11 +22,15 @@
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
 
 /* Keywords */
-%terminals IF, ELSE, WHILE, RETURN;
+%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE;
 
 /* AST Classes */
 %typeof program     = "Program";
-%typeof functions   = "List";
+%typeof unit        = "Unit";
+%typeof units       = "List";
+%typeof func_unit   = "FunctionUnit";
+%typeof var_unit    = "VariableUnit";
+
 %typeof function    = "Function";
 %typeof func_call   = "FuncExpr";
 %typeof type_id     = "TypeId";
@@ -44,6 +48,8 @@
 %typeof if_stmt     = "IfStmt";
 %typeof else_stmt   = "Opt<Statement>";
 %typeof call_stmt   = "CallStmt";
+%typeof break_stmt  = "BreakStmt";
+%typeof cont_stmt   = "ContinueStmt";
 
 %typeof expr1   = "Expr";
 %typeof expr2   = "Expr";
@@ -55,11 +61,15 @@
 %goal program;
 
 /* Goal: Program - list of functions */
-program = functions.list {: return new Program(list); :};
+program = units.list {: return new Program(list); :};
 
-functions = function.f {: return new List().add(f); :}
-          | functions.list function.f {: return list.add(f); :};
+/* Compilation units */
+units = unit.u {: return new List().add(u); :}
+      | units.list unit.u {: return list.add(u); :};
 
+unit = func_unit | var_unit;
+func_unit = function.f {: return new FunctionUnit(f); :};
+var_unit  = decl_stmt.d {: return new VariableUnit(d); :};
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :};
@@ -95,7 +105,15 @@ param_list = /* Empty */ {: return new List(); :}
 
 
 /* Statements */
-stmt = block | if_stmt | while_stmt | assign_stmt | decl_stmt | call_stmt | return_stmt;
+stmt = block 
+     | if_stmt 
+     | while_stmt 
+     | assign_stmt 
+     | decl_stmt 
+     | call_stmt 
+     | return_stmt
+     | break_stmt
+     | cont_stmt;
 
 /* Declaration with optional initializer */
 decl_stmt = type_id.type id_decl.name SEMI {: return new DeclareStmt(type,name,new Opt<Expr>()); :}
@@ -118,6 +136,10 @@ else_stmt = /* E */ {: return new Opt<Statement>(); :}
 /* Return statement */
 return_stmt = RETURN SEMI {: return new ReturnStmt(new Opt<Expr>()); :}
             | RETURN expr1.e SEMI {: return new ReturnStmt(new Opt<Expr>(e)); :};
+
+/* Break & Continue statements */
+break_stmt = BREAK SEMI {: return new BreakStmt(); :};
+cont_stmt  = CONTINUE SEMI {: return new ContinueStmt(); :};
 
 
 /* Blocks */
@@ -149,13 +171,14 @@ expr3 = term.t
       ;
 
 term = factor.f 
+     |        NOT  factor.f {: return new NotExpr(f); :}
      | term.t MULT factor.f {: return new MulExpr(t,f); :}
      | term.t DIV  factor.f {: return new DivExpr(t,f); :}
      | term.t MOD  factor.f {: return new ModExpr(t,f); :}
      ;
 
-factor = id_use.id {: return new IdExpr(id); :}
-       | LPARAM expr1.e RPARAM {: return e; :}
+factor = id_use.id 
+       | LPARAM expr1.e RPARAM
        | func_call
        | literal
        ;

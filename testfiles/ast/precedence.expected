@@ -1,35 +1,36 @@
 Program
   List
-    Function
-      TypeId
-      IdDecl
-      List
-      Block
+    FunctionUnit
+      Function
+        TypeId
+        IdDecl
         List
-          IfStmt
-            AndExpr
-              EqualsExpr
-                IntLiteral
-                IntLiteral
-              EqualsExpr
-                IntLiteral
+        Block
+          List
+            IfStmt
+              AndExpr
+                EqualsExpr
+                  IntLiteral
+                  IntLiteral
+                EqualsExpr
+                  IntLiteral
+                  AddExpr
+                    IntLiteral
+                    IntLiteral
+              Block
+                List
+                  AssignStmt
+                    IdUse
+                    AddExpr
+                      IntLiteral
+                      MulExpr
+                        IntLiteral
+                        IntLiteral
+              Opt
+            AssignStmt
+              IdUse
+              MulExpr
                 AddExpr
                   IntLiteral
                   IntLiteral
-            Block
-              List
-                AssignStmt
-                  IdUse
-                  AddExpr
-                    IntLiteral
-                    MulExpr
-                      IntLiteral
-                      IntLiteral
-            Opt
-          AssignStmt
-            IdUse
-            MulExpr
-              AddExpr
                 IntLiteral
-                IntLiteral
-              IntLiteral

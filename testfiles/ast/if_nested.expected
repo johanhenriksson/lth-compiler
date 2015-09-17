@@ -1,33 +1,32 @@
 Program
   List
-    Function
-      TypeId
-      IdDecl
-      List
-      Block
+    FunctionUnit
+      Function
+        TypeId
+        IdDecl
         List
-          IfStmt
-            IdExpr
+        Block
+          List
+            IfStmt
               IdUse
-            Block
-              List
-                IfStmt
-                  IdExpr
+              Block
+                List
+                  IfStmt
                     IdUse
-                  Block
-                    List
-                      AssignStmt
-                        IdUse
-                        IntLiteral
-                  Opt
                     Block
                       List
                         AssignStmt
                           IdUse
                           IntLiteral
-            Opt
-              Block
-                List
-                  AssignStmt
-                    IdUse
-                    IntLiteral
+                    Opt
+                      Block
+                        List
+                          AssignStmt
+                            IdUse
+                            IntLiteral
+              Opt
+                Block
+                  List
+                    AssignStmt
+                      IdUse
+                      IntLiteral

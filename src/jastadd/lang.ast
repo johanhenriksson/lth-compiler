@@ -3,6 +3,10 @@
  */
 Program  ::= List;
 
+abstract Unit;
+FunctionUnit : Unit ::= Function;
+VariableUnit : Unit ::= DeclareStmt;
+
 /* Functions */
 Function ::= TypeId IdDecl List Block;
 ArgDef   ::= TypeId IdDecl;
@@ -10,24 +14,25 @@ ArgDef   ::= TypeId IdDecl;
 /* Statements */
 abstract Statement;
 
-Block       : Statement ::= List;
-AssignStmt  : Statement ::= IdUse Expr;
-DeclareStmt : Statement ::= TypeId IdDecl [ Expr ];
-WhileStmt   : Statement ::= Expr Statement;
-IfStmt      : Statement ::= Expr Then:Statement [ Else:Statement ];
-CallStmt    : Statement ::= FuncExpr;
-ReturnStmt  : Statement ::= [ Expr ];
+Block        : Statement ::= List;
+AssignStmt   : Statement ::= IdUse Expr;
+DeclareStmt  : Statement ::= TypeId IdDecl [ Expr ];
+WhileStmt    : Statement ::= Expr Statement;
+IfStmt       : Statement ::= Expr Then:Statement [ Else:Statement ];
+CallStmt     : Statement ::= FuncExpr;
+ReturnStmt   : Statement ::= [ Expr ];
+BreakStmt    : Statement ::=;
+ContinueStmt : Statement ::=;
 
 /* Expressions */
 abstract Expr;
 BinExpr  : Expr ::= Left:Expr Right:Expr;
 
 /* Variables & Function calls */
-IdExpr   : Expr ::= IdUse;
 FuncExpr : Expr ::= IdUse List;
 
 /* Logical operators */
-NotExpr : Expr    ::=;
+NotExpr : Expr    ::= Expr;
 AndExpr : BinExpr ::=;
 OrExpr  : BinExpr ::=;
 
@@ -55,7 +60,7 @@ FloatLiteral  : Literal ::= <FLOAT:String>;
 StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
-IdUse  ::= <ID:String>;
+IdUse : Expr ::= <ID:String>;
 IdDecl ::= <ID:String>;
 
 /* Type Names */

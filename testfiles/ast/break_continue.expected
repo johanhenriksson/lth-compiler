@@ -8,6 +8,9 @@ Program
         Block
           List
             WhileStmt
-              BoolLiteral
+              NotExpr
+                BoolLiteral
               Block
                 List
+                  ContinueStmt
+                  BreakStmt

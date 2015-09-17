@@ -1,5 +1,11 @@
 Program
   List
+    VariableUnit
+      DeclareStmt
+        TypeId
+        IdDecl
+        Opt
+          IntLiteral
     FunctionUnit
       Function
         TypeId
@@ -7,8 +13,6 @@ Program
         List
         Block
           List
-            WhileStmt
-              BoolLiteral
-              AssignStmt
+            ReturnStmt
+              Opt
                 IdUse
-                IntLiteral

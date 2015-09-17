@@ -9,13 +9,7 @@ Program
           List
             AssignStmt
               IdUse
-              FuncExpr
-                IdUse
-                List
-                  IntLiteral
+              IntLiteral
             AssignStmt
               IdUse
-              FuncExpr
-                IdUse
-                List
-                  StringLiteral
+              FloatLiteral
