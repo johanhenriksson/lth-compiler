@@ -73,7 +73,7 @@ units = unit.u {: return new List().add(u); :}
       | units.list unit.u {: return list.add(u); :};
 
 unit = function | global | struct;
-global  = decl_stmt.d {: return new VariableUnit(d); :};
+global  = decl_stmt.d {: return new Global(d); :};
 
 /* Struct */
 struct = STRUCT id_decl.id struct_block.b {: return new Struct(id, b); :};

@@ -1,6 +1,6 @@
 Program
   List
-    VariableUnit
+    Global
       DeclareStmt
         TypeId
         IdDecl
