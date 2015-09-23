@@ -1,0 +1,14 @@
+function a() {
+    int one;
+    int two;
+}
+
+function b() {
+    int one; // ok
+    one = two; // error
+}
+
+function c(int one, int three) {
+    int one; // not ok
+    one = three;
+}

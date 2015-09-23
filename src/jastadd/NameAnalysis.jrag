@@ -68,6 +68,34 @@ aspect NameAnalysis {
 		}
 	}
 
+	public void Function.checkNames(PrintStream err, SymbolTable symbols) {
+        /* Function name to global symbol table */
+        getName().checkNames(err, symbols);
+
+        /* Child scope with function parameters */
+        SymbolTable scope = symbols.push();
+        for (int i = 0; i < getNumArgument(); i++) {
+            getArgument(i).checkNames(err, scope);
+        }
+        getBlock().checkNames(err, scope);
+    }
+
+	public void WhileStmt.checkNames(PrintStream err, SymbolTable symbols) {
+        /* Child scope */
+        SymbolTable scope = symbols.push();
+        getCondition().checkNames(err, scope);
+        getLoop().checkNames(err, scope);
+    }
+
+	public void IfStmt.checkNames(PrintStream err, SymbolTable symbols) {
+        SymbolTable scope = symbols.push();
+        getCondition().checkNames(err, scope);
+        getThen().checkNames(err, scope.push());
+        if (hasElse()) {
+            getElse().checkNames(err, scope.push());
+        }
+    }
+
 	public void IdDecl.checkNames(PrintStream err, SymbolTable symbols) {
 		if (!symbols.declare(getID())) {
 			err.format("Error at line %d: symbol \'%s\' is already declared!", getLine(), getID());
