@@ -1,0 +1,6 @@
+int main(int c) {
+    int b;
+    if (b) {
+        int d;
+    }
+}
