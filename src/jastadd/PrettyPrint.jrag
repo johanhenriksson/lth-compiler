@@ -79,6 +79,16 @@ aspect PrettyPrint {
         out.print(";\n");
     }
 
+    public void BreakStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        out.print("break;\n");
+    }
+
+    public void ContinueStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        out.print("continue;\n");
+    }
+
     public void IfStmt.prettyPrint(PrintStream out, String ind) {
         out.print(ind);
         out.print("if (");
@@ -183,6 +193,24 @@ aspect PrettyPrint {
         getLeft().prettyPrint(out);
         out.print(" <= ");
         getRight().prettyPrint(out);
+    }
+
+    public void AndExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" && ");
+        getRight().prettyPrint(out);
+    }
+
+    public void OrExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" || ");
+        getRight().prettyPrint(out);
+    }
+
+    public void ParamExpr.prettyPrint(PrintStream out, String ind) {
+        out.print("(");
+        getExpr().prettyPrint(out, ind);
+        out.print(")");
     }
 
     public void BoolLiteral.prettyPrint(PrintStream out, String ind) { out.print(getBOOL()); }

@@ -29,7 +29,8 @@ Program
           AssignStmt
             IdUse
             MulExpr
-              AddExpr
-                IntLiteral
-                IntLiteral
+              ParamExpr
+                AddExpr
+                  IntLiteral
+                  IntLiteral
               IntLiteral

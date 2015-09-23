@@ -24,6 +24,7 @@ ContinueStmt : Statement;
 /* Expressions */
 abstract Expr;
 abstract BinExpr : Expr ::= Left:Expr Right:Expr;
+ParamExpr : Expr ::= Expr;
 
 /* Variables & Function calls */
 FuncExpr : Expr ::= Name:IdUse Argument:Expr*;
