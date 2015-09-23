@@ -1,0 +1,11 @@
+int main() {
+    if (a) {
+        if (b) {
+            b = 2;
+        } else {
+            c = 3;
+        }
+    } else {
+        d = 4;
+    }
+}

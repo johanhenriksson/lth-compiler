@@ -1,0 +1,195 @@
+import java.io.PrintStream;
+
+aspect PrettyPrint {
+	public void ASTNode.prettyPrint(PrintStream out) {
+		prettyPrint(out, "");
+		//out.println();
+	}
+
+	public void ASTNode.prettyPrint(PrintStream out, String ind) {
+		for (int i = 0; i < getNumChild(); ++i) {
+			getChild(i).prettyPrint(out, ind);
+		}
+	}
+
+    public void Function.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        getType().prettyPrint(out);
+        out.print(" ");
+        getName().prettyPrint(out);
+        out.print("(");
+
+        for (int i = 0; i < getNumArgument(); i++) {
+            getArgument(i).prettyPrint(out);
+            if (i < getNumArgument() - 1)
+                out.print(", ");
+        }
+
+        out.print(") ");
+        getBlock().prettyPrint(out, ind);
+        out.print("\n");
+    }
+
+    public void Argument.prettyPrint(PrintStream out, String ind) {
+        getType().prettyPrint(out);
+        out.print(" ");
+        getName().prettyPrint(out);
+    }
+
+    public void Block.prettyPrint(PrintStream out, String ind) {
+        out.print("{\n");
+        for (int i = 0; i < getNumStatement(); i++) {
+            getStatement(i).prettyPrint(out, ind + "    ");
+        }
+        out.print(ind + "}");
+    }
+
+    public void AssignStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        getName().prettyPrint(out);
+        out.print(" = ");
+        getAssignExpr().prettyPrint(out);
+        out.print(";\n");
+    }
+
+    public void DeclareStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        getType().prettyPrint(out);
+        out.print(" ");
+        getName().prettyPrint(out);
+        if (hasAssignExpr()) {
+            out.print(" = ");
+            getAssignExpr().prettyPrint(out);
+        }
+        out.print(";\n");
+    }
+
+    public void CallStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        getFunction().prettyPrint(out, ind);
+        out.print(";\n");
+    }
+
+    public void ReturnStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        out.print("return ");
+        if (hasReturnExpr()) {
+            getReturnExpr().prettyPrint(out, ind);
+        }
+        out.print(";\n");
+    }
+
+    public void IfStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        out.print("if (");
+        getCondition().prettyPrint(out);
+        out.print(") ");
+        getThen().prettyPrint(out, ind);
+        if (hasElse()) {
+            out.print(" else ");
+            getElse().prettyPrint(out, ind);
+        }
+        out.print("\n");
+    }
+
+    public void WhileStmt.prettyPrint(PrintStream out, String ind) {
+        out.print(ind);
+        out.print("while (");
+        getCondition().prettyPrint(out);
+        out.print(") ");
+        getLoop().prettyPrint(out, ind);
+        out.print("\n");
+    }
+
+    /* Expressions */
+
+    public void FuncExpr.prettyPrint(PrintStream out, String ind) {
+        getName().prettyPrint(out, ind);
+        out.print("(");
+        for (int i = 0; i < getNumArgument(); i++) {
+            getArgument(i).prettyPrint(out);
+            if (i < getNumArgument() - 1)
+                out.print(", ");
+        }
+        out.print(")");
+    }
+
+    public void NotExpr.prettyPrint(PrintStream out, String ind) {
+        out.print("!");
+        getExpr().prettyPrint(out);
+    }
+
+    public void AddExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" + ");
+        getRight().prettyPrint(out);
+    }
+
+    public void SubExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" - ");
+        getRight().prettyPrint(out);
+    }
+
+    public void MulExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" * ");
+        getRight().prettyPrint(out);
+    }
+
+    public void DivExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" / ");
+        getRight().prettyPrint(out);
+    }
+
+    public void ModExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" % ");
+        getRight().prettyPrint(out);
+    }
+
+    public void EqualsExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" == ");
+        getRight().prettyPrint(out);
+    }
+
+    public void NotEqualsExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" != ");
+        getRight().prettyPrint(out);
+    }
+
+    public void GreaterExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" > ");
+        getRight().prettyPrint(out);
+    }
+
+    public void GreaterEqualExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" >= ");
+        getRight().prettyPrint(out);
+    }
+
+    public void LessExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" < ");
+        getRight().prettyPrint(out);
+    }
+
+    public void LessEqualExpr.prettyPrint(PrintStream out, String ind) {
+        getLeft().prettyPrint(out);
+        out.print(" <= ");
+        getRight().prettyPrint(out);
+    }
+
+    public void BoolLiteral.prettyPrint(PrintStream out, String ind) { out.print(getBOOL()); }
+    public void IntLiteral.prettyPrint(PrintStream out, String ind) { out.print(getINT()); }
+    public void StringLiteral.prettyPrint(PrintStream out, String ind) { out.print(getSTRING()); }
+    public void FloatLiteral.prettyPrint(PrintStream out, String ind) { out.print(getFLOAT()); }
+    public void TypeId.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
+    public void IdUse.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
+    public void IdDecl.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
+}

@@ -11,9 +11,9 @@ import lang.ast.LangParser;
 import lang.ast.LangScanner;
 
 /**
- * Dumps the parsed Abstract Syntax Tree of a Calc program.
+ * Computes the maximum statement nesting depth for a Calc program.
  */
-public class DumpTree {
+public class Compiler {
 	/**
 	 * Entry point
 	 * @param args
@@ -32,7 +32,8 @@ public class DumpTree {
 			LangScanner scanner = new LangScanner(new FileReader(filename));
 			LangParser parser = new LangParser();
 			Program program = (Program) parser.parse(scanner);
-			System.out.println(program.dumpTree());
+			program.prettyPrint(System.out);
+            System.out.println("Max statement depth: " + MSNVisitor.result(program));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 			System.exit(1);
@@ -44,8 +45,8 @@ public class DumpTree {
 	}
 
 	private static void printUsage() {
-		System.err.println("Usage: DumpTree FILE");
-		System.err.println("  where FILE is the file to be parsed");
+		System.err.println("Usage: Compiler FILE");
+		System.err.println("  where FILE is the file to be compiled");
 	}
 }
 

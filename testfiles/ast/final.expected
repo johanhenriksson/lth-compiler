@@ -4,10 +4,10 @@ Program
       TypeId
       IdDecl
       List
-        ArgDef
+        Argument
           TypeId
           IdDecl
-        ArgDef
+        Argument
           TypeId
           IdDecl
       Block
@@ -44,10 +44,10 @@ Program
       TypeId
       IdDecl
       List
-        ArgDef
+        Argument
           TypeId
           IdDecl
-        ArgDef
+        Argument
           TypeId
           IdDecl
       Block

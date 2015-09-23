@@ -1,0 +1,4 @@
+int GLOBAL = 5;
+int main() {
+    return GLOBAL;
+}

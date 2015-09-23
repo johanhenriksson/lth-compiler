@@ -1,0 +1,5 @@
+int main() {
+    while(true == 5 + 3) {
+        a = b;
+    }
+}

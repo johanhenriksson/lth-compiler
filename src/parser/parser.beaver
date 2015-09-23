@@ -22,7 +22,7 @@
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
 
 /* Keywords */
-%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE, STRUCT;
+%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE;
 
 /* AST Classes */
 %typeof program     = "Program";
@@ -30,38 +30,32 @@
 %typeof units       = "List";
 %typeof global      = "Global";
 
-%typeof struct      = "Struct";
-%typeof struct_block = "List";
-%typeof struct_list = "List";
-%typeof struct_decl = "StructDecl";
-%typeof struct_func = "StructFunc";
+%typeof function     = "Function";
+%typeof func_call    = "FuncExpr";
+%typeof type_id      = "TypeId";
+%typeof id_use       = "IdUse";
+%typeof id_decl      = "IdDecl";
+%typeof arg_list     = "List";
+%typeof arg_def      = "Argument";
+%typeof param_list   = "List";
+%typeof block        = "Block";
+%typeof stmt         = "Statement";
+%typeof stmt_list    = "List";
+%typeof assign_stmt  = "AssignStmt";
+%typeof decl_stmt    = "DeclareStmt";
+%typeof while_stmt   = "WhileStmt";
+%typeof if_stmt      = "IfStmt";
+%typeof else_stmt    = "Opt<Statement>";
+%typeof call_stmt    = "CallStmt";
+%typeof break_stmt   = "BreakStmt";
+%typeof cont_stmt    = "ContinueStmt";
 
-%typeof function    = "Function";
-%typeof func_call   = "FuncExpr";
-%typeof type_id     = "TypeId";
-%typeof id_use      = "IdUse";
-%typeof id_decl     = "IdDecl";
-%typeof arg_list    = "List";
-%typeof arg_def     = "ArgDef";
-%typeof param_list  = "List";
-%typeof block       = "Block";
-%typeof stmt        = "Statement";
-%typeof stmt_list   = "List";
-%typeof assign_stmt = "AssignStmt";
-%typeof decl_stmt   = "DeclareStmt";
-%typeof while_stmt  = "WhileStmt";
-%typeof if_stmt     = "IfStmt";
-%typeof else_stmt   = "Opt<Statement>";
-%typeof call_stmt   = "CallStmt";
-%typeof break_stmt  = "BreakStmt";
-%typeof cont_stmt   = "ContinueStmt";
-
-%typeof expr1   = "Expr";
-%typeof expr2   = "Expr";
-%typeof expr3   = "Expr";
-%typeof factor  = "Expr";
-%typeof term    = "Expr";
-%typeof literal = "Literal";
+%typeof expr1        = "Expr";
+%typeof expr2        = "Expr";
+%typeof expr3        = "Expr";
+%typeof factor       = "Expr";
+%typeof term         = "Expr";
+%typeof literal      = "Literal";
 
 %goal program;
 
@@ -72,34 +66,22 @@ program = units.list {: return new Program(list); :};
 units = unit.u {: return new List().add(u); :}
       | units.list unit.u {: return list.add(u); :};
 
-unit = function | global | struct;
+unit = function | global;
 global  = decl_stmt.d {: return new Global(d); :};
-
-/* Struct */
-struct = STRUCT id_decl.id struct_block.b {: return new Struct(id, b); :};
-struct_block = LBRACE RBRACE {: return new List(); :}
-             | LBRACE struct_list.list RBRACE {: return list; :};
-struct_list = struct_decl.d {: return new List().add(d); :}
-            | struct_list.list struct_decl.d {: return list.add(d); :};
-struct_decl = struct_var | struct_func;
-struct_var = type_id.type id_decl.id SEMI {: return new StructVar(type,id); :};
-struct_func = function.f {: return new StructFunc(f); :};
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :};
 
-
 /* Identifiers */
 id_use  = ID.id {: return new IdUse(id); :};
 id_decl = ID.id {: return new IdDecl(id); :};
-
 
 /* Function */
 function = type_id.type id_decl.id LPARAM arg_list.args RPARAM block.block {: return new Function(type,id,args,block); :};
 
 
 /* Function argument */
-arg_def = type_id.type id_decl.name {: return new ArgDef(type,name); :};
+arg_def = type_id.type id_decl.name {: return new Argument(type,name); :};
 
 
 /* Function definition arugment list */

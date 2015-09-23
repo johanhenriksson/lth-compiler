@@ -10,7 +10,7 @@ Program
       TypeId
       IdDecl
       List
-        ArgDef
+        Argument
           TypeId
           IdDecl
       Block

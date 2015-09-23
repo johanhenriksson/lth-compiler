@@ -1,40 +1,32 @@
-/* 
- * Goal: Program
- */
-Program  ::= List;
+/* Goal: Program */
+Program  ::= Unit*;
 
 abstract Unit;
 Global : Unit ::= DeclareStmt;
 
-/* Structs */
-Struct : Unit ::= IdDecl List;
-abstract StructDecl;
-StructVar : StructDecl ::= TypeId IdDecl;
-StructFunc : StructDecl ::= Function;
-
 /* Functions */
-Function : Unit ::= TypeId IdDecl List Block;
-ArgDef   ::= TypeId IdDecl;
+Function : Unit ::= Type:TypeId Name:IdDecl Argument* Block;
+Argument ::= Type:TypeId Name:IdDecl;
 
 /* Statements */
 abstract Statement;
 
-Block        : Statement ::= List;
-AssignStmt   : Statement ::= IdUse Expr;
-DeclareStmt  : Statement ::= TypeId IdDecl [ Expr ];
-WhileStmt    : Statement ::= Expr Statement;
-IfStmt       : Statement ::= Expr Then:Statement [ Else:Statement ];
-CallStmt     : Statement ::= FuncExpr;
-ReturnStmt   : Statement ::= [ Expr ];
+Block        : Statement ::= Statement*;
+AssignStmt   : Statement ::= Name:IdUse AssignExpr:Expr;
+DeclareStmt  : Statement ::= Type:TypeId Name:IdDecl [ AssignExpr:Expr ];
+WhileStmt    : Statement ::= Condition:Expr Loop:Statement;
+IfStmt       : Statement ::= Condition:Expr Then:Statement [ Else:Statement ];
+CallStmt     : Statement ::= Function:FuncExpr;
+ReturnStmt   : Statement ::= [ ReturnExpr:Expr ];
 BreakStmt    : Statement;
 ContinueStmt : Statement;
 
 /* Expressions */
 abstract Expr;
-BinExpr  : Expr ::= Left:Expr Right:Expr;
+abstract BinExpr : Expr ::= Left:Expr Right:Expr;
 
 /* Variables & Function calls */
-FuncExpr : Expr ::= IdUse List;
+FuncExpr : Expr ::= Name:IdUse Argument:Expr*;
 
 /* Logical operators */
 NotExpr : Expr ::= Expr;
