@@ -110,10 +110,6 @@ aspect NameAnalysis {
 		}
 	}
 
-	/**
-	 * Helper method
-	 * @return line number of this token
-	 */
 	public int ASTNode.getLine() {
 		return getLine(getStart());
 	}

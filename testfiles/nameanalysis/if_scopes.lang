@@ -1,0 +1,10 @@
+int main() {
+    int a;
+    if (a) {
+        int b = a;
+        int c = 5;
+    } else {
+        int b = c; // error - c is not defined here
+        int d = a;
+    }
+}
