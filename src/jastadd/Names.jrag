@@ -95,3 +95,15 @@ aspect Names {
         return prev_decl != this;
     }
 }
+
+aspect CircularDefinitions {
+	/* Identify circular definitions in let expressions */
+	syn boolean IdUse.isCircular() = inExprOf(decl());
+
+	inh boolean IdUse.inExprOf(IdDecl decl);
+
+	eq Program.getChild().inExprOf(IdDecl decl) = false;
+
+    inh boolean AssignStmt.inExprOf(IdDecl decl);
+    eq AssignStmt.getAssignExpr().inExprOf(IdDecl decl) = getName() == decl || inExprOf(decl);
+}
