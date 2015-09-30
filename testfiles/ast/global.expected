@@ -2,13 +2,13 @@ Program
   List
     Global
       DeclareStmt
-        TypeId
         IdDecl
+          TypeId
         Opt
           IntLiteral
     Function
-      TypeId
       IdDecl
+        TypeId
       List
       Block
         List

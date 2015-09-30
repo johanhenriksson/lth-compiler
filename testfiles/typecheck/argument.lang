@@ -1,0 +1,10 @@
+int main(int c) {
+    return c;
+}
+int m(bool b, int c) {
+    return b; // error
+    return c;
+}
+bool v(int c) {
+    return c; // error
+}

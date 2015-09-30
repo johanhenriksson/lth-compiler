@@ -41,4 +41,32 @@ aspect ErrorContributions {
 	IdDecl contributes error("symbol '" + getID() + "' is already declared!")
 		when isMultiplyDeclared()
 		to Program.errors() for program();
+
+    ReturnStmt contributes error("expected return type " + expectedType().toString() + ", got " + getReturnExpr().type().toString())
+        when typeError()
+        to Program.errors() for program();
+
+    AssignStmt contributes error("cannot assign '" + getName().getID() + "' of type " + getName().type().toString() + ", got " + getAssignExpr().type().toString())
+        when typeError()
+        to Program.errors() for program();
+
+    DeclareStmt contributes error("cannot assign '" + getName().getID() + "' of type " + getName().type().toString() + ", got " + getAssignExpr().type().toString())
+        when typeError()
+        to Program.errors() for program();
+
+    BinExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type())
+        when typeError()
+        to Program.errors() for program();
+
+    FuncExpr contributes error("cannot call '" + getName().getID() + "': not a function")
+        when typeError()
+        to Program.errors() for program();
+
+    FuncExpr contributes error("cannot call '" + getName().getID() + "': expected " + getName().function().getNumArgument() + " arguments, got " + getNumArgument())
+        when getName().isFunction() && paramError()
+        to Program.errors() for program();
+
+    FuncExpr contributes error("cannot call '" + getName().getID() + "': parameter type mismatch.\n\tSignature: " + getName().function().signature() + " called with " + signature())
+        when getName().isFunction() && !paramError() && paramTypeError()
+        to Program.errors() for program();
 }

@@ -16,6 +16,14 @@ aspect Names {
             if (!decl.isUnknown())
                 return decl;
         }
+
+        /* Predefined functions */
+        for(Function func: predefinedFunctions()) {
+            IdDecl decl = func.findGlobal(name);
+            if (!decl.isUnknown())
+                return decl;
+        }
+
         /* Nothing found yet = undeclared identifier */
         return unknownDecl();
     }
@@ -23,8 +31,9 @@ aspect Names {
     /* Finds names of functions */
     syn IdDecl Function.findGlobal(String name) {
         IdDecl func_decl = getName();
-        if (func_decl.getID().equals(name))
+        if (func_decl.getID().equals(name)) {
             return func_decl;
+        }
         return unknownDecl();
     }
 

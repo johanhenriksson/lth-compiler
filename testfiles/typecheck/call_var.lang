@@ -1,0 +1,6 @@
+int actual_func() { }
+int main() {
+    int variable;
+    variable(5); // error
+    actual_func();
+}

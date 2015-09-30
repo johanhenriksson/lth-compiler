@@ -1,8 +1,12 @@
 aspect UnknownDecl {
-	syn nta UnknownDecl Program.unknownDecl() = new UnknownDecl("<unknown>");
+	syn nta UnknownDecl Program.unknownDecl() = new UnknownDecl(new TypeId("<unknown>"), "<unknown>");
+	syn nta UnknownFunc Program.unknownFunc() = new UnknownFunc(new IdDecl(new TypeId("<unknown>"),"<unknown>"), new List<Argument>(), new Block());
 	
 	inh UnknownDecl ASTNode.unknownDecl();
 	eq Program.getChild().unknownDecl() = unknownDecl();
+
+	inh UnknownFunc ASTNode.unknownFunc();
+	eq Program.getChild().unknownFunc() = unknownFunc();
 	
 	syn boolean IdDecl.isUnknown() = false;
 	eq UnknownDecl.isUnknown() = true;

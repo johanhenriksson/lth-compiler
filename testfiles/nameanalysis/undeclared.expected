@@ -1,1 +1,2 @@
+Error at line 2,5: cannot assign 'a' of type <unknown>, got int
 Error at line 2,5: symbol 'a' is not declared

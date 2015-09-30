@@ -1,0 +1,24 @@
+int m1() {
+    return true; // error
+}
+int m2() {
+    return 5;
+}
+int m3() {
+    int c;
+    return c;
+}
+
+bool m4() {
+    return true;
+    return false;
+    return 1; // error
+}
+bool m5() {
+    bool b;
+    return b;
+}
+bool m6() {
+    int c;
+    return c; // error
+}

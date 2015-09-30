@@ -1,0 +1,11 @@
+void main() {
+    bool a = true;
+    bool b = 1;
+    b = true;
+    b = 2; // error
+
+    int c = 1;
+    int d = false; // error
+    c = false; // error
+    c = 1;
+}

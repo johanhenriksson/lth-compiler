@@ -1,17 +1,17 @@
 Program
   List
     Function
-      TypeId
       IdDecl
+        TypeId
       List
       Block
         List
     Function
-      TypeId
       IdDecl
+        TypeId
       List
         Argument
-          TypeId
           IdDecl
+            TypeId
       Block
         List

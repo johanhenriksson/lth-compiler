@@ -1,0 +1,3 @@
+Error at line 2,5: expected return type int, got bool
+Error at line 15,5: expected return type bool, got int
+Error at line 23,5: expected return type bool, got int

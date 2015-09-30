@@ -1,0 +1,32 @@
+aspect Types {
+    syn nta List<Type> Program.predefinedTypes() {
+        List<Type> types = new List<Type>();
+
+        types.add(new UnknownType());
+        types.add(new VoidType());
+        types.add(new IntType());
+        types.add(new BoolType());
+
+        return types;
+    }
+
+    syn Type TypeId.type() {
+        switch(getID()) {
+            case "int": return new IntType();
+            case "bool": return new BoolType();
+            case "void": return new VoidType();
+        }
+        return new UnknownType();
+    }
+
+    syn boolean Type.equals(Object other) {
+        if (!(other instanceof Type))
+            return false;
+        return toString().equals(((Type)other).toString());
+    }
+
+    syn String IntType.toString() = "int";
+    syn String BoolType.toString() = "bool";
+    syn String VoidType.toString() = "void";
+    syn String UnknownType.toString() = "<unknown>";
+}

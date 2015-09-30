@@ -1,8 +1,8 @@
 Program
   List
     Function
-      TypeId
       IdDecl
+        TypeId
       List
       Block
         List

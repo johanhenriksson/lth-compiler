@@ -1,0 +1,4 @@
+Error at line 5,5: cannot call 'callee': parameter type mismatch.
+	Signature: callee(int,bool) called with (bool,bool)
+Error at line 6,5: cannot call 'callee': parameter type mismatch.
+	Signature: callee(int,bool) called with (int,int)

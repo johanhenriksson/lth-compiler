@@ -1,0 +1,4 @@
+Error at line 3,5: cannot assign 'b' of type bool, got int
+Error at line 5,5: cannot assign 'b' of type bool, got int
+Error at line 8,5: cannot assign 'd' of type int, got bool
+Error at line 9,5: cannot assign 'c' of type int, got bool

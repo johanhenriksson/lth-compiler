@@ -1,0 +1,3 @@
+Error at line 2,5: cannot assign 'x' of type int, got <unknown>
+Error at line 2,13: mismatched operands <unknown> and int
+Error at line 2,13: symbol 'x' is not declared

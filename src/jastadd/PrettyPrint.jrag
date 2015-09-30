@@ -14,8 +14,6 @@ aspect PrettyPrint {
 
     public void Function.prettyPrint(PrintStream out, String ind) {
         out.print(ind);
-        getType().prettyPrint(out);
-        out.print(" ");
         getName().prettyPrint(out);
         out.print("(");
 
@@ -31,8 +29,6 @@ aspect PrettyPrint {
     }
 
     public void Argument.prettyPrint(PrintStream out, String ind) {
-        getType().prettyPrint(out);
-        out.print(" ");
         getName().prettyPrint(out);
     }
 
@@ -54,8 +50,6 @@ aspect PrettyPrint {
 
     public void DeclareStmt.prettyPrint(PrintStream out, String ind) {
         out.print(ind);
-        getType().prettyPrint(out);
-        out.print(" ");
         getName().prettyPrint(out);
         if (hasAssignExpr()) {
             out.print(" = ");
@@ -219,5 +213,5 @@ aspect PrettyPrint {
     public void FloatLiteral.prettyPrint(PrintStream out, String ind) { out.print(getFLOAT()); }
     public void TypeId.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
     public void IdUse.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
-    public void IdDecl.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
+    public void IdDecl.prettyPrint(PrintStream out, String ind) { out.print(getType().getID()); out.print(" "); out.print(getID()); }
 }

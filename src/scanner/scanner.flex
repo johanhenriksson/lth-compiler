@@ -28,7 +28,7 @@ import lang.ast.LangParser.SyntaxError;
 
 // macros
 WhiteSpace = [ ] | \t | \f | \n | \r
-ID         = [a-zA-Z][a-zA-Z0-9]*
+ID         = [a-zA-Z][_a-zA-Z0-9]*
 Int        = "-"? [0-9]+
 Float      = "-"? [0-9]+ \. [0-9]+
 String     = \"[^\"]*\"

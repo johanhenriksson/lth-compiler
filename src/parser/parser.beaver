@@ -74,14 +74,14 @@ type_id = ID.name {: return new TypeId(name); :};
 
 /* Identifiers */
 id_use  = ID.id {: return new IdUse(id); :};
-id_decl = ID.id {: return new IdDecl(id); :};
+id_decl = type_id.type ID.id {: return new IdDecl(type, id); :};
 
 /* Function */
-function = type_id.type id_decl.id LPARAM arg_list.args RPARAM block.block {: return new Function(type,id,args,block); :};
+function = id_decl.id LPARAM arg_list.args RPARAM block.block {: return new Function(id,args,block); :};
 
 
 /* Function argument */
-arg_def = type_id.type id_decl.name {: return new Argument(type,name); :};
+arg_def = id_decl.name {: return new Argument(name); :};
 
 
 /* Function definition arugment list */
@@ -112,8 +112,8 @@ stmt = block
      | cont_stmt;
 
 /* Declaration with optional initializer */
-decl_stmt = type_id.type id_decl.name SEMI {: return new DeclareStmt(type,name,new Opt<Expr>()); :}
-          | type_id.type id_decl.name ASSIGN expr1.e SEMI {: return new DeclareStmt(type,name,new Opt<Expr>(e)); :};
+decl_stmt = id_decl.name SEMI {: return new DeclareStmt(name,new Opt<Expr>()); :}
+          | id_decl.name ASSIGN expr1.e SEMI {: return new DeclareStmt(name,new Opt<Expr>(e)); :};
 
 /* Assign statement */
 assign_stmt = id_use.name ASSIGN expr1.exp SEMI {: return new AssignStmt(name,exp); :};

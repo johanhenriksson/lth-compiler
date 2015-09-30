@@ -1,15 +1,15 @@
 Program
   List
     Function
-      TypeId
       IdDecl
+        TypeId
       List
         Argument
-          TypeId
           IdDecl
+            TypeId
         Argument
-          TypeId
           IdDecl
+            TypeId
       Block
         List
           WhileStmt
@@ -41,15 +41,15 @@ Program
             Opt
               IdUse
     Function
-      TypeId
       IdDecl
+        TypeId
       List
         Argument
-          TypeId
           IdDecl
+            TypeId
         Argument
-          TypeId
           IdDecl
+            TypeId
       Block
         List
           IfStmt
@@ -72,18 +72,18 @@ Program
                     IdUse
                     IdUse
     Function
-      TypeId
       IdDecl
+        TypeId
       List
       Block
         List
           DeclareStmt
-            TypeId
             IdDecl
+              TypeId
             Opt
           DeclareStmt
-            TypeId
             IdDecl
+              TypeId
             Opt
           AssignStmt
             IdUse
@@ -114,8 +114,8 @@ Program
                     IdUse
                     IdUse
           DeclareStmt
-            TypeId
             IdDecl
+              TypeId
             Opt
               SubExpr
                 FuncExpr

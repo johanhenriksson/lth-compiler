@@ -1,0 +1,9 @@
+void callee(int a, int b, int c) { }
+
+int main() {
+    callee(1,2,3);
+    callee(1,2); // error
+    callee(1); // error
+    callee(); // error
+    main();
+}

@@ -1,0 +1,7 @@
+void callee(int a, bool b) { }
+
+int main() {
+    callee(5, true);
+    callee(true, true); // error
+    callee(5, 5); // error
+}

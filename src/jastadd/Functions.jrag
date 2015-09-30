@@ -1,0 +1,70 @@
+aspect Functions {
+    syn nta List<Function> Program.predefinedFunctions() {
+        List<Function> functions = new List<Function>();
+
+        /* void print(int value) */
+        functions.add(new Function(
+            new IdDecl(new TypeId("int"), "print"), 
+            new List<Argument>(
+                new Argument(new IdDecl(new TypeId("int"), "value"))
+            ), 
+            new Block())
+        );
+
+        /* int read() */
+        functions.add(new Function(
+            new IdDecl(new TypeId("int"), "read"), 
+            new List<Argument>(), 
+            new Block())
+        );
+
+        return functions;
+    }
+
+    inh boolean IdDecl.isFunction();
+    inh Function IdDecl.function();
+
+    syn boolean IdUse.isFunction() = decl().isFunction();
+    syn Function IdUse.function() = decl().function();
+
+    eq Function.getName().isFunction() = true;
+    eq Function.getName().function() = this;
+    eq Argument.getName().function() = unknownFunc();
+    eq Argument.getName().isFunction() = false;
+    eq DeclareStmt.getName().function() = unknownFunc();
+    eq DeclareStmt.getName().isFunction() = false;
+
+    eq Program.getChild().isFunction() = false;
+    eq Program.getChild().function() = unknownFunc();
+
+    syn boolean UnknownDecl.isFunction() = false;
+    syn Function UnknownDecl.function() = unknownFunc();
+
+    syn boolean UnknownFunc.isFunction() = true;
+    syn Function UnknownFunc.function() = unknownFunc();
+
+    syn String Function.signature() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName().getID());
+        sb.append("(");
+        for(int i = 0; i < getNumArgument(); i++) {
+            sb.append(getArgument(i).getName().type());
+            if (i < getNumArgument()-1)
+                sb.append(",");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    syn String FuncExpr.signature() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for(int i = 0; i < getNumArgument(); i++) {
+            sb.append(getArgument(i).type());
+            if (i < getNumArgument()-1)
+                sb.append(",");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+}

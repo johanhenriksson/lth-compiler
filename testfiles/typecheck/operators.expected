@@ -1,0 +1,4 @@
+Error at line 3,5: cannot assign 'b' of type int, got <unknown>
+Error at line 3,13: mismatched operands int and bool
+Error at line 4,5: cannot assign 'c' of type int, got <unknown>
+Error at line 4,13: mismatched operands bool and int

@@ -1,0 +1,14 @@
+
+int callee() {
+    return 0;
+}
+
+bool maybe() {
+    return false;
+    return callee(); // error
+}
+
+int main() {
+    return callee();
+    return maybe(); // error
+}

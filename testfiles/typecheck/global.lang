@@ -1,0 +1,9 @@
+bool b;
+int c;
+
+int main() {
+    b = true; 
+    b = 1; // error
+    c = 1;
+    c = false; // error
+}

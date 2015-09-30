@@ -1,1 +1,2 @@
+Error at line 6,9: cannot assign 'b' of type int, got <unknown>
 Error at line 6,17: symbol 'c' is not declared

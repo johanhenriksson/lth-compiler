@@ -1,0 +1,113 @@
+aspect TypeCheck {
+    inh Type IdDecl.expectedType(); 
+    syn Type IdDecl.type() = getType().type();
+
+    eq Program.getChild().expectedType() = new UnknownType();
+
+    eq Function.getName().expectedType() = getName().type();
+    eq Argument.getName().expectedType() = getName().type();
+    eq DeclareStmt.getName().expectedType() = getName().type();
+
+    syn Type IdUse.type() = decl().type();
+    
+    syn Type Expr.type() = new UnknownType(); 
+    eq IntLiteral.type() = new IntType();
+    eq BoolLiteral.type() = new BoolType();
+    eq FuncExpr.type() = getName().type();
+
+    eq BinExpr.type() { 
+        if (!getLeft().type().equals(getRight().type()))
+            return new UnknownType();
+        return getLeft().type();
+    }
+
+    inh Type Expr.expectedType();
+
+    inh boolean Expr.typeMatch(Type t);
+    eq AssignStmt.getAssignExpr().typeMatch(Type t)  = t.equals(getName().decl().type());
+    eq DeclareStmt.getAssignExpr().typeMatch(Type t) = t.equals(getName().type());
+    eq WhileStmt.getCondition().typeMatch(Type t)    = t.equals(new BoolType());
+    eq IfStmt.getCondition().typeMatch(Type t)       = t.equals(new BoolType());
+    eq ReturnStmt.getReturnExpr().typeMatch(Type t)  = t.equals(expectedType());
+    eq CallStmt.getFunction().typeMatch(Type t)      = true; /* call statements dont return anything */
+
+    eq BinExpr.getLeft().typeMatch(Type t) {
+        if (!t.equals(getRight().type()))
+            return false;
+        return t.equals(expectedType());
+    }
+    eq BinExpr.getRight().typeMatch(Type t) {
+        if (!t.equals(getLeft().type()))
+            return false;
+        return t.equals(expectedType());
+    }
+    eq ParamExpr.getExpr().typeMatch(Type t) {
+        return t.equals(expectedType());
+    }
+
+    eq FuncExpr.getArgument(int index).typeMatch(Type t) {
+        /* make sure parameter type N matches argument type N */
+        /*
+        Argument arg = getFunction().getArgument(index);
+        return t.equals(arg.getName().type());
+        */
+        System.out.println("Parameter expr " + t + " on line " + getLine(getStart()));
+        System.out.println("is function: " + getName().isFunction());
+        return true;
+    }
+    
+    inh Type Block.expectedType();
+    eq Function.getBlock().expectedType() = getName().type();
+
+    inh Type Statement.expectedType(); 
+    eq ReturnStmt.getReturnExpr().expectedType() = expectedType();
+    eq AssignStmt.getAssignExpr().expectedType() = getName().type();
+    eq DeclareStmt.getAssignExpr().expectedType() {
+        System.out.println(getName() + ": " + getName().type());
+        return getName().type();
+    }
+
+    syn boolean Statement.typeError() = false;
+    
+    syn boolean ReturnStmt.typeError() = !expectedType().equals(getReturnExpr().type());
+
+    syn boolean DeclareStmt.typeError() {
+        if (!hasAssignExpr())
+            return false;
+        return !getName().type().equals(getAssignExpr().type());
+    }
+
+    syn boolean AssignStmt.typeError() {
+        return !getName().type().equals(getAssignExpr().type());
+    }
+
+    syn boolean CallStmt.typeError() {
+        /* argument errors */
+        return false;
+    }
+
+    syn boolean FuncExpr.typeError() {
+        /* argument errors */
+        if (!getName().isFunction())
+            return true;
+        return false;
+    }
+
+    syn boolean FuncExpr.paramError() {
+        Function func = getName().function();
+        return getNumArgument() != func.getNumArgument();
+    }
+
+    syn boolean FuncExpr.paramTypeError() {
+        Function func = getName().function();
+        for(int i = 0; i < getNumArgument(); i++) {
+            if (!getArgument(i).type().equals(func.getArgument(i).getName().type()))
+                return true;
+        }
+        return false;
+    }
+
+    syn boolean BinExpr.typeError() {
+        return !getLeft().type().equals(getRight().type());
+    }
+}

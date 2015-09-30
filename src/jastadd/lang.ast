@@ -1,19 +1,28 @@
 /* Goal: Program */
 Program  ::= Unit*;
 
+/* Types */
+TypeId ::= <ID:String>;
+
+abstract Type;
+IntType: Type;
+BoolType: Type;
+VoidType: Type;
+UnknownType: Type;
+
 abstract Unit;
 Global : Unit ::= DeclareStmt;
 
 /* Functions */
-Function : Unit ::= Type:TypeId Name:IdDecl Argument* Block;
-Argument ::= Type:TypeId Name:IdDecl;
+Function : Unit ::= Name:IdDecl Argument* Block;
+Argument ::= Name:IdDecl;
 
 /* Statements */
 abstract Statement;
 
 Block        : Statement ::= Statement*;
 AssignStmt   : Statement ::= Name:IdUse AssignExpr:Expr;
-DeclareStmt  : Statement ::= Type:TypeId Name:IdDecl [ AssignExpr:Expr ];
+DeclareStmt  : Statement ::= Name:IdDecl [ AssignExpr:Expr ];
 WhileStmt    : Statement ::= Condition:Expr Loop:Statement;
 IfStmt       : Statement ::= Condition:Expr Then:Statement [ Else:Statement ];
 CallStmt     : Statement ::= Function:FuncExpr;
@@ -59,8 +68,6 @@ StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
 IdUse : Expr ::= <ID:String>;
-IdDecl ::= <ID:String>;
+IdDecl ::= Type:TypeId <ID:String>;
 UnknownDecl : IdDecl;
-
-/* Type Names */
-TypeId ::= <ID:String>;
+UnknownFunc : Function;

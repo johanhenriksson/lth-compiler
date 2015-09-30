@@ -1,14 +1,14 @@
 Program
   List
     Function
-      TypeId
       IdDecl
+        TypeId
       List
       Block
         List
           DeclareStmt
-            TypeId
             IdDecl
+              TypeId
             Opt
           AssignStmt
             IdUse
