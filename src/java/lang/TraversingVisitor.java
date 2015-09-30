@@ -26,6 +26,7 @@ public class TraversingVisitor implements lang.ast.Visitor {
 	public Object visit(IdDecl node, Object data) { return visitChildren(node, data); }
 	public Object visit(IdUse node, Object data) { return visitChildren(node, data); }
 	public Object visit(TypeId node, Object data) { return visitChildren(node, data); }
+	public Object visit(IdExpr node, Object data) { return visitChildren(node, data); }
 
 	public Object visit(AssignStmt node, Object data) { return visitChildren(node, data); }
 	public Object visit(ReturnStmt node, Object data) { return visitChildren(node, data); }

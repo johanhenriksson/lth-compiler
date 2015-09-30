@@ -14,32 +14,41 @@ Program
         List
           WhileStmt
             NotEqualsExpr
-              IdUse
-              IdUse
+              IdExpr
+                IdUse
+              IdExpr
+                IdUse
             Block
               List
                 IfStmt
                   GreaterExpr
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
                   Block
                     List
                       AssignStmt
                         IdUse
                         SubExpr
-                          IdUse
-                          IdUse
+                          IdExpr
+                            IdUse
+                          IdExpr
+                            IdUse
                   Opt
                     Block
                       List
                         AssignStmt
                           IdUse
                           SubExpr
-                            IdUse
-                            IdUse
+                            IdExpr
+                              IdUse
+                            IdExpr
+                              IdUse
           ReturnStmt
             Opt
-              IdUse
+              IdExpr
+                IdUse
     Function
       IdDecl
         TypeId
@@ -54,23 +63,28 @@ Program
         List
           IfStmt
             EqualsExpr
-              IdUse
+              IdExpr
+                IdUse
               IntLiteral
             Block
               List
                 ReturnStmt
                   Opt
-                    IdUse
+                    IdExpr
+                      IdUse
             Opt
           ReturnStmt
             Opt
               FuncExpr
                 IdUse
                 List
-                  IdUse
+                  IdExpr
+                    IdUse
                   ModExpr
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
     Function
       IdDecl
         TypeId
@@ -102,8 +116,10 @@ Program
                 FuncExpr
                   IdUse
                   List
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
           CallStmt
             FuncExpr
               IdUse
@@ -111,8 +127,10 @@ Program
                 FuncExpr
                   IdUse
                   List
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
           DeclareStmt
             IdDecl
               TypeId
@@ -121,18 +139,23 @@ Program
                 FuncExpr
                   IdUse
                   List
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
                 FuncExpr
                   IdUse
                   List
-                    IdUse
-                    IdUse
+                    IdExpr
+                      IdUse
+                    IdExpr
+                      IdUse
           CallStmt
             FuncExpr
               IdUse
               List
-                IdUse
+                IdExpr
+                  IdUse
           ReturnStmt
             Opt
               IntLiteral

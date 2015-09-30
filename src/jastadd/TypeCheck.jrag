@@ -14,6 +14,16 @@ aspect TypeCheck {
     eq IntLiteral.type() = new IntType();
     eq BoolLiteral.type() = new BoolType();
     eq FuncExpr.type() = getName().type();
+    eq IdExpr.type() = getName().type();
+
+    eq EqualsExpr.type() = new BoolType();
+    eq NotEqualsExpr.type() = new BoolType();
+    eq GreaterExpr.type() = new BoolType();
+    eq GreaterEqualExpr.type() = new BoolType();
+    eq LessExpr.type() = new BoolType();
+    eq LessEqualExpr.type() = new BoolType();
+    eq AndExpr.type() = new BoolType();
+    eq OrExpr.type() = new BoolType();
 
     eq BinExpr.type() { 
         if (!getLeft().type().equals(getRight().type()))
@@ -80,6 +90,8 @@ aspect TypeCheck {
     syn boolean AssignStmt.typeError() {
         return !getName().type().equals(getAssignExpr().type());
     }
+
+    syn boolean AssignStmt.assignFuncError() = getName().isFunction();
 
     syn boolean CallStmt.typeError() {
         /* argument errors */

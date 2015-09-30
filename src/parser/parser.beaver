@@ -173,7 +173,7 @@ term = factor.f
      | term.t MOD  factor.f {: return new ModExpr(t,f); :}
      ;
 
-factor = id_use.id 
+factor = id_use.id {: return new IdExpr(id); :}
        | LPARAM expr1.e RPARAM {: return new ParamExpr(e); :}
        | func_call
        | literal

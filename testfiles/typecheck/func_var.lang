@@ -1,0 +1,8 @@
+/* dont allow functions to be used as variables */
+
+int callee() { }
+
+int main() {
+    int a = callee; // error
+    callee = 5; // error
+}

@@ -12,5 +12,7 @@ Program
           ReturnStmt
             Opt
               MulExpr
-                IdUse
-                IdUse
+                IdExpr
+                  IdUse
+                IdExpr
+                  IdUse

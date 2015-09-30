@@ -36,6 +36,7 @@ abstract BinExpr : Expr ::= Left:Expr Right:Expr;
 ParamExpr : Expr ::= Expr;
 
 /* Variables & Function calls */
+IdExpr : Expr ::= Name:IdUse;
 FuncExpr : Expr ::= Name:IdUse Argument:Expr*;
 
 /* Logical operators */
@@ -67,7 +68,7 @@ FloatLiteral  : Literal ::= <FLOAT:String>;
 StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
-IdUse : Expr ::= <ID:String>;
+IdUse ::= <ID:String>;
 IdDecl ::= Type:TypeId <ID:String>;
 UnknownDecl : IdDecl;
 UnknownFunc : Function;

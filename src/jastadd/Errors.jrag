@@ -50,6 +50,10 @@ aspect ErrorContributions {
         when typeError()
         to Program.errors() for program();
 
+    AssignStmt contributes error("cannot assign '" + getName().getID() + "' because it's a function. dummy!")
+        when assignFuncError()
+        to Program.errors() for program();
+
     DeclareStmt contributes error("cannot assign '" + getName().getID() + "' of type " + getName().type().toString() + ", got " + getAssignExpr().type().toString())
         when typeError()
         to Program.errors() for program();
@@ -68,5 +72,9 @@ aspect ErrorContributions {
 
     FuncExpr contributes error("cannot call '" + getName().getID() + "': parameter type mismatch.\n\tSignature: " + getName().function().signature() + " called with " + signature())
         when getName().isFunction() && !paramError() && paramTypeError()
+        to Program.errors() for program();
+
+    IdExpr contributes error("cannot evaluate '" + getName().getID() + "' because it's a function. dummy!")
+        when getName().isFunction()
         to Program.errors() for program();
 }

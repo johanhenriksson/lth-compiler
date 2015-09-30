@@ -7,11 +7,13 @@ Program
       Block
         List
           IfStmt
-            IdUse
+            IdExpr
+              IdUse
             Block
               List
                 IfStmt
-                  IdUse
+                  IdExpr
+                    IdUse
                   Block
                     List
                       AssignStmt
