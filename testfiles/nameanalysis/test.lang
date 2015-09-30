@@ -1,6 +1,5 @@
 int main(int c) {
     int b;
-    if (b) {
-        int d;
-    }
+    b = 5;
+    c = 5;
 }

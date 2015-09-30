@@ -13,9 +13,7 @@ public class MSNVisitor extends TraversingVisitor {
 
 	public Object visit(Block node, Object data) { 
         int depth = (int)data + 1;
-        if (depth > max_depth)
-            max_depth = depth;
-
+        this.max_depth = Math.max(max_depth, depth);
         return visitChildren(node, depth); 
     }
 }

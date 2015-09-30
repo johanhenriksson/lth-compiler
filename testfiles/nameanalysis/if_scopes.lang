@@ -1,5 +1,4 @@
-int main() {
-    int a;
+int main(int a) {
     if (a) {
         int b = a;
         int c = 5;

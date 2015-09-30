@@ -1,0 +1,97 @@
+aspect Names {
+    syn IdDecl IdUse.decl() = lookup(getID());
+
+    inh IdDecl IdUse.lookup(String name);
+    inh IdDecl IdDecl.lookup(String name);
+    inh IdDecl Function.lookup(String name);
+    inh IdDecl Block.lookup(String name);
+
+    syn IdDecl Unit.findGlobal(String name) = unknownDecl();
+    syn IdDecl Global.findGlobal(String name) = getDeclareStmt().findLocal(name);
+
+    /* Top level lookup - checks global variables and function names */
+    eq Program.getChild().lookup(String name) {
+        for(int i = 0; i < getNumUnit(); i++) {
+            IdDecl decl = getUnit(i).findGlobal(name);
+            if (!decl.isUnknown())
+                return decl;
+        }
+        /* Nothing found yet = undeclared identifier */
+        return unknownDecl();
+    }
+
+    /* Finds names of functions */
+    syn IdDecl Function.findGlobal(String name) {
+        IdDecl func_decl = getName();
+        if (func_decl.getID().equals(name))
+            return func_decl;
+        return unknownDecl();
+    }
+
+    /* Look for an identifier among the first N arguments */
+    syn IdDecl Function.findLocal(String name) = findLocal(name, getNumArgument());
+    syn IdDecl Function.findLocal(String name, int until) {
+        for(int i = 0; i < until; i++) {
+            IdDecl arg = getArgument(i).getName();
+            if (arg.getID().equals(name))
+                return arg;
+        }
+        return unknownDecl();
+    }
+
+    /* Check if a function argument is previously defined */
+    eq Function.getArgument(int index).lookup(String name) {
+        IdDecl decl = findLocal(name, index);
+        if (!decl.isUnknown())
+            return decl;
+
+        /* Not defined among the function arguments. Pass it upwards */
+        return lookup(name);
+    }
+
+    /* Check if a declare statement overwrites a previously defined variable */
+    eq Block.getStatement(int index).lookup(String name) {
+        IdDecl decl = findLocal(name, index);
+        if (!decl.isUnknown())
+            return decl;
+
+        /* pass up to function */
+        return lookup(name);
+    }
+
+    /* Find definitions in blocks */
+    syn IdDecl Block.findLocal(String name) = findLocal(name, getNumStatement());
+    syn IdDecl Block.findLocal(String name, int until) {
+        for(int i = 0; i < until; i++) {
+            IdDecl decl = getStatement(i).findLocal(name);
+            if (!decl.isUnknown())
+                return decl;
+        }
+        return lookup(name);
+    }
+
+    /* Find definitions in statements */
+    syn IdDecl Statement.findLocal(String name) = unknownDecl();
+    syn IdDecl DeclareStmt.findLocal(String name) {
+        if (getName().getID().equals(name))
+            return getName();
+        return unknownDecl();
+    }
+
+    /* Check if a variable used within the function of a block is defined as a function argument */
+    eq Function.getBlock().lookup(String name) {
+        IdDecl decl = findLocal(name);
+        if (!decl.isUnknown())
+            return decl;
+
+        /* pass up to globals */
+        return lookup(name);
+    }
+
+	syn boolean IdDecl.isMultiplyDeclared() {
+        IdDecl prev_decl = lookup(getID());
+        if (prev_decl.isUnknown())
+            return false;
+        return prev_decl != this;
+    }
+}

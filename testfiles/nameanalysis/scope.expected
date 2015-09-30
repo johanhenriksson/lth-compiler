@@ -1,2 +1,4 @@
-Error at line 8: symbol 'two' has not been declared before this use!
-Error at line 12: symbol 'one' is already declared!
+Error at line 3,27: symbol 'one' is already declared!
+Error at line 4,9: symbol 'one' is already declared!
+Error at line 6,5: symbol 'three' is not declared
+Error at line 12,11: symbol 'two' is not declared

@@ -1,5 +1,0 @@
-int global = 5;
-function main() {
-    main(global); // ok
-    int global; // not ok
-}

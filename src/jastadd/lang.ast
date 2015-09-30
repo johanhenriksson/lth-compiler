@@ -60,6 +60,7 @@ StringLiteral : Literal ::= <STRING:String>;
 /* Identifiers */
 IdUse : Expr ::= <ID:String>;
 IdDecl ::= <ID:String>;
+UnknownDecl : IdDecl;
 
 /* Type Names */
 TypeId ::= <ID:String>;

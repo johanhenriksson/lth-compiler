@@ -1,1 +1,1 @@
-Error at line 7: symbol 'c' has not been declared before this use!
+Error at line 6,17: symbol 'c' is not declared

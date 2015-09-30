@@ -1,6 +1,0 @@
-int main(int b) {
-    int b;
-    if (b) {
-        int b;
-    }
-}

@@ -1,14 +1,14 @@
-function a() {
+int glob = 5;
+
+function a(int one, float one) {
     int one;
     int two;
+    three = 5;
+    two = glob;
 }
 
 function b() {
     int one; // ok
     one = two; // error
-}
-
-function c(int one, int three) {
-    int one; // not ok
-    one = three;
+    glob = one;
 }
