@@ -1,0 +1,6 @@
+int func() { }
+
+int main() {
+    if (3 + 5) { } // error
+    while (func()) { } // error
+}

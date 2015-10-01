@@ -1,0 +1,9 @@
+int func1() { }
+
+int main() { 
+    func1();
+    func2();
+    func3(); // error
+}
+
+int func2() { }

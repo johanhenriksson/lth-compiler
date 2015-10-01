@@ -1,0 +1,9 @@
+int main(int a) {
+    int a;
+    if (true) {
+        int a;
+        while (true) {
+            int a;
+        }
+    }
+}

@@ -1,0 +1,7 @@
+int main() {
+    bool b = true + true; // error
+    bool c = true - false; // error
+    bool d = true / false; // error
+    bool e = true * false; // error
+    bool f = true % false; // error
+}

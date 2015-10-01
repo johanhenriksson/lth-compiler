@@ -1,0 +1,10 @@
+function a(int one) { 
+    int one;
+    int two;
+    three = 5; // 2x error
+}
+
+function b() {
+    int one; 
+    one = two; // 2x error
+}

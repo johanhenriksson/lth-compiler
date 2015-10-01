@@ -8,6 +8,8 @@ abstract Type;
 IntType: Type;
 BoolType: Type;
 VoidType: Type;
+FloatType: Type;
+StringType: Type;
 UnknownType: Type;
 
 abstract Unit;

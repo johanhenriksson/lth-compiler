@@ -10,11 +10,13 @@ aspect TypeCheck {
 
     syn Type IdUse.type() = decl().type();
     
-    syn Type Expr.type() = new UnknownType(); 
-    eq IntLiteral.type() = new IntType();
-    eq BoolLiteral.type() = new BoolType();
-    eq FuncExpr.type() = getName().type();
-    eq IdExpr.type() = getName().type();
+    syn Type Expr.type()    = new UnknownType(); 
+    eq IntLiteral.type()    = new IntType();
+    eq BoolLiteral.type()   = new BoolType();
+    eq FloatLiteral.type()  = new FloatType();
+    eq StringLiteral.type() = new StringType();
+    eq FuncExpr.type()      = getName().type();
+    eq IdExpr.type()        = getName().type();
 
     eq EqualsExpr.type() = new BoolType();
     eq NotEqualsExpr.type() = new BoolType();
@@ -55,27 +57,13 @@ aspect TypeCheck {
         return t.equals(expectedType());
     }
 
-    eq FuncExpr.getArgument(int index).typeMatch(Type t) {
-        /* make sure parameter type N matches argument type N */
-        /*
-        Argument arg = getFunction().getArgument(index);
-        return t.equals(arg.getName().type());
-        */
-        System.out.println("Parameter expr " + t + " on line " + getLine(getStart()));
-        System.out.println("is function: " + getName().isFunction());
-        return true;
-    }
-    
     inh Type Block.expectedType();
     eq Function.getBlock().expectedType() = getName().type();
 
     inh Type Statement.expectedType(); 
     eq ReturnStmt.getReturnExpr().expectedType() = expectedType();
     eq AssignStmt.getAssignExpr().expectedType() = getName().type();
-    eq DeclareStmt.getAssignExpr().expectedType() {
-        System.out.println(getName() + ": " + getName().type());
-        return getName().type();
-    }
+    eq DeclareStmt.getAssignExpr().expectedType() = getName().type();
 
     syn boolean Statement.typeError() = false;
     
@@ -91,12 +79,15 @@ aspect TypeCheck {
         return !getName().type().equals(getAssignExpr().type());
     }
 
-    syn boolean AssignStmt.assignFuncError() = getName().isFunction();
-
-    syn boolean CallStmt.typeError() {
-        /* argument errors */
-        return false;
+    syn boolean IfStmt.typeError() {
+        return !getCondition().type().equals(new BoolType());
     }
+
+    syn boolean WhileStmt.typeError() {
+        return !getCondition().type().equals(new BoolType());
+    }
+
+    syn boolean AssignStmt.assignFuncError() = getName().isFunction();
 
     syn boolean FuncExpr.typeError() {
         /* argument errors */
@@ -122,4 +113,11 @@ aspect TypeCheck {
     syn boolean BinExpr.typeError() {
         return !getLeft().type().equals(getRight().type());
     }
+
+    syn boolean AddExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
+    syn boolean SubExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
+    syn boolean MulExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
+    syn boolean DivExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
+    syn boolean ModExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
+    /* todo: add boolean checks for logic operators */
 }

@@ -1,0 +1,2 @@
+Error at line 6,5: cannot call 'func3': not a function
+Error at line 6,5: symbol 'func3' is not declared

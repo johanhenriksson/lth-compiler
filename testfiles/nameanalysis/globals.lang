@@ -1,0 +1,9 @@
+int global;
+
+int main() {
+    int a = global;
+    global = 5;
+
+    undeclared_global = 5; // error
+    int global; 
+}

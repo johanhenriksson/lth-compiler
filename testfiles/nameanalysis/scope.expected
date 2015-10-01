@@ -1,5 +1,4 @@
 Error at line 3,21: symbol 'one' is already declared!
-Error at line 4,5: symbol 'one' is already declared!
 Error at line 6,5: cannot assign 'three' of type <unknown>, got int
 Error at line 6,5: symbol 'three' is not declared
 Error at line 12,5: cannot assign 'one' of type int, got <unknown>

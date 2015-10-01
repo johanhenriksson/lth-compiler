@@ -43,6 +43,7 @@ aspect Functions {
     syn boolean UnknownFunc.isFunction() = true;
     syn Function UnknownFunc.function() = unknownFunc();
 
+    /* Generates a function signature string from a function definition node */
     syn String Function.signature() {
         StringBuilder sb = new StringBuilder();
         sb.append(getName().getID());
@@ -56,6 +57,7 @@ aspect Functions {
         return sb.toString();
     }
 
+    /* Generates a call signature string from a function expression node */
     syn String FuncExpr.signature() {
         StringBuilder sb = new StringBuilder();
         sb.append("(");

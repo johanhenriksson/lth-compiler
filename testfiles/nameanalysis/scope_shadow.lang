@@ -1,0 +1,8 @@
+int main() {
+    if (true) {
+        int a;
+    }
+    if (false) {
+        int a;
+    }
+}

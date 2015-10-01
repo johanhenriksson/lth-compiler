@@ -6,6 +6,8 @@ aspect Types {
         types.add(new VoidType());
         types.add(new IntType());
         types.add(new BoolType());
+        types.add(new StringType());
+        types.add(new FloatType());
 
         return types;
     }
@@ -15,6 +17,8 @@ aspect Types {
             case "int": return new IntType();
             case "bool": return new BoolType();
             case "void": return new VoidType();
+            case "float": return new FloatType();
+            case "string": return new StringType();
         }
         return new UnknownType();
     }
@@ -28,5 +32,7 @@ aspect Types {
     syn String IntType.toString() = "int";
     syn String BoolType.toString() = "bool";
     syn String VoidType.toString() = "void";
+    syn String FloatType.toString() = "float";
+    syn String StringType.toString() = "string";
     syn String UnknownType.toString() = "<unknown>";
 }

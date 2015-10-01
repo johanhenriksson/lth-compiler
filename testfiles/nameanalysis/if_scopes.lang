@@ -1,5 +1,5 @@
 int main(int a) {
-    if (a) {
+    if (true) {
         int b = a;
         int c = 5;
     } else {

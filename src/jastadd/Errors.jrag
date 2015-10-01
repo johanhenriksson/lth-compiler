@@ -58,6 +58,14 @@ aspect ErrorContributions {
         when typeError()
         to Program.errors() for program();
 
+    IfStmt contributes error("expected boolean expression")
+        when typeError()
+        to Program.errors() for program();
+
+    WhileStmt contributes error("expected boolean expression")
+        when typeError()
+        to Program.errors() for program();
+
     BinExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type())
         when typeError()
         to Program.errors() for program();
@@ -76,5 +84,25 @@ aspect ErrorContributions {
 
     IdExpr contributes error("cannot evaluate '" + getName().getID() + "' because it's a function. dummy!")
         when getName().isFunction()
+        to Program.errors() for program();
+
+    AddExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+        when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    SubExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+        when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    MulExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+        when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    DivExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+        when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    ModExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+        when !typeError() && nonNumericError()
         to Program.errors() for program();
 }

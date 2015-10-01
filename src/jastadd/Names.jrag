@@ -1,16 +1,16 @@
 aspect Names {
-    syn IdDecl IdUse.decl() = lookup(getID());
+    syn IdDecl IdUse.decl() = lookup(getID(), false);
 
-    inh IdDecl IdUse.lookup(String name);
-    inh IdDecl IdDecl.lookup(String name);
-    inh IdDecl Function.lookup(String name);
-    inh IdDecl Block.lookup(String name);
+    inh IdDecl IdUse.lookup(String name, boolean in_scope);
+    inh IdDecl IdDecl.lookup(String name, boolean in_scope);
+    inh IdDecl Function.lookup(String name, boolean in_scope);
+    inh IdDecl Block.lookup(String name, boolean in_scope);
 
     syn IdDecl Unit.findGlobal(String name) = unknownDecl();
     syn IdDecl Global.findGlobal(String name) = getDeclareStmt().findLocal(name);
 
     /* Top level lookup - checks global variables and function names */
-    eq Program.getChild().lookup(String name) {
+    eq Program.getChild().lookup(String name, boolean in_scope) {
         for(int i = 0; i < getNumUnit(); i++) {
             IdDecl decl = getUnit(i).findGlobal(name);
             if (!decl.isUnknown())
@@ -18,6 +18,7 @@ aspect Names {
         }
 
         /* Predefined functions */
+        /* TODO: disallow overwriting predefined functions */
         for(Function func: predefinedFunctions()) {
             IdDecl decl = func.findGlobal(name);
             if (!decl.isUnknown())
@@ -49,23 +50,27 @@ aspect Names {
     }
 
     /* Check if a function argument is previously defined */
-    eq Function.getArgument(int index).lookup(String name) {
+    eq Function.getArgument(int index).lookup(String name, boolean in_scope) {
         IdDecl decl = findLocal(name, index);
         if (!decl.isUnknown())
             return decl;
 
-        /* Not defined among the function arguments. Pass it upwards */
-        return lookup(name);
+        /* Parameter ok */
+        return unknownDecl();
     }
 
     /* Check if a declare statement overwrites a previously defined variable */
-    eq Block.getStatement(int index).lookup(String name) {
+    eq Block.getStatement(int index).lookup(String name, boolean in_scope) {
         IdDecl decl = findLocal(name, index);
         if (!decl.isUnknown())
             return decl;
 
+        /* we're only checking the current scope */
+        if (in_scope)
+            return unknownDecl();
+
         /* pass up to function */
-        return lookup(name);
+        return lookup(name, in_scope);
     }
 
     /* Find definitions in blocks */
@@ -76,7 +81,7 @@ aspect Names {
             if (!decl.isUnknown())
                 return decl;
         }
-        return lookup(name);
+        return unknownDecl();
     }
 
     /* Find definitions in statements */
@@ -88,19 +93,20 @@ aspect Names {
     }
 
     /* Check if a variable used within the function of a block is defined as a function argument */
-    eq Function.getBlock().lookup(String name) {
+    eq Function.getBlock().lookup(String name, boolean in_scope) {
         IdDecl decl = findLocal(name);
         if (!decl.isUnknown())
             return decl;
 
         /* pass up to globals */
-        return lookup(name);
+        return lookup(name, in_scope);
     }
 
 	syn boolean IdDecl.isMultiplyDeclared() {
-        IdDecl prev_decl = lookup(getID());
+        IdDecl prev_decl = lookup(getID(), true);
         if (prev_decl.isUnknown())
             return false;
+        /* only if they are in the same block? */
         return prev_decl != this;
     }
 }

@@ -1,0 +1,2 @@
+Error at line 7,5: cannot assign 'undeclared_global' of type <unknown>, got int
+Error at line 7,5: symbol 'undeclared_global' is not declared
