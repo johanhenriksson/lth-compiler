@@ -61,7 +61,7 @@ Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 "=="       { return sym(Terminals.EQUALS); }
 "!="       { return sym(Terminals.NOTEQ); }
 "<="       { return sym(Terminals.LEQUAL); }
-"=>"       { return sym(Terminals.GEQUAL); }
+">="       { return sym(Terminals.GEQUAL); }
 "<"        { return sym(Terminals.LESS); }
 ">"        { return sym(Terminals.GREATER); }
 "+"        { return sym(Terminals.PLUS); }

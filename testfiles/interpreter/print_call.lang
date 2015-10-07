@@ -1,0 +1,7 @@
+int val() {
+    return 1 + 2 * 3;
+}
+
+void main() {
+    print(val());
+}

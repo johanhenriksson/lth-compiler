@@ -1,0 +1,12 @@
+int main() {
+    int i = 0; // Declaration of i
+    if (i == 0) {
+        int i = 1; // Another declaration of i
+        if (i == 1) {
+            int i = 2; // A third declaration of i
+            print(i); // Prints 2
+        }
+        print(i); // Prints 1
+    }
+    print(i); // Prints 0
+}

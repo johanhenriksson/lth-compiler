@@ -1,15 +1,45 @@
-aspect Functions {
+aspect Functions 
+{
+    // print int to std in
+    class PrintFunction extends Function {
+        public PrintFunction() {
+            super(
+                new IdDecl(new TypeId("int"), "print"), 
+                new List<Argument>(
+                    new Argument(new IdDecl(new TypeId("int"), "value"))
+                ), 
+                new Block()
+            );
+        }
+
+        @Override
+        public int eval(ActivationRecord rec) {
+            System.out.println(rec.get("value"));
+            return 0;
+        }
+    }
+
+    // read int from std in
+    class ReadFunction extends Function {
+        public ReadFunction() {
+            super(
+                new IdDecl(new TypeId("int"), "read"), 
+                new List<Argument>(), 
+                new Block()
+            );
+        }
+
+        @Override
+        public int eval(ActivationRecord rec) {
+            return 0;
+        }
+    }
+
     syn nta List<Function> Program.predefinedFunctions() {
         List<Function> functions = new List<Function>();
 
         /* void print(int value) */
-        functions.add(new Function(
-            new IdDecl(new TypeId("int"), "print"), 
-            new List<Argument>(
-                new Argument(new IdDecl(new TypeId("int"), "value"))
-            ), 
-            new Block())
-        );
+        functions.add(new PrintFunction());
 
         /* int read() */
         functions.add(new Function(

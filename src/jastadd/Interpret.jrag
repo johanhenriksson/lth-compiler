@@ -1,0 +1,233 @@
+import java.util.HashMap;
+
+aspect Interpret 
+{
+    public class ActivationRecord 
+    {
+        protected HashMap<String,Integer> vars = new HashMap<String,Integer>();
+        protected ActivationRecord parent = null;
+        
+        public ActivationRecord() { }
+        public ActivationRecord(ActivationRecord parent) {
+            this.parent = parent;
+        }
+        
+        public ActivationRecord scope() {
+            return new ActivationRecord(this);
+        }
+
+        public boolean has(String name) {
+            return vars.containsKey(name);
+        }
+
+        public void decl(String name, int val) {
+            vars.put(name, val);
+        }
+
+        public void set(String name, int val) {
+            if (!has(name)) {
+                if (parent != null)
+                    parent.set(name, val);
+                else
+                    throw new RuntimeException("Undefined variable '" + name + "'");
+            }
+            vars.put(name, val);
+        }
+
+        public int get(String name) {
+            if (!has(name)) {
+                if (parent != null)
+                    return parent.get(name);
+                throw new RuntimeException("Variable '" + name + "' not set");
+            }
+            return vars.get(name);
+        }
+    }
+
+    public class ReturnException extends RuntimeException {
+        protected int v;
+        public ReturnException(int v) { this.v = v; }
+        public int val() { return v; }
+    }
+
+    public class BreakException extends RuntimeException {
+        public BreakException() { }
+    }
+
+    public class ContinueException extends RuntimeException {
+        public ContinueException() { }
+    }
+
+    public void Program.eval() {
+        // find main
+        Function main = null;
+        for(int i = 0; i < getNumUnit(); i++) {
+            Unit u = getUnit(i);
+            IdDecl id = u.findGlobal("main");
+            if (id.isUnknown())
+                continue;
+            if (!id.isFunction())
+                throw new RuntimeException("Main is not a function");
+
+            main = id.function();
+        }
+        if (main == null)
+            throw new RuntimeException("Main is undefined");
+        
+        main.eval(new ActivationRecord());
+    }
+
+    public int Function.eval(ActivationRecord rec) {
+        try {
+            getBlock().eval(rec);
+        }
+        catch(ReturnException r) { return r.val(); }
+        return 0; // implicit return
+    }
+
+    /** statements **/
+
+    public void Statement.eval(ActivationRecord rec) { }
+
+    @Override
+    public void AssignStmt.eval(ActivationRecord rec) {
+        int v = getAssignExpr().eval(rec);
+        rec.set(getName().getID(), v);
+    }
+
+    @Override
+    public void DeclareStmt.eval(ActivationRecord rec) {
+        if (hasAssignExpr()) {
+            int v = getAssignExpr().eval(rec);
+            rec.decl(getName().getID(), v);
+        }
+    }
+
+    @Override
+    public void CallStmt.eval(ActivationRecord rec) {
+        getFunction().eval(rec);
+    }
+
+    @Override
+    public void ReturnStmt.eval(ActivationRecord rec) {
+        int r = 0;
+        if (hasReturnExpr()) {
+            r = getReturnExpr().eval(rec);
+        }
+        throw new ReturnException(r);
+    }
+
+    @Override
+    public void BreakStmt.eval(ActivationRecord rec) {
+        throw new BreakException();
+    }
+
+    @Override
+    public void ContinueStmt.eval(ActivationRecord rec) {
+        throw new ContinueException();
+    }
+
+    @Override
+    public void WhileStmt.eval(ActivationRecord rec) {
+        ActivationRecord scope = rec.scope();
+        Expr cond = getCondition();
+            while(cond.eval(scope) == 1) {
+                try {
+                    getLoop().eval(scope);
+                }
+                catch(ContinueException cont) { continue; }
+                catch(BreakException brk) { return; }
+            }
+    }
+
+    @Override
+    public void IfStmt.eval(ActivationRecord rec) {
+        Expr cond = getCondition();
+        if (cond.eval(rec) == 1) {
+            ActivationRecord then_scope = rec.scope();
+            getThen().eval(then_scope);
+        }
+        else if (hasElse()) {
+            ActivationRecord else_scope = rec.scope();
+            getElse().eval(else_scope);
+        }
+    }
+
+    @Override
+    public void Block.eval(ActivationRecord rec) {
+        for(Statement stmt : getStatements())
+            stmt.eval(rec);
+    }
+
+    /** expressions **/
+
+    public int Expr.eval(ActivationRecord rec) {
+        return 0;
+    }
+
+    @Override
+    public int IdExpr.eval(ActivationRecord rec) { return rec.get(getName().getID()); }
+
+    @Override
+    public int IntLiteral.eval(ActivationRecord rec) { return Integer.parseInt(getINT()); }
+
+    @Override
+    public int BoolLiteral.eval(ActivationRecord rec) { return Boolean.parseBoolean(getBOOL()) ? 1 : 0; }
+
+    @Override
+    public int FuncExpr.eval(ActivationRecord rec) {
+        Function f = getName().function();
+        ActivationRecord call = rec.scope();
+        for(int i = 0; i < getNumArgument(); i++) {
+            call.decl(f.getArgument(i).getName().getID(),
+                      getArgument(i).eval(rec));
+        }
+        return f.eval(call);
+    }
+
+    /** arithmetic **/
+
+    @Override
+    public int AddExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) + getRight().eval(rec); }
+    @Override
+    public int SubExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) - getRight().eval(rec); }
+    @Override
+    public int MulExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) * getRight().eval(rec); }
+    @Override
+    public int DivExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) / getRight().eval(rec); }
+    @Override
+    public int ModExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) % getRight().eval(rec); }
+
+    /** logic **/
+
+    @Override
+    public int GreaterExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) > getRight().eval(rec) ? 1 : 0; }
+    @Override
+    public int GreaterEqualExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) >= getRight().eval(rec) ? 1 : 0; }
+    @Override
+    public int LessExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) < getRight().eval(rec) ? 1 : 0; }
+    @Override
+    public int LessEqualExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) <= getRight().eval(rec) ? 1 : 0; }
+    @Override
+    public int EqualsExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) == getRight().eval(rec) ? 1 : 0; }
+    @Override
+    public int NotEqualsExpr.eval(ActivationRecord rec) { return getLeft().eval(rec) != getRight().eval(rec) ? 1 : 0; }
+
+    @Override
+    public int AndExpr.eval(ActivationRecord rec) { 
+        boolean left  = getLeft().eval(rec) == 1 ? true : false;
+        boolean right = getRight().eval(rec) == 1 ? true : false;
+        return left && right ? 1 : 0;
+    }
+
+    @Override
+    public int OrExpr.eval(ActivationRecord rec) { 
+        boolean left  = getLeft().eval(rec) == 1 ? true : false;
+        boolean right = getRight().eval(rec) == 1 ? true : false;
+        return left || right ? 1 : 0;
+    }
+
+    @Override
+    public int NotExpr.eval(ActivationRecord rec) { return getExpr().eval(rec) == 1 ? 0 : 1; } 
+
+}

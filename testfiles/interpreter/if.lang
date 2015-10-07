@@ -1,0 +1,10 @@
+void main() {
+    if (true && true) {
+        print(1);
+    }
+    if (false || 1 == 0) {
+    }
+    else {
+        print(0);
+    }
+}
