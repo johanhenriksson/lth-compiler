@@ -130,13 +130,13 @@ aspect Interpret {
     public void WhileStmt.eval(ActivationRecord rec) {
         ActivationRecord scope = rec.scope();
         Expr cond = getCondition();
-            while(cond.eval(scope) == 1) {
-                try {
-                    getLoop().eval(scope);
-                }
-                catch(ContinueException cont) { continue; }
-                catch(BreakException brk) { return; }
+        while(cond.eval(scope) == 1) {
+            try {
+                getLoop().eval(scope);
             }
+            catch(ContinueException cont) { continue; }
+            catch(BreakException brk) { return; }
+        }
     }
 
     @Override

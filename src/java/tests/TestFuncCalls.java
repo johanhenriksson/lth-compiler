@@ -47,9 +47,10 @@ public class TestFuncCalls extends AbstractParameterizedTest {
             Program program = (Program) parse(inFile);
 
 		    StringBuilder sb = new StringBuilder();
-            sb.append("digraph G {\n");
             List<Function> functions = new ArrayList<Function>(program.functions());
             java.util.Collections.sort(functions, new FuncCmp());
+
+            sb.append("digraph G {\n");
             for(Function f : functions) {
                 sb.append("  ").append(f.getName().getID()).append(";\n");
                 List<Function> calls = new ArrayList<Function>(f.calls());
