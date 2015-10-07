@@ -1,0 +1,11 @@
+digraph G {
+  f;
+  f -> fac;
+  f -> print;
+  fac;
+  fac -> fac;
+  main;
+  main -> f;
+  main -> fac;
+  main -> print;
+}
