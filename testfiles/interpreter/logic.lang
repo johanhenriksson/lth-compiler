@@ -1,0 +1,29 @@
+void bprint(bool val) {
+    if (val) {
+        print(1);
+    }
+    else {
+        print(0);
+    }
+}
+
+void main() {
+    bprint(!true); // 0
+    bprint(!false); // 1
+
+    bprint(true && true); // 1
+    bprint(true && false); // 0
+    bprint(false && true); // 0
+    bprint(false && false); // 0
+
+    bprint(true || true); // 1
+    bprint(true || false); // 1
+    bprint(false || true); // 1
+    bprint(false || false); // 0
+
+    bprint(1 < 3); // 1
+    bprint(3 < 1); // 0
+
+    bprint(3 > 1); // 1
+    bprint(1 > 3); // 0
+}

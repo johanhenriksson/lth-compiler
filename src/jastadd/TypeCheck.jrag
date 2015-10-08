@@ -18,14 +18,15 @@ aspect TypeCheck {
     eq FuncExpr.type()      = getName().type();
     eq IdExpr.type()        = getName().type();
 
-    eq EqualsExpr.type() = new BoolType();
-    eq NotEqualsExpr.type() = new BoolType();
-    eq GreaterExpr.type() = new BoolType();
-    eq GreaterEqualExpr.type() = new BoolType();
-    eq LessExpr.type() = new BoolType();
-    eq LessEqualExpr.type() = new BoolType();
-    eq AndExpr.type() = new BoolType();
-    eq OrExpr.type() = new BoolType();
+    eq EqualsExpr.type()        = new BoolType();
+    eq NotEqualsExpr.type()     = new BoolType();
+    eq GreaterExpr.type()       = new BoolType();
+    eq GreaterEqualExpr.type()  = new BoolType();
+    eq LessExpr.type()          = new BoolType();
+    eq LessEqualExpr.type()     = new BoolType();
+    eq AndExpr.type()           = new BoolType();
+    eq OrExpr.type()            = new BoolType();
+    eq NotExpr.type()           = new BoolType();
 
     eq BinExpr.type() { 
         if (!getLeft().type().equals(getRight().type()))
