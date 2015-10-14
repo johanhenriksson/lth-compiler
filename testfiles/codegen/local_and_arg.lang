@@ -1,0 +1,11 @@
+int calc(int a, int b) {
+    int c = a + b;
+    int d = 5;
+    return c * d;
+}
+
+int main() {
+    int a = 1;
+    int b = 2;
+    return calc(a,b) - 15;
+}

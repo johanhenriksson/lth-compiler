@@ -1,0 +1,247 @@
+aspect CodeGen {
+    private static int Program.next_label = 1;
+
+    public static int Program.nextCounter() {
+        return Program.next_label++;
+    }
+
+    public void Program.codeGen(PrintStream out) {
+        // globals
+        out.println(".global _start");
+		out.println(".data");
+		out.println("buf: .skip 1024");
+		out.println();
+
+        // init
+		out.println(".text");
+        out.println("_start:");
+        out.println("    call main");
+        out.println("    movq %rax, %rdi");
+        out.println("    movq $60, %rax");
+        out.println("    syscall");
+        out.println("");
+
+        for(Function f : functions()) {
+            f.codeGen(out);
+        }
+
+        for(Function f : predefinedFunctions()) {
+            f.codeGen(out);
+        }
+    }
+
+    public void Function.codeGen(PrintStream out) {
+        out.println(getName().getID() + ":");
+        out.println("    pushq %rbp");
+        out.println("    movq %rsp, %rbp");
+
+        getBlock().codeGen(out);
+        
+        // dealloc
+		out.println("    movq %rbp, %rsp");
+        out.println("    popq %rbp");
+        out.println("    ret");
+        out.println("");
+    }
+
+    public void Block.codeGen(PrintStream out) {
+        for(Statement stmt : getStatements())
+            stmt.codeGen(out);
+    }
+
+    public void Statement.codeGen(PrintStream out) { 
+        out.println("Missing code gen for " + this.toString());
+    }
+    public void Expr.codeGen(PrintStream out) { 
+        out.println("Missing code gen for " + this.toString());
+    }
+
+    public void CallStmt.codeGen(PrintStream out) {
+        // push arguments on stack
+        getFunction().codeGen(out);
+    }
+
+    public void ReturnStmt.codeGen(PrintStream out) { 
+        if (hasReturnExpr())
+            getReturnExpr().codeGen(out);
+    }
+
+    public void DeclareStmt.codeGen(PrintStream out) {
+        out.println("    subq $8, %rsp");
+        if (hasAssignExpr()) {
+            getAssignExpr().codeGen(out);
+		    out.println("    movq %rax, " + getName().address()); 
+        }
+    } 
+
+    public void AssignStmt.codeGen(PrintStream out) {
+        getAssignExpr().codeGen(out);
+        out.println("    movq %rax, " + getName().decl().address()); 
+    } 
+
+    public void IfStmt.codeGen(PrintStream out) { 
+        int ctr = Program.nextCounter();
+        String if_label = "if" + ctr;
+        String else_label = "else" + ctr;
+        
+        getCondition().codeGen(out); // rax contains result
+        out.println("    cmpq $0, %rax");
+        out.println("    je " + else_label);
+        out.println(if_label + ":");
+        // then code
+        getThen().codeGen(out);
+        out.println("    jmp end" + if_label);
+        out.println(else_label + ":");
+        if (hasElse()) {
+            // else code
+            getElse().codeGen(out);
+        }
+        out.println("end" + if_label + ":");
+    }
+
+    public void WhileStmt.codeGen(PrintStream out) {
+        String label = "while" + Program.nextCounter();
+
+        out.println(label + ":");
+        getCondition().codeGen(out); // rax contains result
+        out.println("    cmpq $0, %rax");
+        out.println("    je end" + label);
+        
+        getLoop().codeGen(out);
+
+        out.println("    jmp " + label);
+        out.println("end" + label + ":");
+    }
+
+    /** Expressions */
+
+    public void FuncExpr.codeGen(PrintStream out) {
+        for(int i = getNumArgument() - 1; i >= 0; i--) {
+            Expr arg = getArgument(i);
+            arg.codeGen(out);
+            out.println("    pushq %rax");
+        }
+        out.println("    call " + getName().getID());
+        out.println("    addq $" + 8 * getNumArgument() + ", %rsp");
+    }
+
+    // evaluates operands to rax and rbx
+    public void BinExpr.evalCodeGen(PrintStream out) {
+		getLeft().codeGen(out);
+		out.println("    pushq %rax");
+		getRight().codeGen(out);
+		out.println("    movq %rax, %rbx");
+		out.println("    popq %rax");
+    }
+
+    // prepares comparison of rax with rbx
+    public void BinExpr.cmpCodeGen(PrintStream out) {
+        evalCodeGen(out);
+		out.println("    movq %rax, %rcx");
+		out.println("    movq $0, %rax");
+		out.println("    movq $1, %rdx");
+		out.println("    cmpq %rbx, %rcx");
+    }
+
+	public void AddExpr.codeGen(PrintStream out) {
+        evalCodeGen(out);
+		out.println("    addq %rbx, %rax");
+	}
+
+	public void SubExpr.codeGen(PrintStream out) {
+        evalCodeGen(out);
+		out.println("    subq %rbx, %rax");
+	}
+
+	public void MulExpr.codeGen(PrintStream out) {
+        evalCodeGen(out);
+		out.println("    imulq %rbx, %rax");
+	}
+
+	public void DivExpr.codeGen(PrintStream out) {
+        evalCodeGen(out);
+		out.println("    idivq %rbx, %rax");
+	}
+
+    public void EqualsExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmove %rdx, %rax");
+    }
+
+    public void NotEqualsExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmovne %rdx, %rax");
+    }
+
+    public void GreaterExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmovg %rdx, %rax");
+    }
+
+    public void GreaterEqualExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmovge %rdx, %rax");
+    }
+
+    public void LessExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmovl %rdx, %rax");
+    }
+
+    public void LessEqualExpr.codeGen(PrintStream out) {
+        cmpCodeGen(out);
+		out.println("    cmovle %rdx, %rax");
+    }
+
+    // and
+    // or
+    // not
+
+    public void IntLiteral.codeGen(PrintStream out) {
+        int v = Integer.parseInt(getINT());
+        out.println("    movq $" + v + ", %rax");
+    }
+
+	public void IdExpr.codeGen(PrintStream out) {
+		out.println("    movq " + getName().decl().address() + ", %rax");
+	}
+
+    public void ParamExpr.codeGen(PrintStream out) {
+        getExpr().codeGen(out);
+    }
+
+    inh boolean IdDecl.isLocalVariable();
+    eq DeclareStmt.getName().isLocalVariable() = true;
+    eq Argument.getName().isLocalVariable() = false;
+    eq Function.getName().isLocalVariable() = false;
+
+	/**
+ 	 * Address of local variable variable in the current stack frame.
+ 	 */
+	syn String IdDecl.address() {
+        if (!isLocalVariable())
+            return (argumentIndex()*8)+"(%rbp)";
+        return "-" + (localIndex()*8)+"(%rbp)";
+    }
+
+	/**
+ 	 * Local variable counting.
+ 	 */
+	syn int ASTNode.numLocals() = lastNode().localIndex() - localIndex();
+
+	/**
+ 	 * Local variable numbering.
+ 	 */
+	syn int ASTNode.localIndex() = prevNode().localIndex();
+	eq Function.localIndex() = 0;
+	eq IdDecl.localIndex() = prevNode().localIndex() + 1;
+
+	syn int ASTNode.argumentIndex() = prevNode().argumentIndex();
+	eq Function.argumentIndex() = 0;
+	eq IdDecl.argumentIndex() = prevNode().argumentIndex() + 1;
+
+	inh ASTNode ASTNode.prevNode();
+	eq ASTNode.getChild(int i).prevNode() = prevNode(i);
+	syn ASTNode ASTNode.lastNode() = prevNode(getNumChild());
+	syn ASTNode ASTNode.prevNode(int i) = i>0 ? getChild(i-1).lastNode() : this;
+}

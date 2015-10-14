@@ -1,6 +1,6 @@
 package lang;
 
-import java.io.FileReader;
+import java.io.*;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
@@ -32,8 +32,11 @@ public class Compiler {
 			LangScanner scanner = new LangScanner(new FileReader(filename));
 			LangParser parser = new LangParser();
 			Program program = (Program) parser.parse(scanner);
-			program.prettyPrint(System.out);
-            System.out.println("Max statement depth: " + MSNVisitor.result(program));
+
+            String outName = filename.substring(0,filename.indexOf("."));
+            PrintStream out = new PrintStream(new FileOutputStream(outName + ".s", true)); 
+			program.codeGen(out);
+
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 			System.exit(1);

@@ -27,6 +27,7 @@ aspect TypeCheck {
     eq AndExpr.type()           = new BoolType();
     eq OrExpr.type()            = new BoolType();
     eq NotExpr.type()           = new BoolType();
+    eq ParamExpr.type()         = getExpr().type();
 
     eq BinExpr.type() { 
         if (!getLeft().type().equals(getRight().type()))
