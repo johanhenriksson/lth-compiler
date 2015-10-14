@@ -17,6 +17,9 @@ Global : Unit ::= DeclareStmt;
 
 /* Functions */
 Function : Unit ::= Name:IdDecl Argument* Block;
+PrintFunction : Function;
+ReadFunction : Function;
+
 Argument ::= Name:IdDecl;
 
 /* Statements */
