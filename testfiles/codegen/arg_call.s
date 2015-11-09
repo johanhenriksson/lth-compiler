@@ -9,6 +9,19 @@ _start:
     movq $60, %rax
     syscall
 
+square:
+    pushq %rbp
+    movq %rsp, %rbp
+    movq 16(%rbp), %rax
+    pushq %rax
+    movq 16(%rbp), %rax
+    movq %rax, %rbx
+    popq %rax
+    imulq %rbx, %rax
+    movq %rbp, %rsp
+    popq %rbp
+    ret
+
 main:
     pushq %rbp
     movq %rsp, %rbp
@@ -21,19 +34,6 @@ main:
     movq %rax, %rbx
     popq %rax
     subq %rbx, %rax
-    movq %rbp, %rsp
-    popq %rbp
-    ret
-
-square:
-    pushq %rbp
-    movq %rsp, %rbp
-    movq 16(%rbp), %rax
-    pushq %rax
-    movq 16(%rbp), %rax
-    movq %rax, %rbx
-    popq %rax
-    imulq %rbx, %rax
     movq %rbp, %rsp
     popq %rbp
     ret

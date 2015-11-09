@@ -6,13 +6,13 @@ aspect Names {
     inh IdDecl Function.lookup(String name, boolean in_scope);
     inh IdDecl Block.lookup(String name, boolean in_scope);
 
-    syn IdDecl Unit.findGlobal(String name) = unknownDecl();
-    syn IdDecl Global.findGlobal(String name) = getDeclareStmt().findLocal(name);
+    syn IdDecl Unit.find(String name) = unknownDecl();
+    syn IdDecl Global.find(String name) = getDeclareStmt().findLocal(name);
 
     /* Top level lookup - checks global variables and function names */
     eq Program.getChild().lookup(String name, boolean in_scope) {
         for(int i = 0; i < getNumUnit(); i++) {
-            IdDecl decl = getUnit(i).findGlobal(name);
+            IdDecl decl = getUnit(i).find(name);
             if (!decl.isUnknown())
                 return decl;
         }
@@ -20,7 +20,7 @@ aspect Names {
         /* Predefined functions */
         /* TODO: disallow overwriting predefined functions */
         for(Function func: predefinedFunctions()) {
-            IdDecl decl = func.findGlobal(name);
+            IdDecl decl = func.find(name);
             if (!decl.isUnknown())
                 return decl;
         }
@@ -30,7 +30,7 @@ aspect Names {
     }
 
     /* Finds names of functions */
-    syn IdDecl Function.findGlobal(String name) {
+    syn IdDecl Function.find(String name) {
         IdDecl func_decl = getName();
         if (func_decl.getID().equals(name)) {
             return func_decl;

@@ -3,13 +3,16 @@ Program  ::= Unit*;
 
 /* Types */
 TypeId ::= <ID:String>;
+PointerTypeId : TypeId;
 
-abstract Type;
+abstract Type; 
 IntType: Type;
 BoolType: Type;
 VoidType: Type;
 FloatType: Type;
 StringType: Type;
+PointerType: Type ::= To:Type;
+CustomType: Type ::= <Name:String>;
 UnknownType: Type;
 
 abstract Unit;
@@ -41,6 +44,8 @@ abstract BinExpr : Expr ::= Left:Expr Right:Expr;
 ParamExpr : Expr ::= Expr;
 
 /* Variables & Function calls */
+DerefExpr : Expr ::= Expr;
+AddressExpr : Expr ::= Expr;
 IdExpr : Expr ::= Name:IdUse;
 FuncExpr : Expr ::= Name:IdUse Argument:Expr*;
 

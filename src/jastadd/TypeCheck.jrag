@@ -9,7 +9,7 @@ aspect TypeCheck {
     eq DeclareStmt.getName().expectedType() = getName().type();
 
     syn Type IdUse.type() = decl().type();
-    
+
     syn Type Expr.type()    = new UnknownType(); 
     eq IntLiteral.type()    = new IntType();
     eq BoolLiteral.type()   = new BoolType();
@@ -28,6 +28,8 @@ aspect TypeCheck {
     eq OrExpr.type()            = new BoolType();
     eq NotExpr.type()           = new BoolType();
     eq ParamExpr.type()         = getExpr().type();
+    eq AddressExpr.type()       = new PointerType(getExpr().type());
+    eq DerefExpr.type()         = getExpr().type().dereference();
 
     eq BinExpr.type() { 
         if (!getLeft().type().equals(getRight().type()))

@@ -12,6 +12,7 @@ aspect Types {
         return types;
     }
 
+    syn Type PointerTypeId.type() = new PointerType(super.type());
     syn Type TypeId.type() {
         switch(getID()) {
             case "int": return new IntType();
@@ -22,6 +23,10 @@ aspect Types {
         }
         return new UnknownType();
     }
+
+    // helper for dereference operator
+    syn Type Type.dereference() = new UnknownType();
+    eq PointerType.dereference() = getTo();
 
     syn boolean Type.equals(Object other) {
         if (!(other instanceof Type))
@@ -34,5 +39,6 @@ aspect Types {
     syn String VoidType.toString() = "void";
     syn String FloatType.toString() = "float";
     syn String StringType.toString() = "string";
+    syn String PointerType.toString() = getTo() + "*";
     syn String UnknownType.toString() = "<unknown>";
 }

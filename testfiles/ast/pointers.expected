@@ -1,0 +1,25 @@
+Program
+  List
+    Function
+      IdDecl
+        TypeId
+      List
+      Block
+        List
+          DeclareStmt
+            IdDecl
+              TypeId
+            Opt
+              IntLiteral
+          DeclareStmt
+            IdDecl
+              PointerTypeId
+            Opt
+              AddressExpr
+                IdExpr
+                  IdUse
+          ReturnStmt
+            Opt
+              DerefExpr
+                IdExpr
+                  IdUse

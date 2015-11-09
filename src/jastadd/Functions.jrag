@@ -13,12 +13,6 @@ aspect Functions
         }
 
         @Override
-        public int eval(ActivationRecord rec) {
-            System.out.println(rec.get("value"));
-            return 0;
-        }
-
-        @Override
         public void codeGen(PrintStream out) {
             out.println("print:");
             out.println("    pushq %rbp");
@@ -58,11 +52,6 @@ aspect Functions
             );
         }
 
-        @Override
-        public int eval(ActivationRecord rec) {
-            return 0;
-        }
-        
         @Override
         public void codeGen(PrintStream out) {
             out.println("read:");

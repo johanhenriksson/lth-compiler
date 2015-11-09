@@ -13,10 +13,10 @@
 %terminals ID, INT, FLOAT, STRING, TRUE, FALSE;
 
 /* Punctuation */
-%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT; 
+%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT, STAR, AMP; 
 
 /* Arithmetic */
-%terminals PLUS, MINUS, MULT, DIV, MOD;
+%terminals PLUS, MINUS, DIV, MOD;
 
 /* Boolean operators */
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
@@ -70,7 +70,9 @@ unit = function | global;
 global  = decl_stmt.d {: return new Global(d); :};
 
 /* Types */
-type_id = ID.name {: return new TypeId(name); :};
+type_id = ID.name {: return new TypeId(name); :}
+        | ID.name STAR {: return new PointerTypeId(name); :}
+        ;
 
 /* Identifiers */
 id_use  = ID.id {: return new IdUse(id); :};
@@ -168,9 +170,11 @@ expr3 = term.t
 
 term = factor.f 
      |        NOT  factor.f {: return new NotExpr(f); :}
-     | term.t MULT factor.f {: return new MulExpr(t,f); :}
+     | term.t STAR factor.f {: return new MulExpr(t,f); :}
      | term.t DIV  factor.f {: return new DivExpr(t,f); :}
      | term.t MOD  factor.f {: return new ModExpr(t,f); :}
+     | STAR factor.f        {: return new DerefExpr(f); :}
+     | AMP factor.f         {: return new AddressExpr(f); :}
      ;
 
 factor = id_use.id {: return new IdExpr(id); :}

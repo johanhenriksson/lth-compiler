@@ -66,12 +66,13 @@ Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 ">"        { return sym(Terminals.GREATER); }
 "+"        { return sym(Terminals.PLUS); }
 "-"        { return sym(Terminals.MINUS); }
-"*"        { return sym(Terminals.MULT); }
+"*"        { return sym(Terminals.STAR); }
 "/"        { return sym(Terminals.DIV); }
 "%"        { return sym(Terminals.MOD); }
 "!"        { return sym(Terminals.NOT); }
 "&&"       { return sym(Terminals.AND); }
 "||"       { return sym(Terminals.OR); }
+"&"        { return sym(Terminals.AMP); }
 
 {Int}      { return sym(Terminals.INT); }
 {Float}    { return sym(Terminals.FLOAT); }
