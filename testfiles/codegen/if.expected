@@ -23,13 +23,13 @@ main:
     cmpq %rbx, %rcx
     cmove %rdx, %rax
     cmpq $0, %rax
-    je else4
-if4:
+    je else2
+if2:
     movq $0, %rax
-    jmp endif4
-else4:
+    jmp endif2
+else2:
     movq $1, %rax
-endif4:
+endif2:
     movq %rbp, %rsp
     popq %rbp
     ret

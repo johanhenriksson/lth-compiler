@@ -15,7 +15,7 @@ main:
     subq $8, %rsp
     movq $0, %rax
     movq %rax, -16(%rbp)
-while1:
+while4:
     movq -16(%rbp), %rax
     pushq %rax
     movq $0, %rax
@@ -27,7 +27,7 @@ while1:
     cmpq %rbx, %rcx
     cmovl %rdx, %rax
     cmpq $0, %rax
-    je endwhile1
+    je endwhile4
     movq -16(%rbp), %rax
     pushq %rax
     movq $1, %rax
@@ -35,8 +35,8 @@ while1:
     popq %rax
     addq %rbx, %rax
     movq %rax, -16(%rbp)
-    jmp while1
-endwhile1:
+    jmp while4
+endwhile4:
     movq -16(%rbp), %rax
     movq %rbp, %rsp
     popq %rbp
