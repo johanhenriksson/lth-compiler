@@ -22,7 +22,7 @@
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
 
 /* Keywords */
-%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE;
+%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE, STRUCT;
 
 /* AST Classes */
 %typeof program     = "Program";
@@ -57,6 +57,10 @@
 %typeof term         = "Expr";
 %typeof literal      = "Literal";
 
+%typeof struct = "Struct";
+%typeof struct_decls = "List";
+%typeof struct_decl = "StructDecl";
+
 %goal program;
 
 /* Goal: Program - list of functions */
@@ -66,8 +70,18 @@ program = units.list {: return new Program(list); :};
 units = unit.u {: return new List().add(u); :}
       | units.list unit.u {: return list.add(u); :};
 
-unit = function | global;
+unit = function | global | struct;
 global  = decl_stmt.d {: return new Global(d); :};
+
+struct = STRUCT type_id.name LBRACE RBRACE {: return new Struct(name, new List()); :} // empty struct
+       | STRUCT type_id.name LBRACE struct_decls.decls RBRACE {: return new Struct(name,decls); :}
+       ;
+
+struct_decls = struct_decl.d {: return new List().add(d); :}
+             | struct_decls.list struct_decl.d {: return list.add(d); :}
+             ;
+
+struct_decl = id_decl.decl SEMI {: return new StructVar(decl); :};
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :}

@@ -18,6 +18,11 @@ UnknownType: Type;
 abstract Unit;
 Global : Unit ::= DeclareStmt;
 
+/* Structs */
+Struct : Unit ::= TypeId StructDecl*;
+abstract StructDecl;
+StructVar : StructDecl ::= IdDecl;
+
 /* Functions */
 Function : Unit ::= Name:IdDecl Argument* Block;
 PrintFunction : Function;

@@ -1,0 +1,5 @@
+struct hello_world {
+    int integer;
+    bool boolean;
+    float decimal;
+}
