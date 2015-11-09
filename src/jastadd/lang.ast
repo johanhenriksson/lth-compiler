@@ -3,6 +3,7 @@ Program  ::= Unit*;
 
 /* Types */
 TypeId ::= <ID:String>;
+TypeDecl ::= <ID:String>;
 PointerTypeId : TypeId;
 
 abstract Type; 
@@ -12,14 +13,14 @@ VoidType: Type;
 FloatType: Type;
 StringType: Type;
 PointerType: Type ::= To:Type;
-CustomType: Type ::= <Name:String>;
+StructType: Type ::= <Name:String>;
 UnknownType: Type;
 
 abstract Unit;
 Global : Unit ::= DeclareStmt;
 
 /* Structs */
-Struct : Unit ::= TypeId StructDecl*;
+Struct : Unit ::= Name:TypeDecl StructDecl*;
 abstract StructDecl;
 StructVar : StructDecl ::= IdDecl;
 

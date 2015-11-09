@@ -1,0 +1,6 @@
+struct test_type { }
+
+int main() {
+    test_type struct1; // ok
+    not_def struct2; // error
+}

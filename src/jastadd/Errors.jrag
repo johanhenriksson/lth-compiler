@@ -42,6 +42,10 @@ aspect ErrorContributions {
 		when isMultiplyDeclared()
 		to Program.errors() for program();
 
+    TypeId contributes error("unknown type '" + getID() + "'")
+        when invalidType()
+        to Program.errors() for program();
+
     ReturnStmt contributes error("expected return type " + expectedType().toString() + ", got " + getReturnExpr().type().toString())
         when typeError()
         to Program.errors() for program();

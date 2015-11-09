@@ -73,6 +73,8 @@ aspect TypeCheck {
     
     syn boolean ReturnStmt.typeError() = !expectedType().equals(getReturnExpr().type());
 
+    syn boolean TypeId.invalidType() = type().isUnknownType();
+
     syn boolean DeclareStmt.typeError() {
         if (!hasAssignExpr())
             return false;

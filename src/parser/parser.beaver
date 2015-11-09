@@ -33,6 +33,7 @@
 %typeof function     = "Function";
 %typeof func_call    = "FuncExpr";
 %typeof type_id      = "TypeId";
+%typeof type_decl    = "TypeDecl";
 %typeof id_use       = "IdUse";
 %typeof id_decl      = "IdDecl";
 %typeof arg_list     = "List";
@@ -73,8 +74,8 @@ units = unit.u {: return new List().add(u); :}
 unit = function | global | struct;
 global  = decl_stmt.d {: return new Global(d); :};
 
-struct = STRUCT type_id.name LBRACE RBRACE {: return new Struct(name, new List()); :} // empty struct
-       | STRUCT type_id.name LBRACE struct_decls.decls RBRACE {: return new Struct(name,decls); :}
+struct = STRUCT type_decl.name LBRACE RBRACE {: return new Struct(name, new List()); :} // empty struct
+       | STRUCT type_decl.name LBRACE struct_decls.decls RBRACE {: return new Struct(name,decls); :}
        ;
 
 struct_decls = struct_decl.d {: return new List().add(d); :}
@@ -87,6 +88,8 @@ struct_decl = id_decl.decl SEMI {: return new StructVar(decl); :};
 type_id = ID.name {: return new TypeId(name); :}
         | ID.name STAR {: return new PointerTypeId(name); :}
         ;
+
+type_decl = ID.name {: return new TypeDecl(name); :};
 
 /* Identifiers */
 id_use  = ID.id {: return new IdUse(id); :};
