@@ -1,10 +1,28 @@
 aspect Names {
     syn IdDecl IdUse.decl() = lookup(getID(), false);
 
+    syn IdDecl StructIdUse.decl() { 
+        IdDecl struct_decl = super.decl();
+        Struct s = structLookup(struct_decl.getType().getID());
+        if (s == null)
+            return unknownDecl();
+        IdDecl d = s.findField(getField());
+        if (d == null) 
+            return unknownDecl();
+        return d;
+    }
+
+    syn boolean IdUse.isStructId() = false;
+    eq StructIdUse.isStructId() = true;
+
+    syn boolean StructIdUse.structNameError() = decl().isUnknown(); 
+    
     inh IdDecl IdUse.lookup(String name, boolean in_scope);
     inh IdDecl IdDecl.lookup(String name, boolean in_scope);
     inh IdDecl Function.lookup(String name, boolean in_scope);
     inh IdDecl Block.lookup(String name, boolean in_scope);
+
+    inh Struct StructIdUse.structLookup(String struct);
 
     syn IdDecl Unit.find(String name) = unknownDecl();
     syn IdDecl Global.find(String name) = getDeclareStmt().findLocal(name);
@@ -27,6 +45,31 @@ aspect Names {
 
         /* Nothing found yet = undeclared identifier */
         return unknownDecl();
+    }
+
+    eq Program.getChild().structLookup(String struct) {
+        for(int i = 0; i < getNumUnit(); i++) {
+            Struct s = getUnit(i).findStruct(struct);
+            if (s != null)
+                return s;
+        }
+        return null;
+    }
+
+    syn IdDecl Struct.findField(String field) {
+        for(int i = 0; i < getNumStructDecl(); i++) {
+            IdDecl d = getStructDecl(i).findField(field);
+            if (d != null)
+                return d;
+        }
+        return null;
+    }
+
+    syn IdDecl StructDecl.findField(String field) = unknownDecl();
+    eq StructVar.findField(String field) {
+        if (getIdDecl().getID().equals(field))
+            return getIdDecl();
+        return null;
     }
 
     /* Finds names of functions */

@@ -13,7 +13,7 @@
 %terminals ID, INT, FLOAT, STRING, TRUE, FALSE;
 
 /* Punctuation */
-%terminals ASSIGN, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT, STAR, AMP; 
+%terminals ASSIGN, DOT, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT, STAR, AMP; 
 
 /* Arithmetic */
 %terminals PLUS, MINUS, DIV, MOD;
@@ -92,7 +92,10 @@ type_id = ID.name {: return new TypeId(name); :}
 type_decl = ID.name {: return new TypeDecl(name); :};
 
 /* Identifiers */
-id_use  = ID.id {: return new IdUse(id); :};
+id_use  = ID.id {: return new IdUse(id); :}
+        | ID.struct DOT ID.field {: return new StructIdUse(struct, field); :}
+        ;
+
 id_decl = type_id.type ID.id {: return new IdDecl(type, id); :};
 
 /* Function */

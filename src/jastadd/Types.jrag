@@ -1,31 +1,18 @@
 aspect Types {
-    syn nta List<Type> Program.predefinedTypes() {
-        List<Type> types = new List<Type>();
-
-        types.add(new UnknownType());
-        types.add(new VoidType());
-        types.add(new IntType());
-        types.add(new BoolType());
-        types.add(new StringType());
-        types.add(new FloatType());
-
-        return types;
-    }
-
     syn Type Program.findType(String name) {
         for(int i = 0; i < getNumUnit(); i++) {
-            Type type = getUnit(i).findType(name);
-            if (!type.isUnknownType())
-                return type;
+            Struct struct = getUnit(i).findStruct(name);
+            if (struct != null)
+                return new StructType(struct);
         }
         return new UnknownType();
     }
 
-    syn Type Unit.findType(String name) = new UnknownType();
-    eq Struct.findType(String name) {
+    syn Struct Unit.findStruct(String name) = null;
+    eq Struct.findStruct(String name) {
         if (getName().getID().equals(name))
-            return new StructType(name);
-        return new UnknownType();
+            return this;
+        return null;
     }
 
     syn boolean Type.isUnknownType() = false;
@@ -40,8 +27,12 @@ aspect Types {
             case "float": return new FloatType();
             case "string": return new StringType();
         }
+
+        // look for struct
         return program().findType(getID());
     }
+
+    syn String StructType.name() = getStruct().getName().getID();
 
     // helper for dereference operator
     syn Type Type.dereference() = new UnknownType();
@@ -60,4 +51,6 @@ aspect Types {
     syn String StringType.toString() = "string";
     syn String PointerType.toString() = getTo() + "*";
     syn String UnknownType.toString() = "<unknown>";
+
+    syn String StructType.toString() = "struct " + getStruct().getName();
 }

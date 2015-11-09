@@ -35,7 +35,11 @@ aspect Errors {
 
 aspect ErrorContributions {
 	IdUse contributes error("symbol '" + getID() + "' is not declared")
-		when decl().isUnknown()
+		when !isStructId() && decl().isUnknown()
+		to Program.errors() for program();
+
+	StructIdUse contributes error("no such field '" + getField() + "' on struct " + getID())
+		when structNameError() 
 		to Program.errors() for program();
 
 	IdDecl contributes error("symbol '" + getID() + "' is already declared!")
@@ -51,7 +55,7 @@ aspect ErrorContributions {
         to Program.errors() for program();
 
     AssignStmt contributes error("cannot assign '" + getName().getID() + "' of type " + getName().type().toString() + ", got " + getAssignExpr().type().toString())
-        when typeError()
+        when !getName().decl().isUnknown() && typeError()
         to Program.errors() for program();
 
     AssignStmt contributes error("cannot assign '" + getName().getID() + "' because it's a function. dummy!")

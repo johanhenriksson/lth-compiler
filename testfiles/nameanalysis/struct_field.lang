@@ -1,0 +1,9 @@
+struct test {
+    int hello;
+}
+
+void main() {
+    test t;
+    t.hello = 5;
+    t.undef = 6; // error
+}

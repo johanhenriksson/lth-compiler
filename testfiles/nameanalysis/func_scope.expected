@@ -1,4 +1,3 @@
-Error at line 4,5: cannot assign 'three' of type <unknown>, got int
 Error at line 4,5: symbol 'three' is not declared
 Error at line 9,5: cannot assign 'one' of type int, got <unknown>
 Error at line 9,11: symbol 'two' is not declared

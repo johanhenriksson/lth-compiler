@@ -13,7 +13,7 @@ VoidType: Type;
 FloatType: Type;
 StringType: Type;
 PointerType: Type ::= To:Type;
-StructType: Type ::= <Name:String>;
+StructType: Type ::= Struct;
 UnknownType: Type;
 
 abstract Unit;
@@ -85,6 +85,7 @@ StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
 IdUse ::= <ID:String>;
+StructIdUse : IdUse ::= <Field:String>;
 IdDecl ::= Type:TypeId <ID:String>;
 UnknownDecl : IdDecl;
 UnknownFunc : Function;

@@ -52,6 +52,7 @@ Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 "break"    { return sym(Terminals.BREAK); }
 "continue" { return sym(Terminals.CONTINUE); }
 "struct"   { return sym(Terminals.STRUCT); }
+"."        { return sym(Terminals.DOT); }
 ","        { return sym(Terminals.COMMA); }
 ";"        { return sym(Terminals.SEMI); }
 "("        { return sym(Terminals.LPARAM); }

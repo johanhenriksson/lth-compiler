@@ -1,0 +1,21 @@
+Program
+  List
+    Struct
+      TypeDecl
+      List
+        StructVar
+          IdDecl
+            TypeId
+    Function
+      IdDecl
+        TypeId
+      List
+      Block
+        List
+          DeclareStmt
+            IdDecl
+              TypeId
+            Opt
+          AssignStmt
+            StructIdUse
+            IntLiteral
