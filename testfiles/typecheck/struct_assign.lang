@@ -1,0 +1,15 @@
+struct ex_struct { }
+
+struct other_struct { }
+
+int main() {
+    ex_struct a;
+    ex_struct b;
+    other_struct c;
+
+    a = b; // ok
+
+    a = 5; // type error
+    a = true; // type error
+    a = c; // type error
+}

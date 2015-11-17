@@ -10,10 +10,7 @@ aspect Names {
         if (s.isUnknown())
             return unknownDecl();
 
-        IdDecl d = s.findField(getID());
-        if (d.isUnknown())
-            return unknownDecl();
-        return d;
+        return s.findField(getID());
     }
 
     syn String IdDecl.toString() = getType().getID() + " " + getID();
@@ -32,16 +29,7 @@ aspect Names {
 
     inh Struct StructIdUse.structLookup(String struct);
 
-    syn IdDecl Unit.find(String name) {
-        System.out.println("cannot use find() on " + this + ", looking for " + name);
-        try {
-        return unknownDecl();
-        }
-        catch(NullPointerException e) {
-            System.out.println("null ptr looking for " + name);
-            return new UnknownDecl(new TypeId("<unknown>"),"<unknown>");
-        }
-    }
+    syn IdDecl Unit.find(String name) = unknownDecl();
     syn IdDecl Global.find(String name) = getDeclareStmt().findLocal(name);
 
     eq Struct.find(String name) {

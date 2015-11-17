@@ -1,0 +1,13 @@
+struct data {
+    int val;
+}
+
+void other() {
+    data x;
+    return x.val; // error
+}
+
+int main() {
+    data x;
+    return x.val; // ok
+}

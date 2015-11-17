@@ -52,5 +52,5 @@ aspect Types {
     syn String PointerType.toString() = getTo() + "*";
     syn String UnknownType.toString() = "<unknown>";
 
-    syn String StructType.toString() = "struct " + getStruct().getName();
+    syn String StructType.toString() = "struct " + getStruct().getName().getID();
 }

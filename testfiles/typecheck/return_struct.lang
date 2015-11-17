@@ -1,0 +1,6 @@
+struct car { }
+
+car CarFactory() {
+    car a;
+    return a;
+}
