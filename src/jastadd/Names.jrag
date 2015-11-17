@@ -178,6 +178,16 @@ aspect Names {
         return lookup(name, in_scope);
     }
 
+    /* Used to look for previous variable declarations within structs */
+    eq Struct.getStructDecl(int idx).lookup(String name, boolean in_scope) {
+        for(int i = 0; i < idx; i++) {
+            IdDecl decl = getStructDecl(i).findField(name);
+            if (!decl.isUnknown())
+                return decl;
+        }
+        return unknownDecl();
+    }
+
 	syn boolean IdDecl.isMultiplyDeclared() {
         IdDecl prev_decl = lookup(getID(), true);
         if (prev_decl.isUnknown())
