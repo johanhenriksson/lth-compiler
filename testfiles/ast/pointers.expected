@@ -1,25 +1,25 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-              IntLiteral
-          DeclareStmt
-            IdDecl
-              PointerTypeId
-            Opt
-              AddressExpr
-                IdExpr
-                  IdUse
-          ReturnStmt
-            Opt
-              DerefExpr
-                IdExpr
-                  IdUse
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 3 statement(s)
+        List 3 item(s)
+          DeclareStmt int a = 5;
+            IdDecl int a
+              TypeId int
+            Opt ?
+              IntLiteral 5
+          DeclareStmt int a_ptr = a;
+            IdDecl int a_ptr
+              PointerTypeId int
+            Opt ?
+              AddressExpr a
+                IdExpr a
+                  IdUse a
+          ReturnStmt return a_ptr;
+            Opt ?
+              DerefExpr a_ptr
+                IdExpr a_ptr
+                  IdUse a_ptr

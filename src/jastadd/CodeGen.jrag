@@ -35,7 +35,7 @@ aspect CodeGen {
         out.println("    pushq %rbp");
         out.println("    movq %rsp, %rbp");
 
-        getBlock().codeGen(out);
+        getBody().codeGen(out);
         
         // dealloc
 		out.println("    movq %rbp, %rsp");

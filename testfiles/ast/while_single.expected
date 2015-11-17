@@ -1,13 +1,13 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          WhileStmt
-            BoolLiteral
-            AssignStmt
-              IdUse
-              IntLiteral
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 1 statement(s)
+        List 1 item(s)
+          WhileStmt true
+            BoolLiteral true
+            AssignStmt a = 5;
+              IdUse a
+              IntLiteral 5

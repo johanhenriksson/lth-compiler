@@ -1,36 +1,36 @@
-Program
-  List
-    Struct
-      TypeDecl
-      List
-        StructVar
-          IdDecl
-            TypeId
-    Struct
-      TypeDecl
-      List
-        StructVar
-          IdDecl
-            TypeId
-        StructVar
-          IdDecl
-            TypeId
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-          AssignStmt
-            StructIdUse
-              IdUse
-            IntLiteral
-          AssignStmt
-            StructIdUse
-              StructIdUse
-                IdUse
-            BoolLiteral
+Program 
+  List 3 item(s)
+    Struct struct_inner
+      TypeDecl struct_inner
+      List 1 item(s)
+        StructVar 
+          IdDecl bool c
+            TypeId bool
+    Struct struct_a
+      TypeDecl struct_a
+      List 2 item(s)
+        StructVar 
+          IdDecl int b
+            TypeId int
+        StructVar 
+          IdDecl struct_inner nested
+            TypeId struct_inner
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 3 statement(s)
+        List 3 item(s)
+          DeclareStmt struct_a a;
+            IdDecl struct_a a
+              TypeId struct_a
+            Opt ?
+          AssignStmt b = 5;
+            StructIdUse a.b
+              IdUse a
+            IntLiteral 5
+          AssignStmt c = true;
+            StructIdUse a.nested.c
+              StructIdUse a.nested
+                IdUse a
+            BoolLiteral true

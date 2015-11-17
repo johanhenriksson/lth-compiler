@@ -1,17 +1,17 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
+Program 
+  List 2 item(s)
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 0 statement(s)
+        List 0 item(s)
+    Function square(int)
+      IdDecl int square
+        TypeId int
+      List 1 item(s)
+        Argument 
+          IdDecl int x
+            TypeId int
+      Block 0 statement(s)
+        List 0 item(s)

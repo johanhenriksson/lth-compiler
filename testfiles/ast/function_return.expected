@@ -1,18 +1,18 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
-          ReturnStmt
-            Opt
-              MulExpr
-                IdExpr
-                  IdUse
-                IdExpr
-                  IdUse
+Program 
+  List 1 item(s)
+    Function square(int)
+      IdDecl int square
+        TypeId int
+      List 1 item(s)
+        Argument 
+          IdDecl int x
+            TypeId int
+      Block 1 statement(s)
+        List 1 item(s)
+          ReturnStmt return x * x;
+            Opt ?
+              MulExpr x * x
+                IdExpr x
+                  IdUse x
+                IdExpr x
+                  IdUse x

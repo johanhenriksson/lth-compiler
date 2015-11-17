@@ -107,11 +107,6 @@ aspect Functions
 
     eq Function.getName().isFunction() = true;
     eq Function.getName().function() = this;
-    eq Argument.getName().function() = unknownFunc();
-    eq Argument.getName().isFunction() = false;
-    eq DeclareStmt.getName().function() = unknownFunc();
-    eq DeclareStmt.getName().isFunction() = false;
-    eq StructVar.getIdDecl().isFunction() = false;
 
     eq Program.getChild().isFunction() = false;
     eq Program.getChild().function() = unknownFunc();

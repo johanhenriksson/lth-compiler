@@ -1,0 +1,11 @@
+Program
+  List
+    Struct
+      TypeDecl
+      List
+    Struct
+      TypeDecl
+      List
+        StructVar
+          IdDecl
+            TypeId

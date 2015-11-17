@@ -1,14 +1,14 @@
-Program
-  List
-    Struct
-      TypeDecl
-      List
-        StructVar
-          IdDecl
-            TypeId
-        StructVar
-          IdDecl
-            TypeId
-        StructVar
-          IdDecl
-            TypeId
+Program 
+  List 1 item(s)
+    Struct hello_world
+      TypeDecl hello_world
+      List 3 item(s)
+        StructVar 
+          IdDecl int integer
+            TypeId int
+        StructVar 
+          IdDecl bool boolean
+            TypeId bool
+        StructVar 
+          IdDecl float decimal
+            TypeId float

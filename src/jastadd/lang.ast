@@ -23,10 +23,10 @@ Global : Unit ::= DeclareStmt;
 Struct : Unit ::= Name:TypeDecl StructDecl*;
 UnknownStruct : Struct;
 abstract StructDecl;
-StructVar : StructDecl ::= IdDecl;
+Field : StructDecl ::= IdDecl;
 
 /* Functions */
-Function : Unit ::= Name:IdDecl Argument* Block;
+Function : Unit ::= Name:IdDecl Argument* Body:Block;
 PrintFunction : Function;
 ReadFunction : Function;
 
@@ -34,8 +34,8 @@ Argument ::= Name:IdDecl;
 
 /* Statements */
 abstract Statement;
-
 Block        : Statement ::= Statement*;
+
 AssignStmt   : Statement ::= Name:IdUse AssignExpr:Expr;
 DeclareStmt  : Statement ::= Name:IdDecl [ AssignExpr:Expr ];
 WhileStmt    : Statement ::= Condition:Expr Loop:Statement;
@@ -44,6 +44,7 @@ CallStmt     : Statement ::= Function:FuncExpr;
 ReturnStmt   : Statement ::= [ ReturnExpr:Expr ];
 BreakStmt    : Statement;
 ContinueStmt : Statement;
+
 
 /* Expressions */
 abstract Expr;

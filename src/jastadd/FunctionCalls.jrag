@@ -12,13 +12,12 @@ aspect FunctionCalls {
 
     inh Function Statement.enclosingFunction(); 
     inh Function Expr.enclosingFunction();
-    eq Program.getChild().enclosingFunction() = unknownFunc();
 
     eq Block.getStatement(int index).enclosingFunction() {
         return enclosingFunction();
     }
 
-    eq Function.getBlock().enclosingFunction() {
+    eq Function.getBody().enclosingFunction() {
         return this;
     }
 

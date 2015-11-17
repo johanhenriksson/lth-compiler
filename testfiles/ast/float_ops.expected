@@ -1,65 +1,65 @@
-Program
-  List
-    Struct
-      TypeDecl
-      List
-        StructVar
-          IdDecl
-            TypeId
-        StructVar
-          IdDecl
-            TypeId
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
-          ReturnStmt
-            Opt
-              FloatLiteral
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-          AssignStmt
-            StructIdUse
-              IdUse
-            FloatLiteral
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-              AddExpr
-                MulExpr
-                  IdExpr
-                    StructIdUse
-                      IdUse
-                  IdExpr
-                    StructIdUse
-                      IdUse
-                MulExpr
-                  IdExpr
-                    StructIdUse
-                      IdUse
-                  IdExpr
-                    StructIdUse
-                      IdUse
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-              FuncExpr
-                IdUse
-                List
-                  IdExpr
-                    IdUse
+Program 
+  List 3 item(s)
+    Struct vector
+      TypeDecl vector
+      List 2 item(s)
+        StructVar 
+          IdDecl float x
+            TypeId float
+        StructVar 
+          IdDecl float y
+            TypeId float
+    Function sqrt(float)
+      IdDecl float sqrt
+        TypeId float
+      List 1 item(s)
+        Argument 
+          IdDecl float x
+            TypeId float
+      Block 1 statement(s)
+        List 1 item(s)
+          ReturnStmt return 0.0;
+            Opt ?
+              FloatLiteral 0.0
+    Function main()
+      IdDecl void main
+        TypeId void
+      List 0 item(s)
+      Block 4 statement(s)
+        List 4 item(s)
+          DeclareStmt vector v;
+            IdDecl vector v
+              TypeId vector
+            Opt ?
+          AssignStmt x = 3.0;
+            StructIdUse v.x
+              IdUse v
+            FloatLiteral 3.0
+          DeclareStmt float lengthSquare = x * x + y * y;
+            IdDecl float lengthSquare
+              TypeId float
+            Opt ?
+              AddExpr x * x + y * y
+                MulExpr x * x
+                  IdExpr x
+                    StructIdUse v.x
+                      IdUse v
+                  IdExpr x
+                    StructIdUse v.x
+                      IdUse v
+                MulExpr y * y
+                  IdExpr y
+                    StructIdUse v.y
+                      IdUse v
+                  IdExpr y
+                    StructIdUse v.y
+                      IdUse v
+          DeclareStmt float length = sqrt(lengthSquare);
+            IdDecl float length
+              TypeId float
+            Opt ?
+              FuncExpr sqrt(lengthSquare)
+                IdUse sqrt
+                List 1 item(s)
+                  IdExpr lengthSquare
+                    IdUse lengthSquare

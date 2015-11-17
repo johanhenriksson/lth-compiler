@@ -1,0 +1,24 @@
+Program 
+  List 3 item(s)
+    Struct type_a
+      TypeDecl type_a
+      List 1 item(s)
+        StructVar 
+          IdDecl int a
+            TypeId int
+    Global 
+      DeclareStmt type_a glob;
+        IdDecl type_a glob
+          TypeId type_a
+        Opt ?
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 1 statement(s)
+        List 1 item(s)
+          ReturnStmt return a;
+            Opt ?
+              IdExpr a
+                StructIdUse glob.a
+                  IdUse glob

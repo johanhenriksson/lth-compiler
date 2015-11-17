@@ -1,161 +1,161 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
-          WhileStmt
-            NotEqualsExpr
-              IdExpr
-                IdUse
-              IdExpr
-                IdUse
-            Block
-              List
-                IfStmt
-                  GreaterExpr
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-                  Block
-                    List
-                      AssignStmt
-                        IdUse
-                        SubExpr
-                          IdExpr
-                            IdUse
-                          IdExpr
-                            IdUse
-                  Opt
-                    Block
-                      List
-                        AssignStmt
-                          IdUse
-                          SubExpr
-                            IdExpr
-                              IdUse
-                            IdExpr
-                              IdUse
-          ReturnStmt
-            Opt
-              IdExpr
-                IdUse
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
-          IfStmt
-            EqualsExpr
-              IdExpr
-                IdUse
-              IntLiteral
-            Block
-              List
-                ReturnStmt
-                  Opt
-                    IdExpr
-                      IdUse
-            Opt
-          ReturnStmt
-            Opt
-              FuncExpr
-                IdUse
-                List
-                  IdExpr
-                    IdUse
-                  ModExpr
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-          AssignStmt
-            IdUse
-            FuncExpr
-              IdUse
-              List
-          AssignStmt
-            IdUse
-            FuncExpr
-              IdUse
-              List
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-                FuncExpr
-                  IdUse
-                  List
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-                FuncExpr
-                  IdUse
-                  List
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-          DeclareStmt
-            IdDecl
-              TypeId
-            Opt
-              SubExpr
-                FuncExpr
-                  IdUse
-                  List
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-                FuncExpr
-                  IdUse
-                  List
-                    IdExpr
-                      IdUse
-                    IdExpr
-                      IdUse
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-                IdExpr
-                  IdUse
-          ReturnStmt
-            Opt
-              IntLiteral
+Program 
+  List 3 item(s)
+    Function gcd1(int,int)
+      IdDecl int gcd1
+        TypeId int
+      List 2 item(s)
+        Argument 
+          IdDecl int a
+            TypeId int
+        Argument 
+          IdDecl int b
+            TypeId int
+      Block 2 statement(s)
+        List 2 item(s)
+          WhileStmt a != b
+            NotEqualsExpr a != b
+              IdExpr a
+                IdUse a
+              IdExpr b
+                IdUse b
+            Block 1 statement(s)
+              List 1 item(s)
+                IfStmt a > b
+                  GreaterExpr a > b
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+                  Block 1 statement(s)
+                    List 1 item(s)
+                      AssignStmt a = a - b;
+                        IdUse a
+                        SubExpr a - b
+                          IdExpr a
+                            IdUse a
+                          IdExpr b
+                            IdUse b
+                  Opt ?
+                    Block 1 statement(s)
+                      List 1 item(s)
+                        AssignStmt b = b - a;
+                          IdUse b
+                          SubExpr b - a
+                            IdExpr b
+                              IdUse b
+                            IdExpr a
+                              IdUse a
+          ReturnStmt return a;
+            Opt ?
+              IdExpr a
+                IdUse a
+    Function gcd2(int,int)
+      IdDecl int gcd2
+        TypeId int
+      List 2 item(s)
+        Argument 
+          IdDecl int a
+            TypeId int
+        Argument 
+          IdDecl int b
+            TypeId int
+      Block 2 statement(s)
+        List 2 item(s)
+          IfStmt b == 0
+            EqualsExpr b == 0
+              IdExpr b
+                IdUse b
+              IntLiteral 0
+            Block 1 statement(s)
+              List 1 item(s)
+                ReturnStmt return a;
+                  Opt ?
+                    IdExpr a
+                      IdUse a
+            Opt ?
+          ReturnStmt return gcd2(b, a % b);
+            Opt ?
+              FuncExpr gcd2(b, a % b)
+                IdUse gcd2
+                List 2 item(s)
+                  IdExpr b
+                    IdUse b
+                  ModExpr a % b
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 9 statement(s)
+        List 9 item(s)
+          DeclareStmt int a;
+            IdDecl int a
+              TypeId int
+            Opt ?
+          DeclareStmt int b;
+            IdDecl int b
+              TypeId int
+            Opt ?
+          AssignStmt a = read();
+            IdUse a
+            FuncExpr read()
+              IdUse read
+              List 0 item(s)
+          AssignStmt b = read();
+            IdUse b
+            FuncExpr read()
+              IdUse read
+              List 0 item(s)
+          CallStmt print(gcd1(a, b));
+            FuncExpr print(gcd1(a, b))
+              IdUse print
+              List 1 item(s)
+                FuncExpr gcd1(a, b)
+                  IdUse gcd1
+                  List 2 item(s)
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+          CallStmt print(gcd2(a, b));
+            FuncExpr print(gcd2(a, b))
+              IdUse print
+              List 1 item(s)
+                FuncExpr gcd2(a, b)
+                  IdUse gcd2
+                  List 2 item(s)
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+          DeclareStmt int diff = gcd1(a, b) - gcd2(a, b);
+            IdDecl int diff
+              TypeId int
+            Opt ?
+              SubExpr gcd1(a, b) - gcd2(a, b)
+                FuncExpr gcd1(a, b)
+                  IdUse gcd1
+                  List 2 item(s)
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+                FuncExpr gcd2(a, b)
+                  IdUse gcd2
+                  List 2 item(s)
+                    IdExpr a
+                      IdUse a
+                    IdExpr b
+                      IdUse b
+          CallStmt print(diff);
+            FuncExpr print(diff)
+              IdUse print
+              List 1 item(s)
+                IdExpr diff
+                  IdUse diff
+          ReturnStmt return 0;
+            Opt ?
+              IntLiteral 0

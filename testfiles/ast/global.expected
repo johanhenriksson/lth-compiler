@@ -1,18 +1,18 @@
-Program
-  List
-    Global
-      DeclareStmt
-        IdDecl
-          TypeId
-        Opt
-          IntLiteral
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          ReturnStmt
-            Opt
-              IdExpr
-                IdUse
+Program 
+  List 2 item(s)
+    Global 
+      DeclareStmt int GLOBAL = 5;
+        IdDecl int GLOBAL
+          TypeId int
+        Opt ?
+          IntLiteral 5
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 1 statement(s)
+        List 1 item(s)
+          ReturnStmt return GLOBAL;
+            Opt ?
+              IdExpr GLOBAL
+                IdUse GLOBAL

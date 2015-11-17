@@ -1,11 +1,11 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          AssignStmt
-            IdUse
-            StringLiteral
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl void main
+        TypeId void
+      List 0 item(s)
+      Block 1 statement(s)
+        List 1 item(s)
+          AssignStmt str = "hello";
+            IdUse str
+            StringLiteral "hello"

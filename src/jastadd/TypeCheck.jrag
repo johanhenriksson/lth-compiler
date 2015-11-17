@@ -62,7 +62,7 @@ aspect TypeCheck {
     }
 
     inh Type Block.expectedType();
-    eq Function.getBlock().expectedType() = getName().type();
+    eq Function.getBody().expectedType() = getName().type();
 
     inh Type Statement.expectedType(); 
     eq ReturnStmt.getReturnExpr().expectedType() = expectedType();

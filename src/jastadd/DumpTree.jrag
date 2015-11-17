@@ -20,7 +20,9 @@ aspect DumpTree {
 		for (int i = 0; i < indent; i++) {
 			out.print(DUMP_TREE_INDENT);
 		}
-		out.println(getClass().getSimpleName());
+		out.print(getClass().getSimpleName());
+        out.print(" ");
+        out.println(toString());
 		for (ASTNode child: this) {
 			child.dumpTree(out, indent+1);
 		}

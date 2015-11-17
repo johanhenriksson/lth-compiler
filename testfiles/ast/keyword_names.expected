@@ -1,0 +1,24 @@
+Program
+  List
+    Function
+      IdDecl
+        TypeId
+      List
+      Block
+        List
+          DeclareStmt
+            IdDecl
+              TypeId
+            Opt
+          IfStmt
+            EqualsExpr
+              IdExpr
+                IdUse
+              IntLiteral
+            Block
+              List
+                DeclareStmt
+                  IdDecl
+                    TypeId
+                  Opt
+            Opt

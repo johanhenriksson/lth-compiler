@@ -1,11 +1,11 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-        Argument
-          IdDecl
-            TypeId
-      Block
-        List
+Program 
+  List 1 item(s)
+    Function main(int)
+      IdDecl int main
+        TypeId int
+      List 1 item(s)
+        Argument 
+          IdDecl int a
+            TypeId int
+      Block 0 statement(s)
+        List 0 item(s)

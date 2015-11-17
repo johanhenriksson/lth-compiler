@@ -1,0 +1,59 @@
+import java.io.PrintStream;
+import java.io.ByteArrayOutputStream;
+
+aspect ToStrings {
+    syn String TypeId.toString() = getID();
+    syn String TypeDecl.toString() = getID();
+    syn String IntLiteral.toString() = String.valueOf(getValue());
+    syn String BoolLiteral.toString() = getBOOL();
+    syn String FloatLiteral.toString() = getFLOAT();
+
+    syn String Statement.toString() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        prettyPrint(ps);
+        return baos.toString().trim();
+    }
+
+    inh String Block.toString();
+    eq Function.getBody().toString() = "body";
+    eq IfStmt.getThen().toString() = "then";
+    eq IfStmt.getElse().toString() = "else";
+    eq WhileStmt.getLoop().toString() = "loop";
+
+    eq WhileStmt.toString() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        getCondition().prettyPrint(ps);
+        return baos.toString().trim();
+    }
+
+    eq IfStmt.toString() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        getCondition().prettyPrint(ps);
+        return baos.toString().trim();
+    }
+
+    syn String List.toString() = String.valueOf(getNumChild()) + " item(s)";
+    syn String Opt.toString() = "?";
+
+    // functions
+    syn String Function.toString() = signature();
+    syn String Argument.toString() = "";
+
+    // structs
+    syn String Struct.toString() = getName().getID();
+    syn String Field.toString() = "";
+
+    // expr
+    syn String Expr.toString() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        prettyPrint(ps);
+        return baos.toString().trim();
+    }
+
+    syn String Global.toString() = "";
+    syn String Program.toString() = "";
+}

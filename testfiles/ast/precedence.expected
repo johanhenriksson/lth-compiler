@@ -1,36 +1,36 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          IfStmt
-            AndExpr
-              EqualsExpr
-                IntLiteral
-                IntLiteral
-              EqualsExpr
-                IntLiteral
-                AddExpr
-                  IntLiteral
-                  IntLiteral
-            Block
-              List
-                AssignStmt
-                  IdUse
-                  AddExpr
-                    IntLiteral
-                    MulExpr
-                      IntLiteral
-                      IntLiteral
-            Opt
-          AssignStmt
-            IdUse
-            MulExpr
-              ParamExpr
-                AddExpr
-                  IntLiteral
-                  IntLiteral
-              IntLiteral
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl void main
+        TypeId void
+      List 0 item(s)
+      Block 2 statement(s)
+        List 2 item(s)
+          IfStmt 5 == 3 && 4 == 5 + 3
+            AndExpr 5 == 3 && 4 == 5 + 3
+              EqualsExpr 5 == 3
+                IntLiteral 5
+                IntLiteral 3
+              EqualsExpr 4 == 5 + 3
+                IntLiteral 4
+                AddExpr 5 + 3
+                  IntLiteral 5
+                  IntLiteral 3
+            Block 1 statement(s)
+              List 1 item(s)
+                AssignStmt a = 3 + 5 * 3;
+                  IdUse a
+                  AddExpr 3 + 5 * 3
+                    IntLiteral 3
+                    MulExpr 5 * 3
+                      IntLiteral 5
+                      IntLiteral 3
+            Opt ?
+          AssignStmt b = (3 + 5) * 3;
+            IdUse b
+            MulExpr (3 + 5) * 3
+              ParamExpr (3 + 5)
+                AddExpr 3 + 5
+                  IntLiteral 3
+                  IntLiteral 5
+              IntLiteral 3

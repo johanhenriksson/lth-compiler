@@ -1,23 +1,23 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-                IntLiteral
-          CallStmt
-            FuncExpr
-              IdUse
-              List
-                IntLiteral
-                IntLiteral
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 3 statement(s)
+        List 3 item(s)
+          CallStmt main();
+            FuncExpr main()
+              IdUse main
+              List 0 item(s)
+          CallStmt main(5);
+            FuncExpr main(5)
+              IdUse main
+              List 1 item(s)
+                IntLiteral 5
+          CallStmt main(5, 6);
+            FuncExpr main(5, 6)
+              IdUse main
+              List 2 item(s)
+                IntLiteral 5
+                IntLiteral 6

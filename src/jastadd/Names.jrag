@@ -42,7 +42,7 @@ aspect Names {
     }
 
     syn IdDecl StructDecl.findDecl(String field) = unknownDecl();
-    eq StructVar.findDecl(String field) {
+    eq Field.findDecl(String field) {
         if (getIdDecl().getID().equals(field))
             return getIdDecl();
         return unknownDecl();
@@ -87,7 +87,7 @@ aspect Names {
     }
 
     syn IdDecl StructDecl.findField(String field) = unknownDecl();
-    eq StructVar.findField(String field) {
+    eq Field.findField(String field) {
         if (getIdDecl().getID().equals(field))
             return getIdDecl();
         return unknownDecl();
@@ -157,7 +157,7 @@ aspect Names {
     }
 
     /* Check if a variable used within the function of a block is defined as a function argument */
-    eq Function.getBlock().lookup(String name, boolean in_scope) {
+    eq Function.getBody().lookup(String name, boolean in_scope) {
         IdDecl decl = findLocal(name);
         if (!decl.isUnknown())
             return decl;

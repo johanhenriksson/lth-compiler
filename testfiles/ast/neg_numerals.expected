@@ -1,14 +1,14 @@
-Program
-  List
-    Function
-      IdDecl
-        TypeId
-      List
-      Block
-        List
-          AssignStmt
-            IdUse
-            IntLiteral
-          AssignStmt
-            IdUse
-            FloatLiteral
+Program 
+  List 1 item(s)
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block 2 statement(s)
+        List 2 item(s)
+          AssignStmt a = -3;
+            IdUse a
+            IntLiteral -3
+          AssignStmt b = -3.5;
+            IdUse b
+            FloatLiteral -3.5
