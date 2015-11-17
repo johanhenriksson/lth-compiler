@@ -1,0 +1,9 @@
+float main() {
+    float f;
+    float g;
+    f = 3.5;
+    g = f;
+    f = 3; // error
+    int i = f; // error
+    return f;
+}

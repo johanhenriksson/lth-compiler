@@ -1,0 +1,16 @@
+struct vector {
+    float x;
+    float y;
+}
+
+float sqrt(float x) {
+    // ...
+    return 0.0;
+}
+
+void main() {
+    vector v;
+    v.x = 3.0;
+    float lengthSquare = v.x * v.x + v.y * v.y;
+    float length = sqrt(lengthSquare);
+}

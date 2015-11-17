@@ -1,0 +1,9 @@
+struct type_a {
+    int a;
+}
+
+type_a glob;
+
+int main() {
+    return glob.a;
+}

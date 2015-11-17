@@ -1,0 +1,15 @@
+Program
+  List
+    Function
+      IdDecl
+        TypeId
+      List
+      Block
+        List
+          DeclareStmt
+            IdDecl
+              TypeId
+            Opt
+          AssignStmt
+            IdUse
+            FloatLiteral
