@@ -93,7 +93,7 @@ type_decl = ID.name {: return new TypeDecl(name); :};
 
 /* Identifiers */
 id_use  = ID.id {: return new IdUse(id); :}
-        | ID.struct DOT ID.field {: return new StructIdUse(struct, field); :}
+        | id_use.struct DOT ID.field {: return new StructIdUse(field, struct); :}
         ;
 
 id_decl = type_id.type ID.id {: return new IdDecl(type, id); :};

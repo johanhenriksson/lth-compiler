@@ -1,0 +1,7 @@
+void main() {
+    int bool;
+    if (bool == 1) {
+        bool int;
+        if (int) { }
+    }
+}

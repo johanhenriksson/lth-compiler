@@ -1,12 +1,20 @@
 aspect UnknownDecl {
 	syn nta UnknownDecl Program.unknownDecl() = new UnknownDecl(new TypeId("<unknown>"), "<unknown>");
 	syn nta UnknownFunc Program.unknownFunc() = new UnknownFunc(new IdDecl(new TypeId("<unknown>"),"<unknown>"), new List<Argument>(), new Block());
+    syn nta UnknownStruct Program.unknownStruct() = new UnknownStruct(new TypeDecl("unknown"), new List());
 	
-	inh UnknownDecl ASTNode.unknownDecl();
-	eq Program.getChild().unknownDecl() = unknownDecl();
+    /*
+    syn UnknownDecl ASTNode.unknownDecl() = program().unknownDecl();
+    syn UnknownFunc ASTNode.unknownFunc() = program().unknownFunc();
+    syn UnknownStruct ASTNode.unknownStruct() = program().unknownStruct();
+    */
 
-	inh UnknownFunc ASTNode.unknownFunc();
-	eq Program.getChild().unknownFunc() = unknownFunc();
+    syn UnknownDecl ASTNode.unknownDecl() = new UnknownDecl(new TypeId("<unknown>"), "<unknown>");
+    syn UnknownFunc ASTNode.unknownFunc() = new UnknownFunc(new IdDecl(new TypeId("<unknown>"),"<unknown>"), new List<Argument>(), new Block());
+    syn UnknownStruct ASTNode.unknownStruct() = new UnknownStruct(new TypeDecl("unknown"), new List());
+
+    syn boolean Struct.isUnknown() = false;
+    eq UnknownStruct.isUnknown() = true;
 	
 	syn boolean IdDecl.isUnknown() = false;
 	eq UnknownDecl.isUnknown() = true;

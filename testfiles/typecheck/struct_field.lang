@@ -1,0 +1,10 @@
+struct struct_a {
+    int  int_field;
+    bool bool_field;
+}
+
+int main() {
+    struct_a strct; 
+    strct.int_field  = 5;
+    strct.bool_field = true;
+}

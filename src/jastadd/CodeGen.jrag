@@ -211,9 +211,8 @@ aspect CodeGen {
     }
 
     inh boolean IdDecl.isLocalVariable();
+    eq Program.getChild().isLocalVariable() = false;
     eq DeclareStmt.getName().isLocalVariable() = true;
-    eq Argument.getName().isLocalVariable() = false;
-    eq Function.getName().isLocalVariable() = false;
 
 	/**
  	 * Address of local variable variable in the current stack frame.

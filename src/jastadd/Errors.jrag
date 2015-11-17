@@ -38,12 +38,12 @@ aspect ErrorContributions {
 		when !isStructId() && decl().isUnknown()
 		to Program.errors() for program();
 
-	StructIdUse contributes error("no such field '" + getField() + "' on struct " + getID())
+	StructIdUse contributes error("no such field '" + getID() + "' on struct " + getStruct().getID() + " of type " + getStruct().decl().getType().getID())
 		when structNameError() 
 		to Program.errors() for program();
 
 	IdDecl contributes error("symbol '" + getID() + "' is already declared!")
-		when isMultiplyDeclared()
+		when !isUnknown() && isMultiplyDeclared()
 		to Program.errors() for program();
 
     TypeId contributes error("unknown type '" + getID() + "'")

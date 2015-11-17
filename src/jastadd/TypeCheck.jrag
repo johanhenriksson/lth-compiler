@@ -9,6 +9,7 @@ aspect TypeCheck {
     eq DeclareStmt.getName().expectedType() = getName().type();
 
     syn Type IdUse.type() = decl().type();
+    syn Type StructIdUse.type() = decl().type();
 
     syn Type Expr.type()    = new UnknownType(); 
     eq IntLiteral.type()    = new IntType();

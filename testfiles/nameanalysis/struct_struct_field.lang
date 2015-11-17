@@ -1,0 +1,13 @@
+struct outer {
+    test t;
+}
+
+struct test {
+    int hello;
+}
+
+void main() {
+    outer o;
+    o.t.hello = 5; // ok
+    o.t.undef = 6; // error
+}

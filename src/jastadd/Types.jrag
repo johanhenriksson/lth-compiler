@@ -2,17 +2,17 @@ aspect Types {
     syn Type Program.findType(String name) {
         for(int i = 0; i < getNumUnit(); i++) {
             Struct struct = getUnit(i).findStruct(name);
-            if (struct != null)
+            if (!struct.isUnknown())
                 return new StructType(struct);
         }
         return new UnknownType();
     }
 
-    syn Struct Unit.findStruct(String name) = null;
+    syn Struct Unit.findStruct(String name) = unknownStruct();
     eq Struct.findStruct(String name) {
         if (getName().getID().equals(name))
             return this;
-        return null;
+        return unknownStruct();
     }
 
     syn boolean Type.isUnknownType() = false;

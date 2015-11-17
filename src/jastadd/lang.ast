@@ -21,6 +21,7 @@ Global : Unit ::= DeclareStmt;
 
 /* Structs */
 Struct : Unit ::= Name:TypeDecl StructDecl*;
+UnknownStruct : Struct;
 abstract StructDecl;
 StructVar : StructDecl ::= IdDecl;
 
@@ -85,7 +86,7 @@ StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
 IdUse ::= <ID:String>;
-StructIdUse : IdUse ::= <Field:String>;
+StructIdUse : IdUse ::= Struct:IdUse;
 IdDecl ::= Type:TypeId <ID:String>;
 UnknownDecl : IdDecl;
 UnknownFunc : Function;

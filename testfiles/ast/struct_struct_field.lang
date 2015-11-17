@@ -1,0 +1,14 @@
+struct struct_inner {
+    bool c;
+}
+
+struct struct_a {
+    int b;
+    struct_inner nested;
+}
+
+int main() {
+    struct_a a; 
+    a.b = 5;
+    a.nested.c = true;
+}
