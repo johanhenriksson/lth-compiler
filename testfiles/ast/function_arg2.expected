@@ -10,5 +10,5 @@ Program
         Argument 
           IdDecl int b
             TypeId int
-      Block 0 statement(s)
+      Block body
         List 0 item(s)

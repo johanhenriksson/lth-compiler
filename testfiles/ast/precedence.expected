@@ -4,7 +4,7 @@ Program
       IdDecl void main
         TypeId void
       List 0 item(s)
-      Block 2 statement(s)
+      Block body
         List 2 item(s)
           IfStmt 5 == 3 && 4 == 5 + 3
             AndExpr 5 == 3 && 4 == 5 + 3
@@ -16,7 +16,7 @@ Program
                 AddExpr 5 + 3
                   IntLiteral 5
                   IntLiteral 3
-            Block 1 statement(s)
+            Block then
               List 1 item(s)
                 AssignStmt a = 3 + 5 * 3;
                   IdUse a

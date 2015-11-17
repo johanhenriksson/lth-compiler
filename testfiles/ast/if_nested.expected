@@ -4,29 +4,29 @@ Program
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           IfStmt a
             IdExpr a
               IdUse a
-            Block 1 statement(s)
+            Block then
               List 1 item(s)
                 IfStmt b
                   IdExpr b
                     IdUse b
-                  Block 1 statement(s)
+                  Block then
                     List 1 item(s)
                       AssignStmt b = 2;
                         IdUse b
                         IntLiteral 2
                   Opt ?
-                    Block 1 statement(s)
+                    Block else
                       List 1 item(s)
                         AssignStmt c = 3;
                           IdUse c
                           IntLiteral 3
             Opt ?
-              Block 1 statement(s)
+              Block else
                 List 1 item(s)
                   AssignStmt d = 4;
                     IdUse d

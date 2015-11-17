@@ -103,6 +103,8 @@ aspect Functions
     inh Function IdDecl.function();
 
     syn boolean IdUse.isFunction() = decl().isFunction();
+    eq StructIdUse.isFunction() = false;
+
     syn Function IdUse.function() = decl().function();
 
     eq Function.getName().isFunction() = true;

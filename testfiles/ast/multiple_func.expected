@@ -4,7 +4,7 @@ Program
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 0 statement(s)
+      Block body
         List 0 item(s)
     Function square(int)
       IdDecl int square
@@ -13,5 +13,5 @@ Program
         Argument 
           IdDecl int x
             TypeId int
-      Block 0 statement(s)
+      Block body
         List 0 item(s)

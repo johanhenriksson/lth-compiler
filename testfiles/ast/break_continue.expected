@@ -4,12 +4,12 @@ Program
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           WhileStmt !true
             NotExpr !true
               BoolLiteral true
-            Block 2 statement(s)
+            Block loop
               List 2 item(s)
                 ContinueStmt continue;
                 BreakStmt break;

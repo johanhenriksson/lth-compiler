@@ -3,12 +3,12 @@ Program
     Struct hello_world
       TypeDecl hello_world
       List 3 item(s)
-        StructVar 
+        Field 
           IdDecl int integer
             TypeId int
-        StructVar 
+        Field 
           IdDecl bool boolean
             TypeId bool
-        StructVar 
+        Field 
           IdDecl float decimal
             TypeId float

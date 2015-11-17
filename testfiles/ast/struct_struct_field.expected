@@ -3,23 +3,23 @@ Program
     Struct struct_inner
       TypeDecl struct_inner
       List 1 item(s)
-        StructVar 
+        Field 
           IdDecl bool c
             TypeId bool
     Struct struct_a
       TypeDecl struct_a
       List 2 item(s)
-        StructVar 
+        Field 
           IdDecl int b
             TypeId int
-        StructVar 
+        Field 
           IdDecl struct_inner nested
             TypeId struct_inner
     Function main()
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 3 statement(s)
+      Block body
         List 3 item(s)
           DeclareStmt struct_a a;
             IdDecl struct_a a

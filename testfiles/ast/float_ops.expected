@@ -3,10 +3,10 @@ Program
     Struct vector
       TypeDecl vector
       List 2 item(s)
-        StructVar 
+        Field 
           IdDecl float x
             TypeId float
-        StructVar 
+        Field 
           IdDecl float y
             TypeId float
     Function sqrt(float)
@@ -16,7 +16,7 @@ Program
         Argument 
           IdDecl float x
             TypeId float
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           ReturnStmt return 0.0;
             Opt ?
@@ -25,7 +25,7 @@ Program
       IdDecl void main
         TypeId void
       List 0 item(s)
-      Block 4 statement(s)
+      Block body
         List 4 item(s)
           DeclareStmt vector v;
             IdDecl vector v

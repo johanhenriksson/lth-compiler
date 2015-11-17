@@ -4,7 +4,7 @@ Program
       IdDecl void main
         TypeId void
       List 0 item(s)
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           AssignStmt str = "hello";
             IdUse str

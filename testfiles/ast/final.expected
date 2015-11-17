@@ -10,7 +10,7 @@ Program
         Argument 
           IdDecl int b
             TypeId int
-      Block 2 statement(s)
+      Block body
         List 2 item(s)
           WhileStmt a != b
             NotEqualsExpr a != b
@@ -18,7 +18,7 @@ Program
                 IdUse a
               IdExpr b
                 IdUse b
-            Block 1 statement(s)
+            Block loop
               List 1 item(s)
                 IfStmt a > b
                   GreaterExpr a > b
@@ -26,7 +26,7 @@ Program
                       IdUse a
                     IdExpr b
                       IdUse b
-                  Block 1 statement(s)
+                  Block then
                     List 1 item(s)
                       AssignStmt a = a - b;
                         IdUse a
@@ -36,7 +36,7 @@ Program
                           IdExpr b
                             IdUse b
                   Opt ?
-                    Block 1 statement(s)
+                    Block else
                       List 1 item(s)
                         AssignStmt b = b - a;
                           IdUse b
@@ -59,14 +59,14 @@ Program
         Argument 
           IdDecl int b
             TypeId int
-      Block 2 statement(s)
+      Block body
         List 2 item(s)
           IfStmt b == 0
             EqualsExpr b == 0
               IdExpr b
                 IdUse b
               IntLiteral 0
-            Block 1 statement(s)
+            Block then
               List 1 item(s)
                 ReturnStmt return a;
                   Opt ?
@@ -89,7 +89,7 @@ Program
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 9 statement(s)
+      Block body
         List 9 item(s)
           DeclareStmt int a;
             IdDecl int a

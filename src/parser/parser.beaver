@@ -82,7 +82,7 @@ struct_decls = struct_decl.d {: return new List().add(d); :}
              | struct_decls.list struct_decl.d {: return list.add(d); :}
              ;
 
-struct_decl = id_decl.decl SEMI {: return new StructVar(decl); :};
+struct_decl = id_decl.decl SEMI {: return new Field(decl); :};
 
 /* Types */
 type_id = ID.name {: return new TypeId(name); :}

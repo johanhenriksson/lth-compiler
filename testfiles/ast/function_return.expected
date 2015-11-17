@@ -7,7 +7,7 @@ Program
         Argument 
           IdDecl int x
             TypeId int
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           ReturnStmt return x * x;
             Opt ?

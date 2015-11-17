@@ -3,7 +3,7 @@ Program
     Struct type_a
       TypeDecl type_a
       List 1 item(s)
-        StructVar 
+        Field 
           IdDecl int a
             TypeId int
     Global 
@@ -15,7 +15,7 @@ Program
       IdDecl int main
         TypeId int
       List 0 item(s)
-      Block 1 statement(s)
+      Block body
         List 1 item(s)
           ReturnStmt return a;
             Opt ?
