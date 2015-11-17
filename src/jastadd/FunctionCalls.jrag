@@ -17,6 +17,8 @@ aspect FunctionCalls {
         return enclosingFunction();
     }
 
+    eq Global.getDeclareStmt().enclosingFunction() = unknownFunc();
+
     eq Function.getBody().enclosingFunction() {
         return this;
     }

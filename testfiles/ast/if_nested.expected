@@ -6,12 +6,12 @@ Program
       List 0 item(s)
       Block body
         List 1 item(s)
-          IfStmt a
+          IfStmt (a)
             IdExpr a
               IdUse a
             Block then
               List 1 item(s)
-                IfStmt b
+                IfStmt (b)
                   IdExpr b
                     IdUse b
                   Block then

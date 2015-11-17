@@ -6,7 +6,7 @@ Program
       List 0 item(s)
       Block body
         List 2 item(s)
-          IfStmt 5 == 3 && 4 == 5 + 3
+          IfStmt (5 == 3 && 4 == 5 + 3)
             AndExpr 5 == 3 && 4 == 5 + 3
               EqualsExpr 5 == 3
                 IntLiteral 5

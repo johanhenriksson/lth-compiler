@@ -6,7 +6,7 @@ Program
       List 0 item(s)
       Block body
         List 1 item(s)
-          IfStmt false
+          IfStmt (false)
             BoolLiteral false
             Block then
               List 0 item(s)

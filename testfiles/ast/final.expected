@@ -12,7 +12,7 @@ Program
             TypeId int
       Block body
         List 2 item(s)
-          WhileStmt a != b
+          WhileStmt (a != b)
             NotEqualsExpr a != b
               IdExpr a
                 IdUse a
@@ -20,7 +20,7 @@ Program
                 IdUse b
             Block loop
               List 1 item(s)
-                IfStmt a > b
+                IfStmt (a > b)
                   GreaterExpr a > b
                     IdExpr a
                       IdUse a
@@ -61,7 +61,7 @@ Program
             TypeId int
       Block body
         List 2 item(s)
-          IfStmt b == 0
+          IfStmt (b == 0)
             EqualsExpr b == 0
               IdExpr b
                 IdUse b

@@ -6,7 +6,7 @@ Program
       List 0 item(s)
       Block body
         List 1 item(s)
-          WhileStmt !true
+          WhileStmt (!true)
             NotExpr !true
               BoolLiteral true
             Block loop

@@ -10,7 +10,7 @@ aspect Names {
         if (s.isUnknown())
             return unknownDecl();
 
-        return s.findField(getID());
+        return s.find(getID());
     }
 
     syn String IdDecl.toString() = getType().getID() + " " + getID();
@@ -34,16 +34,16 @@ aspect Names {
 
     eq Struct.find(String name) {
         for (int i = 0; i < getNumStructDecl(); i++) {
-            IdDecl decl = getStructDecl(i).findDecl(name);
+            IdDecl decl = getStructDecl(i).find(name);
             if (!decl.isUnknown())
                 return decl;
         }
         return unknownDecl();
     }
 
-    syn IdDecl StructDecl.findDecl(String field) = unknownDecl();
-    eq Field.findDecl(String field) {
-        if (getIdDecl().getID().equals(field))
+    syn IdDecl StructDecl.find(String name) = unknownDecl();
+    eq Field.find(String name) {
+        if (getIdDecl().getID().equals(name))
             return getIdDecl();
         return unknownDecl();
     }
@@ -75,22 +75,6 @@ aspect Names {
                 return s;
         }
         return unknownStruct();
-    }
-
-    syn IdDecl Struct.findField(String field) {
-        for(int i = 0; i < getNumStructDecl(); i++) {
-            IdDecl d = getStructDecl(i).findField(field);
-            if (!d.isUnknown())
-                return d;
-        }
-        return unknownDecl();
-    }
-
-    syn IdDecl StructDecl.findField(String field) = unknownDecl();
-    eq Field.findField(String field) {
-        if (getIdDecl().getID().equals(field))
-            return getIdDecl();
-        return unknownDecl();
     }
 
     /* Finds names of functions */
@@ -169,7 +153,7 @@ aspect Names {
     /* Used to look for previous variable declarations within structs */
     eq Struct.getStructDecl(int idx).lookup(String name, boolean in_scope) {
         for(int i = 0; i < idx; i++) {
-            IdDecl decl = getStructDecl(i).findField(name);
+            IdDecl decl = getStructDecl(i).find(name);
             if (!decl.isUnknown())
                 return decl;
         }

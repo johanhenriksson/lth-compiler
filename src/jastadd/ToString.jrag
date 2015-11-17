@@ -24,14 +24,18 @@ aspect ToStrings {
     eq WhileStmt.toString() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
+        ps.print(" (");
         getCondition().prettyPrint(ps);
+        ps.print(")");
         return baos.toString().trim();
     }
 
     eq IfStmt.toString() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
+        ps.print(" (");
         getCondition().prettyPrint(ps);
+        ps.print(")");
         return baos.toString().trim();
     }
 
