@@ -29,7 +29,15 @@ aspect Types {
         }
 
         // look for struct
-        return program().findType(getID());
+        return lookupType(getID());
+    }
+
+    inh Type TypeId.lookupType(String typeId);
+    eq Program.getChild().lookupType(String typeId) {
+        return findType(typeId);
+    }
+    eq UnknownDecl.getType().lookupType(String typeId) {
+        return new UnknownType();
     }
 
     syn String StructType.name() = getStruct().getName().getID();

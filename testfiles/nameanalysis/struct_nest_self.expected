@@ -1,0 +1,3 @@
+Error at line 14,5: cannot assign 'ax' of type int, got <unknown>
+Error at line 14,14: no such field 'a' on struct undef of type <unknown>
+Error at line 14,14: no such field 'undef' on struct s of type st

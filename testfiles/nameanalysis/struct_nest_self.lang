@@ -1,0 +1,17 @@
+struct other { 
+    int b;
+}
+
+struct st {
+    int a;
+    other o;
+    st nested; // reference semantics - self nesting is okay
+    //undef n2; // error
+}
+
+int main() {
+    st s;
+    int ax = s.undef.a; // error
+    int ay = s.nested.a;
+    return s.o.b;
+}
