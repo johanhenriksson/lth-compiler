@@ -1,0 +1,2 @@
+Error at line 6,5: expected delete operand to be of type struct, got <unknown>
+Error at line 6,12: symbol 'undef' is not declared

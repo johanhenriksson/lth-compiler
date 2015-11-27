@@ -66,6 +66,10 @@ aspect ErrorContributions {
         when typeError()
         to Program.errors() for program();
 
+    DeleteStmt contributes error("expected delete operand to be of type struct, got " + getIdUse().type())
+        when typeError()
+        to Program.errors() for program();
+
     IfStmt contributes error("expected boolean expression")
         when typeError()
         to Program.errors() for program();

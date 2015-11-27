@@ -52,6 +52,9 @@ aspect Types {
         return toString().equals(((Type)other).toString());
     }
 
+    syn boolean Type.isStruct() = false;
+    eq StructType.isStruct() = true;
+
     syn String IntType.toString() = "int";
     syn String BoolType.toString() = "bool";
     syn String VoidType.toString() = "void";
@@ -60,5 +63,10 @@ aspect Types {
     syn String PointerType.toString() = getTo() + "*";
     syn String UnknownType.toString() = "<unknown>";
 
-    syn String StructType.toString() = "struct " + getStruct().getName().getID();
+    syn String StructType.toString() {
+        if (getStruct() != null)
+            return "struct " + getStruct().getName().getID();
+        else
+            return "struct";
+    }
 }

@@ -1,0 +1,17 @@
+Program 
+  List 2 item(s)
+    Struct s
+      TypeDecl s
+      List 0 item(s)
+    Function main()
+      IdDecl void main
+        TypeId void
+      List 0 item(s)
+      Block body
+        List 2 item(s)
+          DeclareStmt s t;
+            IdDecl s t
+              TypeId s
+            Opt ?
+          DeleteStmt t
+            IdUse t

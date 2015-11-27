@@ -46,6 +46,7 @@ aspect TypeCheck {
     eq IfStmt.getCondition().typeMatch(Type t)       = t.equals(new BoolType());
     eq ReturnStmt.getReturnExpr().typeMatch(Type t)  = t.equals(expectedType());
     eq CallStmt.getFunction().typeMatch(Type t)      = true; /* call statements dont return anything */
+    eq DeleteStmt.getIdUse().typeMatch(Type t)       = t.equals(expectedType());
 
     eq BinExpr.getLeft().typeMatch(Type t) {
         if (!t.equals(getRight().type()))
@@ -94,6 +95,9 @@ aspect TypeCheck {
     }
 
     syn boolean AssignStmt.assignFuncError() = getName().isFunction();
+
+    // make sure delete argument is a struct
+    syn boolean DeleteStmt.typeError() = !getIdUse().type().isStruct();
 
     syn boolean FuncExpr.typeError() {
         /* argument errors */

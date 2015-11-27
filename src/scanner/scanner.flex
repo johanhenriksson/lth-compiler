@@ -29,8 +29,8 @@ import lang.ast.LangParser.SyntaxError;
 // macros
 WhiteSpace = [ ] | \t | \f | \n | \r
 ID         = [a-zA-Z][_a-zA-Z0-9]*
-Int        = "-"? [0-9]+
-Float      = "-"? [0-9]+ \. [0-9]+
+Int        = [0-9]+
+Float      = [0-9]+ \. [0-9]+
 String     = \"[^\"]*\"
 Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 
@@ -52,6 +52,7 @@ Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 "break"    { return sym(Terminals.BREAK); }
 "continue" { return sym(Terminals.CONTINUE); }
 "struct"   { return sym(Terminals.STRUCT); }
+"delete"   { return sym(Terminals.DELETE); }
 "."        { return sym(Terminals.DOT); }
 ","        { return sym(Terminals.COMMA); }
 ";"        { return sym(Terminals.SEMI); }

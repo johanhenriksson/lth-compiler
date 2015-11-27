@@ -44,7 +44,7 @@ CallStmt     : Statement ::= Function:FuncExpr;
 ReturnStmt   : Statement ::= [ ReturnExpr:Expr ];
 BreakStmt    : Statement;
 ContinueStmt : Statement;
-
+DeleteStmt   : Statement ::= IdUse;
 
 /* Expressions */
 abstract Expr;

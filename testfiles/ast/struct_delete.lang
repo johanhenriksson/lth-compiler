@@ -1,0 +1,6 @@
+struct s { }
+
+void main() {
+    s t;
+    delete t;
+}

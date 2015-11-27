@@ -22,7 +22,7 @@
 %terminals EQUALS, NOTEQ, LEQUAL, GEQUAL, LESS, GREATER, AND, OR;
 
 /* Keywords */
-%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE, STRUCT;
+%terminals IF, ELSE, WHILE, RETURN, BREAK, CONTINUE, STRUCT, DELETE;
 
 /* AST Classes */
 %typeof program     = "Program";
@@ -131,7 +131,9 @@ stmt = block
      | call_stmt 
      | return_stmt
      | break_stmt
-     | cont_stmt;
+     | cont_stmt
+     | del_stmt
+     ;
 
 /* Declaration with optional initializer */
 decl_stmt = id_decl.name SEMI {: return new DeclareStmt(name,new Opt<Expr>()); :}
@@ -159,6 +161,8 @@ return_stmt = RETURN SEMI {: return new ReturnStmt(new Opt<Expr>()); :}
 break_stmt = BREAK SEMI {: return new BreakStmt(); :};
 cont_stmt  = CONTINUE SEMI {: return new ContinueStmt(); :};
 
+/* Delete */
+del_stmt = DELETE id_use.id SEMI {: return new DeleteStmt(id); :};
 
 /* Blocks */
 stmt_list = stmt.s {: return new List().add(s); :}

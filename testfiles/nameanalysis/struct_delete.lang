@@ -1,0 +1,7 @@
+struct str { }
+
+void main() {
+    str s;
+    delete s; // ok
+    delete undef; // error
+}
