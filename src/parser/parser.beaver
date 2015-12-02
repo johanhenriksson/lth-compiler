@@ -13,7 +13,7 @@
 %terminals ID, INT, FLOAT, STRING, TRUE, FALSE;
 
 /* Punctuation */
-%terminals ASSIGN, DOT, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT, STAR, AMP; 
+%terminals ASSIGN, DOT, COMMA, SEMI, LPARAM, RPARAM, LBRACE, RBRACE, NOT, MUL; 
 
 /* Arithmetic */
 %terminals PLUS, MINUS, DIV, MOD;
@@ -85,9 +85,7 @@ struct_decls = struct_decl.d {: return new List().add(d); :}
 struct_decl = id_decl.decl SEMI {: return new Field(decl); :};
 
 /* Types */
-type_id = ID.name {: return new TypeId(name); :}
-        | ID.name STAR {: return new PointerTypeId(name); :}
-        ;
+type_id = ID.name {: return new TypeId(name); :};
 
 type_decl = ID.name {: return new TypeDecl(name); :};
 
@@ -194,11 +192,9 @@ expr3 = term.t
 
 term = factor.f 
      |        NOT  factor.f {: return new NotExpr(f); :}
-     | term.t STAR factor.f {: return new MulExpr(t,f); :}
+     | term.t MUL  factor.f {: return new MulExpr(t,f); :}
      | term.t DIV  factor.f {: return new DivExpr(t,f); :}
      | term.t MOD  factor.f {: return new ModExpr(t,f); :}
-     | STAR factor.f        {: return new DerefExpr(f); :}
-     | AMP factor.f         {: return new AddressExpr(f); :}
      ;
 
 factor = id_use.id {: return new IdExpr(id); :}

@@ -14,7 +14,6 @@ aspect TypeCheck {
     eq IntLiteral.type()    = new IntType();
     eq BoolLiteral.type()   = new BoolType();
     eq FloatLiteral.type()  = new FloatType();
-    eq StringLiteral.type() = new StringType();
     eq FuncExpr.type()      = getName().type();
     eq IdExpr.type()        = getName().type();
 
@@ -28,8 +27,6 @@ aspect TypeCheck {
     eq OrExpr.type()            = new BoolType();
     eq NotExpr.type()           = new BoolType();
     eq ParamExpr.type()         = getExpr().type();
-    eq AddressExpr.type()       = new PointerType(getExpr().type());
-    eq DerefExpr.type()         = getExpr().type().dereference();
 
     eq BinExpr.type() { 
         if (!getLeft().type().equals(getRight().type()))
@@ -129,5 +126,26 @@ aspect TypeCheck {
     syn boolean MulExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
     syn boolean DivExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
     syn boolean ModExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
-    /* todo: add boolean checks for logic operators */
+
+    syn boolean AndExpr.nonBoolError() = !type().equals(new BoolType());
+    syn boolean OrExpr.nonBoolError()  = !type().equals(new BoolType());
+    syn boolean NotExpr.nonBoolError() = !type().equals(new BoolType());
+    
+	syn boolean Struct.isMultiplyDeclared() {
+        if (isUnknown())
+            return false;
+
+        return this != program().findStruct(getName().getID());
+    }
+
+	syn boolean Struct.overridesBuiltinType() {
+        switch(getName().getID()) {
+            case "int":
+            case "float":
+            case "bool":
+            case "void":
+                return true;
+        }
+        return false;
+    }
 }

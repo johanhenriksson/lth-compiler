@@ -1,5 +1,0 @@
-int main() {
-    int a = 5;
-    int* a_ptr = &a;
-    return *a_ptr;
-}

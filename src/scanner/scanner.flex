@@ -31,7 +31,6 @@ WhiteSpace = [ ] | \t | \f | \n | \r
 ID         = [a-zA-Z][_a-zA-Z0-9]*
 Int        = [0-9]+
 Float      = [0-9]+ \. [0-9]+
-String     = \"[^\"]*\"
 Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 
 %%
@@ -69,17 +68,15 @@ Comment    = "//" [^\n\r]* ([\n\r])? | "/*"((\*+[^/*])|([^*]))*\**"*/"
 ">"        { return sym(Terminals.GREATER); }
 "+"        { return sym(Terminals.PLUS); }
 "-"        { return sym(Terminals.MINUS); }
-"*"        { return sym(Terminals.STAR); }
+"*"        { return sym(Terminals.MUL); }
 "/"        { return sym(Terminals.DIV); }
 "%"        { return sym(Terminals.MOD); }
 "!"        { return sym(Terminals.NOT); }
 "&&"       { return sym(Terminals.AND); }
 "||"       { return sym(Terminals.OR); }
-"&"        { return sym(Terminals.AMP); }
 
 {Int}      { return sym(Terminals.INT); }
 {Float}    { return sym(Terminals.FLOAT); }
-{String}   { return sym(Terminals.STRING); }
 {ID}       { return sym(Terminals.ID); }
 <<EOF>>    { return sym(Terminals.EOF); }
 

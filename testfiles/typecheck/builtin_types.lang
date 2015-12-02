@@ -1,75 +1,7 @@
-string strcpy(string src) { return src; }
-int    strlen(string str) { return 0; }
 int    round(float f)     { return 0; }
 
 int main() {
-    print(strlen("hello world"));
-
     bool    flag = true;
-    string  str = strcpy("hello");
     int     i = round(3.51);
     float   f = 1.5;
 }
-
-/*
-
-    // builtin generic struct: array
-    struct array<T> {
-        uint64  length
-        uint64  capacity
-        T*      ptr
-
-        __C T* get(int index)
-        __C T* push(T* el)
-
-        __C construct(uint64 capacity)
-    }
-
-    array<int>* x = new array<int>(10);
-
-    -- out
-    struct array_int_t {
-        uint64 length;
-        uint64 capacity;
-        int*   ptr;
-    }
-    typedef struct array_int_t array_int_t;
-
-    void array_int_construct(array_int_t* this, uint64 capacity) {
-        this->length = 0;
-        this->capacity = capacity;
-        this->ptr = malloc(capacity * sizeof(int*));
-    }
-
-    int* array_int_get(array_int_t* this, int index) {
-        return &this->ptr[index];
-    }
-
-    void array_push(array_int_t* this, int* element) {
-        if (ptr->length == ptr->capacity-1) {
-            // expand array
-            this->capacity *= 2;
-            this->ptr = realloc(this->ptr, this->capacity * sizeof(int*));
-        }
-        this->ptr[this->length++] = element;
-    }
-
-    // declare on strack
-    array<int> a;
-
-    -- out
-        array_t a; 
-        array_construct(&a);
-
-    // declare on heap
-    array<int>* a = new array<int>(10);
-
-    -- out
-        array_t* ap = (array_t*)malloc(sizeof(array_t));
-        array_construct(ap, 10);
-
-    a.get(0)  // array_get(&a, 0);
-    ap.get(0) // array_get(ap, 0);
-
-
-*/

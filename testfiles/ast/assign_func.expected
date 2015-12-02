@@ -12,9 +12,9 @@ Program
               IdUse square
               List 1 item(s)
                 IntLiteral 2
-          AssignStmt var2 = print("string");
+          AssignStmt var2 = print(3);
             IdUse var2
-            FuncExpr print("string")
+            FuncExpr print(3)
               IdUse print
               List 1 item(s)
-                StringLiteral "string"
+                IntLiteral 3

@@ -1,0 +1,7 @@
+struct one {
+    int two;
+}
+
+struct one {
+    int three;
+}

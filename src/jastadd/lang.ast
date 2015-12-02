@@ -4,16 +4,13 @@ Program  ::= Unit*;
 /* Types */
 TypeId ::= <ID:String>;
 TypeDecl ::= <ID:String>;
-PointerTypeId : TypeId;
 
 abstract Type; 
 IntType: Type;
 BoolType: Type;
 VoidType: Type;
 FloatType: Type;
-StringType: Type;
-PointerType: Type ::= To:Type;
-StructType: Type ::= Struct;
+StructType: Type ::= <Name:String>;
 UnknownType: Type;
 
 abstract Unit;
@@ -27,8 +24,6 @@ Field : StructDecl ::= IdDecl;
 
 /* Functions */
 Function : Unit ::= Name:IdDecl Argument* Body:Block;
-PrintFunction : Function;
-ReadFunction : Function;
 
 Argument ::= Name:IdDecl;
 
@@ -52,8 +47,6 @@ abstract BinExpr : Expr ::= Left:Expr Right:Expr;
 ParamExpr : Expr ::= Expr;
 
 /* Variables & Function calls */
-DerefExpr : Expr ::= Expr;
-AddressExpr : Expr ::= Expr;
 IdExpr : Expr ::= Name:IdUse;
 FuncExpr : Expr ::= Name:IdUse Argument:Expr*;
 
@@ -83,7 +76,6 @@ abstract Literal : Expr;
 IntLiteral    : Literal ::= <INT:String>;
 BoolLiteral   : Literal ::= <BOOL:String>;
 FloatLiteral  : Literal ::= <FLOAT:String>;
-StringLiteral : Literal ::= <STRING:String>;
 
 /* Identifiers */
 IdUse ::= <ID:String>;

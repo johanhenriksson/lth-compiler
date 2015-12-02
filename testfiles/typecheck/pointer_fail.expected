@@ -1,2 +1,0 @@
-Error at line 3,5: cannot assign 'bool_ptr' of type bool*, got int*
-Error at line 9,5: expected return type int, got bool

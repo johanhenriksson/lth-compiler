@@ -1,11 +1,29 @@
-aspect Types {
+aspect Types 
+{
     syn Type Program.findType(String name) {
+        // built in types
+        switch(name) {
+            case "int": return new IntType();
+            case "bool": return new BoolType();
+            case "void": return new VoidType();
+            case "float": return new FloatType();
+        }
+
+        // look for structs
+        Struct struct = findStruct(name);
+        if (!struct.isUnknown())
+            return new StructType(struct.getName().getID());
+
+        return new UnknownType();
+    }
+
+    syn Struct Program.findStruct(String name) {
         for(int i = 0; i < getNumUnit(); i++) {
             Struct struct = getUnit(i).findStruct(name);
             if (!struct.isUnknown())
-                return new StructType(struct);
+                return struct;
         }
-        return new UnknownType();
+        return unknownStruct();
     }
 
     syn Struct Unit.findStruct(String name) = unknownStruct();
@@ -18,33 +36,18 @@ aspect Types {
     syn boolean Type.isUnknownType() = false;
     eq UnknownType.isUnknownType() = true;
 
-    syn Type PointerTypeId.type() = new PointerType(super.type());
-    syn Type TypeId.type() {
-        switch(getID()) {
-            case "int": return new IntType();
-            case "bool": return new BoolType();
-            case "void": return new VoidType();
-            case "float": return new FloatType();
-            case "string": return new StringType();
-        }
-
-        // look for struct
-        return lookupType(getID());
-    }
+    syn Type TypeId.type() = lookupType(getID());
 
     inh Type TypeId.lookupType(String typeId);
+    inh Type Struct.lookupType(String typeId);
+
     eq Program.getChild().lookupType(String typeId) {
         return findType(typeId);
     }
+    
     eq UnknownDecl.getType().lookupType(String typeId) {
         return new UnknownType();
     }
-
-    syn String StructType.name() = getStruct().getName().getID();
-
-    // helper for dereference operator
-    syn Type Type.dereference() = new UnknownType();
-    eq PointerType.dereference() = getTo();
 
     syn boolean Type.equals(Object other) {
         if (!(other instanceof Type))
@@ -59,14 +62,7 @@ aspect Types {
     syn String BoolType.toString() = "bool";
     syn String VoidType.toString() = "void";
     syn String FloatType.toString() = "float";
-    syn String StringType.toString() = "string";
-    syn String PointerType.toString() = getTo() + "*";
     syn String UnknownType.toString() = "<unknown>";
 
-    syn String StructType.toString() {
-        if (getStruct() != null)
-            return "struct " + getStruct().getName().getID();
-        else
-            return "struct";
-    }
+    syn String StructType.toString() = "struct " + getName();
 }

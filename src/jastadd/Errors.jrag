@@ -31,6 +31,7 @@ aspect Errors {
 
 	inh Program ASTNode.program();
 	eq Program.getChild().program() = this;
+    syn Program Program.program() = this;
 }
 
 aspect ErrorContributions {
@@ -116,5 +117,13 @@ aspect ErrorContributions {
 
     ModExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    Struct contributes error("Struct " + getName().getID() + " overrides builtin type")
+        when overridesBuiltinType()
+        to Program.errors() for program();
+
+    Struct contributes error("Struct " + getName().getID() + " cannot be declared more than once")
+        when isMultiplyDeclared()
         to Program.errors() for program();
 }

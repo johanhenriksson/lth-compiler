@@ -209,7 +209,6 @@ aspect PrettyPrint {
 
     public void BoolLiteral.prettyPrint(PrintStream out, String ind) { out.print(getBOOL()); }
     public void IntLiteral.prettyPrint(PrintStream out, String ind) { out.print(getINT()); }
-    public void StringLiteral.prettyPrint(PrintStream out, String ind) { out.print(getSTRING()); }
     public void FloatLiteral.prettyPrint(PrintStream out, String ind) { out.print(getFLOAT()); }
     public void TypeId.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
     public void IdUse.prettyPrint(PrintStream out, String ind) { out.print(getID()); }
