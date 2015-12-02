@@ -1,0 +1,12 @@
+; LLVM Output
+
+; Library Functions
+declare void @_print(i64)
+declare i64 @_read()
+declare i64 @_trunc(double)
+declare double @_promote(i64)
+declare void @_assert(i64)
+
+define i64 @main() {
+}
+

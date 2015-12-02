@@ -2,7 +2,7 @@ aspect Functions
 {
     // print int to std in
     class PrintFunction extends Function {
-        public PrintFunction(int wtf) {
+        public PrintFunction() {
             super(
                 new IdDecl(new TypeId("int"), "print"), 
                 new List<Argument>(
@@ -11,16 +11,22 @@ aspect Functions
                 new Block()
             );
         }
+        public void llvmGen(PrintStream out) {
+            out.println("declare void @_print(i64)");
+        }
     }
 
     // read int from std in
     class ReadFunction extends Function {
-        public ReadFunction(int wtf) {
+        public ReadFunction() {
             super(
                 new IdDecl(new TypeId("int"), "read"), 
                 new List<Argument>(), 
                 new Block()
             );
+        }
+        public void llvmGen(PrintStream out) {
+            out.println("declare i64 @_read()");
         }
     }
 
@@ -29,10 +35,13 @@ aspect Functions
             super(
                 new IdDecl(new TypeId("void"), "assert"),
                 new List<Argument>(
-                    new Argument(new IdDecl(new TypeId("bool"), "expr"))
+                    new Argument(new IdDecl(new TypeId("int"), "expr"))
                 ),
                 new Block()
             );
+        }
+        public void llvmGen(PrintStream out) {
+            out.println("declare void @_assert(i64)");
         }
     }
 
@@ -46,6 +55,10 @@ aspect Functions
                 ),
                 new Block()
             );
+        }
+
+        public void llvmGen(PrintStream out) {
+            out.println("declare i64 @_trunc(double)");
         }
     }
 
@@ -62,16 +75,20 @@ aspect Functions
                 new Block()
             );
         }
+
+        public void llvmGen(PrintStream out) {
+            out.println("declare double @_promote(i64)");
+        }
     }
 
     syn nta List<Function> Program.predefinedFunctions() {
         List<Function> functions = new List<Function>();
 
-        /* void print(int value) */
-        functions.add(new PrintFunction(1));
-
-        /* int read() */
-        functions.add(new ReadFunction(1));
+        functions.add(new PrintFunction());
+        functions.add(new ReadFunction());
+        functions.add(new TruncFunction());
+        functions.add(new PromoteFunction());
+        functions.add(new AssertFunction());
 
         return functions;
     }

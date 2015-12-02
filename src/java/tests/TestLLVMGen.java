@@ -15,7 +15,7 @@ import lang.ast.Program;
  * @author Jesper Öqvist <jesper.oqvist@cs.lth.se>
  */
 @RunWith(Parameterized.class)
-public class TestCodeGen extends AbstractParameterizedTest {
+public class TestLLVMGen extends AbstractParameterizedTest {
 	/**
 	 * Directory where test files live
 	 */
@@ -25,7 +25,7 @@ public class TestCodeGen extends AbstractParameterizedTest {
 	 * Construct a new JastAdd test
 	 * @param testFile filename of test input file
 	 */
-	public TestCodeGen(String testFile) {
+	public TestLLVMGen(String testFile) {
 		super(TEST_DIR, testFile);
 	}
 
@@ -34,13 +34,12 @@ public class TestCodeGen extends AbstractParameterizedTest {
 	 */
 	@Test
 	public void runTest() throws Exception {
-        System.out.println("TEEEEST");
 		Program program = (Program)parse(inFile);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
 
-        program.codeGen(ps);
+        program.llvmGen(ps);
         String content = baos.toString("UTF8");
 
 		compareOutput(content, outFile, expectedFile);
