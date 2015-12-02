@@ -5,12 +5,13 @@ aspect CodeGen {
         return Program.next_label++;
     }
 
+    public static String Program.nextTemp() {
+        return "%tmp." + Program.nextCounter();
+    }
+
     syn String Function.llvmName() = "@" + getName().getID();
 
     public void Program.llvmGen(PrintStream out) {
-
-        out.println("; LLVM Output\n");
-
         out.println("; Library Functions");
         for(Function f : predefinedFunctions())
             f.llvmGen(out);
@@ -31,10 +32,204 @@ aspect CodeGen {
         out.print(" ");
         out.print(llvmName());
         out.print("(");
+
         // print args
+        for(int i = 0; i < getNumArgument(); i++) {
+            Argument a = getArgument(i);
+            a.getName().getType().type().llvmGen(out);
+            out.print(" %");
+            out.print(a.getName().getID());
+            
+            if (i < getNumArgument() - 1)
+                out.print(", ");
+        }
+        
         out.println(") {");
         // generate block
+        getBody().llvmGen(out);
+
+        // TODO: make sure the last statement is a return
+        // OPT:  make sure all code paths return a value
+        if (getName().type().equals(new VoidType()))
+            out.println("ret void");
+
         out.println("}\n");
+    }
+
+    public void Block.llvmGen(PrintStream out) {
+        for(int i = 0; i < getNumStatement(); i++) {
+            getStatement(i).llvmGen(out);
+        }
+    }
+
+    public void Statement.llvmGen(PrintStream out) {
+        throw new RuntimeException("Not implemented yet");
+    }
+
+    public void DeclareStmt.llvmGen(PrintStream out) {
+        String name = "%" + getName().getID();
+
+        out.print(name);
+        out.print(" = alloca ");
+        getName().type().llvmGen(out);
+        out.println("");
+
+        if (hasAssignExpr()) {
+            String r_var = getAssignExpr().llvmGen(out);
+            out.print("store ");
+            getName().type().llvmGen(out);
+            out.print(" ");
+            out.print(r_var);
+            out.print(", ");
+            getName().type().llvmGen(out);
+            out.print("* ");
+            out.println(name);
+        }
+    }
+
+    public void CallStmt.llvmGen(PrintStream out) {
+        getFunction().llvmGen(out);
+    }
+
+    public void ReturnStmt.llvmGen(PrintStream out) {
+        // return expr
+        String ret_var = "unknown";
+        if (hasReturnExpr())
+            ret_var = getReturnExpr().llvmGen(out);
+
+        out.print("ret ");
+        expectedType().llvmGen(out);
+        if (hasReturnExpr()) {
+            out.print(" ");
+            out.print(ret_var);
+        }
+        out.println("");
+    }
+
+    /*
+     * Expressions
+     *
+     * returns a string representing the name of the temporary variable 
+     * containing the result of the expression.
+     */
+
+    public String BinExpr.instr() { throw new RuntimeException("Not yet implemented"); }
+    public String BinExpr.llvmGen(PrintStream out) {
+        String r = Program.nextTemp();
+        String a = getLeft().llvmGen(out);
+        String b = getRight().llvmGen(out);
+
+        out.print(r);
+        out.print(" = ");
+        out.print(instr());
+        out.print(" ");
+        type().llvmGen(out);
+        out.print(" ");
+        out.print(a);
+        out.print(", ");
+        out.println(b);
+        return r;
+    }
+
+    public String AddExpr.instr() {
+        if (type().equals(new FloatType()))
+            return "fadd";
+        return "add";
+    }
+
+    public String SubExpr.instr() {
+        if (type().equals(new FloatType()))
+            return "fsub";
+        return "sub";
+    }
+
+    public String MulExpr.instr() {
+        if (type().equals(new FloatType()))
+            return "fmul";
+        return "mul";
+    }
+
+    public String DivExpr.instr() {
+        if (type().equals(new FloatType()))
+            return "fdiv";
+        return "sdiv";
+    }
+
+    public String ModExpr.instr() {
+        if (type().equals(new FloatType()))
+            return "fdiv";
+        return "srem";
+    }
+
+    syn String AndExpr.instr() = "and";
+    syn String OrExpr.instr() = "or";
+
+    public String FuncExpr.llvmGen(PrintStream out) {
+        // parameter expressions
+        String[] arg_vars = new String[getNumArgument()];
+        for(int i = 0; i < getNumArgument(); i++) {
+            arg_vars[i] = getArgument(i).llvmGen(out);
+        }
+
+        String r = "NONE";
+        if (!getName().type().equals(new VoidType())) {
+            r = Program.nextTemp();
+            out.print(r);
+            out.print(" = ");
+        }
+
+        out.print("call ");
+        getName().type().llvmGen(out);
+        out.print(" @");
+        out.print(getName());
+        out.print("(");
+
+        for(int i = 0; i < arg_vars.length; i++) {
+            getArgument(i).type().llvmGen(out);
+            out.print(" ");
+            out.print(arg_vars[i]);
+            if (i < arg_vars.length - 1)
+                out.print(", ");
+        }
+        
+        out.println(")");
+        return r;
+    }
+
+    public String Expr.llvmGen(PrintStream out) {
+        throw new RuntimeException("Not yet implemented");
+    }
+
+    public String IntLiteral.llvmGen(PrintStream out) {
+        return String.valueOf(getValue());
+    }
+
+    public String FloatLiteral.llvmGen(PrintStream out) {
+        return String.valueOf(getValue());
+    }
+
+    public String BoolLiteral.llvmGen(PrintStream out) {
+        return getValue() ? "1" : "0";
+    }
+
+    inh boolean IdDecl.isArgVariable();
+    eq Program.getChild().isArgVariable() = false;
+    eq Argument.getName().isArgVariable() = true;
+
+    public String IdExpr.llvmGen(PrintStream out) {
+        if (getName().decl().isArgVariable()) {
+            return "%" + getName().getID();
+        }
+
+        String v = Program.nextTemp();
+        out.print(v);
+        out.print(" = load ");
+        getName().type().llvmGen(out);
+        out.print(", ");
+        getName().type().llvmGen(out);
+        out.print("* %");
+        out.println(getName().getID());
+        return v;
     }
 
     // LLVM type names

@@ -5,6 +5,11 @@ declare i64 @trunc(double)
 declare double @promote(i64)
 declare void @assert(i64)
 
+define void @f() {
+ret void
+}
+
 define i64 @main() {
+call void @f()
 }
 

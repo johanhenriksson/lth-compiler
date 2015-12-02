@@ -6,5 +6,7 @@ declare double @promote(i64)
 declare void @assert(i64)
 
 define i64 @main() {
+%a = alloca i64
+store i64 5, i64* %a
 }
 

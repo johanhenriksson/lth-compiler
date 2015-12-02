@@ -6,5 +6,10 @@ declare double @promote(i64)
 declare void @assert(i64)
 
 define i64 @main() {
+%f = alloca double
+store double 3.56, double* %f
+%tmp.4 = load double, double* %f
+%tmp.5 = call i64 @trunc(double %tmp.4)
+ret i64 %tmp.5
 }
 
