@@ -1,4 +1,6 @@
-/* i know this is a complete mess, but it works :P */
+/* i know this is a complete mess, but it works :P 
+ * i wanted to do it using NTAs but couldn't get it to work without rewriting everything
+ */
 aspect TypeCheck {
     inh Type IdDecl.expectedType(); 
     syn Type IdDecl.type() = getType().type();

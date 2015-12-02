@@ -1,9 +1,0 @@
-aspect Literals {
-    syn int IntLiteral.getValue() {
-        return Integer.parseInt(getINT());
-    }
-
-    syn float FloatLiteral.getValue() {
-        return Float.parseFloat(getFLOAT());
-    }
-}

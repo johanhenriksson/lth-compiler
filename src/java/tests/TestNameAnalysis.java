@@ -14,7 +14,7 @@ import lang.ast.Program;
  * Tests name analysis
  */
 @RunWith(Parameterized.class)
-public class TestLookup extends AbstractParameterizedTest {
+public class TestNameAnalysis extends AbstractParameterizedTest {
 	/**
 	 * Directory where test files live
 	 */
@@ -24,7 +24,7 @@ public class TestLookup extends AbstractParameterizedTest {
 	 * Construct a new JastAdd test
 	 * @param filename filename of test input file
 	 */
-	public TestLookup(String filename) {
+	public TestNameAnalysis(String filename) {
 		super(TEST_DIR, filename);
 	}
 

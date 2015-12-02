@@ -1,5 +1,4 @@
 aspect UnknownDecl {
-
     syn UnknownDecl ASTNode.unknownDecl() = new UnknownDecl(new TypeId("<unknown>"), "<unknown>");
     syn UnknownFunc ASTNode.unknownFunc() = new UnknownFunc(new IdDecl(new TypeId("<unknown>"),"<unknown>"), new List<Argument>(), new Block());
     syn UnknownStruct ASTNode.unknownStruct() = new UnknownStruct(new TypeDecl("unknown"), new List());
