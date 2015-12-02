@@ -1,3 +1,4 @@
+/* i know this is a complete mess, but it works :P */
 aspect TypeCheck {
     inh Type IdDecl.expectedType(); 
     syn Type IdDecl.type() = getType().type();
@@ -127,9 +128,9 @@ aspect TypeCheck {
     syn boolean DivExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
     syn boolean ModExpr.nonNumericError() { return !(type().equals(new IntType()) || type().equals(new FloatType())); }
 
-    syn boolean AndExpr.nonBoolError() = !type().equals(new BoolType());
-    syn boolean OrExpr.nonBoolError()  = !type().equals(new BoolType());
-    syn boolean NotExpr.nonBoolError() = !type().equals(new BoolType());
+    syn boolean AndExpr.nonBoolError() = !super.type().equals(new BoolType());
+    syn boolean OrExpr.nonBoolError()  = !super.type().equals(new BoolType());
+    syn boolean NotExpr.nonBoolError() = !getExpr().type().equals(new BoolType());
     
 	syn boolean Struct.isMultiplyDeclared() {
         if (isUnknown())

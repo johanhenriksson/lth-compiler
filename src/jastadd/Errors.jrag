@@ -99,24 +99,36 @@ aspect ErrorContributions {
         when getName().isFunction()
         to Program.errors() for program();
 
-    AddExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+    AddExpr contributes error("mismatched + operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
         to Program.errors() for program();
 
-    SubExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+    SubExpr contributes error("mismatched - operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
         to Program.errors() for program();
 
-    MulExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+    MulExpr contributes error("mismatched * operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
         to Program.errors() for program();
 
-    DivExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+    DivExpr contributes error("mismatched / operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
         to Program.errors() for program();
 
-    ModExpr contributes error("mismatched operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
+    ModExpr contributes error("mismatched % operands " + getLeft().type() + " and " + getRight().type() + " - must be numeric")
         when !typeError() && nonNumericError()
+        to Program.errors() for program();
+
+    AndExpr contributes error("mismatched && operands " + getLeft().type() + " and " + getRight().type() + " - must be of type bool")
+        when !typeError() && nonBoolError()
+        to Program.errors() for program();
+
+    OrExpr contributes error("mismatched || operands " + getLeft().type() + " and " + getRight().type() + " - must be of type bool")
+        when !typeError() && nonBoolError()
+        to Program.errors() for program();
+
+    NotExpr contributes error("mismatched ! operand " + getExpr().type() + " - must be of type bool")
+        when nonBoolError()
         to Program.errors() for program();
 
     Struct contributes error("Struct " + getName().getID() + " overrides builtin type")

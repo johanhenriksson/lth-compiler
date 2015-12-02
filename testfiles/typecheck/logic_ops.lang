@@ -1,0 +1,7 @@
+void main() {
+    bool and = 1 && 2; // error
+    bool or = 1 || 2; // error
+
+    bool not_a = !1; // error
+    bool not_b = !false; // ok
+}
