@@ -7,12 +7,12 @@ declare void @assert(i1)
 
 define i64 @main() {
 %i = alloca double
-%tmp.4 = call double @promote(i64 5)
-store double %tmp.4, double* %i
+%tmp.14 = call double @promote(i64 5)
+store double %tmp.14, double* %i
 %f = alloca double
-store double 3.56, double* %f
-%tmp.5 = load double, double* %f
-%tmp.6 = call i64 @truncate(double %tmp.5)
-ret i64 %tmp.6
+store double 0.56, double* %f
+%tmp.15 = load double, double* %f
+%tmp.16 = call i64 @truncate(double %tmp.15)
+ret i64 %tmp.16
 }
 

@@ -5,13 +5,9 @@ declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
 
-define void @f(i64 %a) {
-call void @print(i64 %a)
-ret void
-}
-
-define void @main() {
-call void @f(i64 5)
-ret void
+define i64 @main() {
+%a = alloca i64
+store i64 5, i64* %a
+ret i64 0
 }
 

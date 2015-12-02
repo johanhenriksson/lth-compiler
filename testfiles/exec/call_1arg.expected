@@ -5,13 +5,13 @@ declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
 
-define void @f(i64 %a) {
-call void @print(i64 %a)
-ret void
+define i64 @f(i64 %a) {
+ret i64 %a
 }
 
-define void @main() {
-call void @f(i64 5)
-ret void
+define i64 @main() {
+%tmp.11 = sub i64 5, 5
+%tmp.12 = call i64 @f(i64 %tmp.11)
+ret i64 %tmp.12
 }
 

@@ -1,9 +1,9 @@
 ; Library Functions
 declare void @print(i64)
 declare i64 @read()
-declare i64 @trunc(double)
+declare i64 @truncate(double)
 declare double @promote(i64)
-declare void @assert(i64)
+declare void @assert(i1)
 
 define void @main() {
 ret void

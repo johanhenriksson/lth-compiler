@@ -1,0 +1,27 @@
+; Library Functions
+declare void @print(i64)
+declare i64 @read()
+declare i64 @truncate(double)
+declare double @promote(i64)
+declare void @assert(i1)
+
+define i64 @main() {
+%tmp.3 = icmp eq i1 1, 1
+call void @assert(i1 %tmp.3)
+%tmp.4 = icmp ne i1 1, 0
+call void @assert(i1 %tmp.4)
+%tmp.5 = icmp sgt i1 1, 0
+call void @assert(i1 %tmp.5)
+%tmp.6 = icmp slt i1 0, 1
+call void @assert(i1 %tmp.6)
+%tmp.7 = icmp sge i1 1, 0
+call void @assert(i1 %tmp.7)
+%tmp.8 = icmp sge i1 0, 0
+call void @assert(i1 %tmp.8)
+%tmp.9 = icmp sle i1 1, 1
+call void @assert(i1 %tmp.9)
+%tmp.10 = icmp sle i1 0, 1
+call void @assert(i1 %tmp.10)
+ret i64 0
+}
+

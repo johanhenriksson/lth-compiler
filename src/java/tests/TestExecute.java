@@ -12,6 +12,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.nio.file.Files;
+import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +32,7 @@ public class TestExecute extends AbstractParameterizedTest {
 	/**
 	 * Directory where test files live
 	 */
-	private static final String TEST_DIR = "testfiles/codegen";
+	private static final String TEST_DIR = "testfiles/exec";
 
 	/**
 	 * Construct a new code generation test
@@ -54,41 +56,66 @@ public class TestExecute extends AbstractParameterizedTest {
 	 */
 	@Test
 	public void runTest() throws IOException, Exception {
-        /*
+        File library_obj = getTestFile("../../src/clib/lib.o");
+        
 		Program program = (Program) parse(inFile);
 
 		assertEquals("[]", program.errors().toString());
 
-		// Generate Assembly file
-		File assemblyFile = getFileReplaceExtension(inFile.getName(), ".s");
-		PrintStream out = new PrintStream(new FileOutputStream(assemblyFile));
-		program.codeGen(out);
-		out.close();
+        /* compile program to LLVM IR */
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+
+        program.llvmGen(ps);
+        String content = baos.toString("UTF8");
+
+        // write out file
+		Files.write(outFile.toPath(), content.getBytes());
+
+		// Assemble bitcode 
+		File bitcodeFile = getFileReplaceExtension(inFile.getName(), ".out.bc");
+		ArrayList<String> llvm_as = new ArrayList<String>();
+		llvm_as.add("llvm-as");
+		llvm_as.add(outFile.getAbsolutePath());
+        execute(llvm_as);
 
 		// Generate object file
-		File objectFile = getFileReplaceExtension(inFile.getName(), ".o");
-		ArrayList<String> cmdAs = new ArrayList<String>();
-		cmdAs.add("as");
-		cmdAs.add("--gstabs");
-		cmdAs.add(assemblyFile.getAbsolutePath());
-		cmdAs.add("-o");
-		cmdAs.add(objectFile.getAbsolutePath());
-		execute(cmdAs);
+		File objectFile = getFileReplaceExtension(inFile.getName(), ".out.o");
+		ArrayList<String> llc = new ArrayList<String>();
+		llc.add("llc");
+		llc.add("--filetype=obj");
+		llc.add(bitcodeFile.getAbsolutePath());
+		execute(llc);
 
 		// Link object file and generate executable file
-		File execFile = getFileReplaceExtension(inFile.getName(), ".elf");
+		File execFile = getFileReplaceExtension(inFile.getName(), ".exec");
 		ArrayList<String> cmdLd = new ArrayList<String>();
 		cmdLd.add("ld");
-		cmdLd.add(objectFile.getAbsolutePath());
+        
+        // if osx
+        cmdLd.add("-macosx_version_min"); 
+        cmdLd.add("10.10");
+
+        // link with libraries
+        cmdLd.add("-lSystem");
+        cmdLd.add("-lcrt1.o");
+
+        // output file
 		cmdLd.add("-o");
 		cmdLd.add(execFile.getAbsolutePath());
+
+        // link object code
+		cmdLd.add(objectFile.getAbsolutePath());
+
+        // link with simplic library
+        cmdLd.add(library_obj.getAbsolutePath());
+
 		execute(cmdLd);
 
 		// Run the executable file
 		String output = execute(Arrays.asList(execFile.getAbsolutePath()));
         if (!output.equals(""))
             fail("Unexpected return value " + output);
-        */
 	}
 
 	private String execute(List<String> cmd) throws IOException, InterruptedException {

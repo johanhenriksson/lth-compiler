@@ -6,12 +6,10 @@ declare double @promote(i64)
 declare void @assert(i1)
 
 define void @f(i64 %a) {
-call void @print(i64 %a)
 ret void
 }
 
-define void @main() {
-call void @f(i64 5)
-ret void
+define i64 @main() {
+ret i64 0
 }
 

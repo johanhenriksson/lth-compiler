@@ -1,6 +1,6 @@
 aspect Functions 
 {
-    // print int to std in
+    // print int to std out
     class PrintFunction extends Function {
         public PrintFunction() {
             super(
@@ -35,13 +35,13 @@ aspect Functions
             super(
                 new IdDecl(new TypeId("void"), "assert"),
                 new List<Argument>(
-                    new Argument(new IdDecl(new TypeId("int"), "expr"))
+                    new Argument(new IdDecl(new TypeId("bool"), "expr"))
                 ),
                 new Block()
             );
         }
         public void llvmGen(PrintStream out) {
-            out.println("declare void @assert(i64)");
+            out.println("declare void @assert(i1)");
         }
     }
 
@@ -49,16 +49,15 @@ aspect Functions
     class TruncFunction extends Function {
         public TruncFunction() {
             super(
-                new IdDecl(new TypeId("int"), "trunc"),
+                new IdDecl(new TypeId("int"), "truncate"),
                 new List<Argument>(
                     new Argument(new IdDecl(new TypeId("float"), "f"))
                 ),
                 new Block()
             );
         }
-
         public void llvmGen(PrintStream out) {
-            out.println("declare i64 @trunc(double)");
+            out.println("declare i64 @truncate(double)");
         }
     }
 
@@ -75,7 +74,6 @@ aspect Functions
                 new Block()
             );
         }
-
         public void llvmGen(PrintStream out) {
             out.println("declare double @promote(i64)");
         }

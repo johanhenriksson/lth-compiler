@@ -113,6 +113,10 @@ aspect CodeGen {
      * containing the result of the expression.
      */
 
+    public String ParamExpr.llvmGen(PrintStream out) {
+        return getExpr().llvmGen(out);
+    }
+
     public String BinExpr.instr() { throw new RuntimeException("Not yet implemented"); }
     public String BinExpr.llvmGen(PrintStream out) {
         String r = Program.nextTemp();
@@ -163,6 +167,15 @@ aspect CodeGen {
 
     syn String AndExpr.instr() = "and";
     syn String OrExpr.instr() = "or";
+
+    syn String EqualsExpr.instr() = "icmp eq";
+    syn String NotEqualsExpr.instr() = "icmp ne";
+
+    // reversed order
+    syn String GreaterEqualExpr.instr() = "icmp sle";
+    syn String LessEqualExpr.instr() = "icmp sge";
+    syn String LessExpr.instr() = "icmp sgt";
+    syn String GreaterExpr.instr() = "icmp slt";
 
     public String FuncExpr.llvmGen(PrintStream out) {
         // parameter expressions
@@ -240,4 +253,5 @@ aspect CodeGen {
     public void BoolType.llvmGen(PrintStream out) { out.print("i1"); }
     public void IntType.llvmGen(PrintStream out) { out.print("i64"); }
     public void FloatType.llvmGen(PrintStream out) { out.print("double"); }
+    public void UnknownType.llvmGen(PrintStream out) { out.print("void"); } // kind of a hack
 }

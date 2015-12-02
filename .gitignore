@@ -3,5 +3,9 @@ ant-bin/
 src/gen/
 
 *.out
+*.s
+*.o
+*.bc
+*.exec
 compiler.jar
 /bin/

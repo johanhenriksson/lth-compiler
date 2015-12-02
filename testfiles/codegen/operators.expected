@@ -1,0 +1,23 @@
+; Library Functions
+declare void @print(i64)
+declare i64 @read()
+declare i64 @truncate(double)
+declare double @promote(i64)
+declare void @assert(i1)
+
+define void @main() {
+%a = alloca i64
+%tmp.10 = sub i64 22, 3
+%tmp.9 = mul i64 %tmp.10, 2
+%tmp.8 = sdiv i64 %tmp.9, 2
+%tmp.7 = srem i64 %tmp.8, 3
+store i64 %tmp.7, i64* %a
+%b = alloca double
+%tmp.14 = fsub double 22.0, 3.5
+%tmp.13 = fmul double %tmp.14, 2.1
+%tmp.12 = fdiv double %tmp.13, 2.3
+%tmp.11 = fdiv double %tmp.12, 3.75
+store double %tmp.11, double* %b
+ret void
+}
+

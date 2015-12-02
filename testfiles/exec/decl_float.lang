@@ -1,0 +1,4 @@
+void main() {
+    float f;
+    float g = 1.5;
+}

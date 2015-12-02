@@ -1,4 +1,4 @@
 void f() { }
-int main() {
+void main() {
     f();
 }
