@@ -1,0 +1,11 @@
+aspect Literals {
+    syn int     IntLiteral.getValue()   = Integer.parseInt(getINT());
+    syn float   FloatLiteral.getValue() = Float.parseFloat(getFLOAT());
+    syn boolean BoolLiteral.getValue() {
+        switch(getBOOL().toLowerCase()) {
+            case "true": return true;
+            case "false": return false;
+        }
+        throw new RuntimeException("Invalid bool literal: " + getBOOL());
+    }
+}
