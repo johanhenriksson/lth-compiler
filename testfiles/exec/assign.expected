@@ -6,8 +6,11 @@ declare double @promote(i64)
 declare void @assert(i1)
 declare void @except(i1)
 
-define void @main() {
+define i64 @main() {
 %a = alloca i64
-ret void
+store i64 1, i64* %a
+store i64 0, i64* %a
+%_t1 = load i64, i64* %a
+ret i64 %_t1
 }
 

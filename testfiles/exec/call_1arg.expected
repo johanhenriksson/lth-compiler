@@ -4,14 +4,15 @@ declare i64 @read()
 declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
+declare void @except(i1)
 
 define i64 @f(i64 %a) {
 ret i64 %a
 }
 
 define i64 @main() {
-%tmp.11 = sub i64 5, 5
-%tmp.12 = call i64 @f(i64 %tmp.11)
-ret i64 %tmp.12
+%_t1 = sub i64 5, 5
+%_t2 = call i64 @f(i64 %_t1)
+ret i64 %_t2
 }
 

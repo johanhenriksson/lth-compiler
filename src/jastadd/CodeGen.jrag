@@ -1,17 +1,35 @@
 aspect CodeGen {
     private static int Program.next_label = 1;
+    private static int Program.next_if = 1;
+    private static int Program.next_while = 1;
 
     public static int Program.nextCounter() {
         return Program.next_label++;
     }
+    public static void Program.resetCounter() {
+        Program.next_label = 1;
+        Program.next_if = 1;
+        Program.next_while = 1;
+    }
 
     public static String Program.nextTemp() {
-        return "%tmp." + Program.nextCounter();
+        return "%_t" + Program.nextCounter();
+    }
+
+    public static String Program.nextIf() {
+        return "if" + Program.next_if++;
+    }
+
+    public static String Program.nextWhile() {
+        return "while" + Program.next_while++;
     }
 
     syn String Function.llvmName() = "@" + getName().getID();
 
     public void Program.llvmGen(PrintStream out) {
+        Program.resetCounter();
+
+        // TODO: only used functions?
         out.println("; Library Functions");
         for(Function f : predefinedFunctions())
             f.llvmGen(out);
@@ -27,6 +45,8 @@ aspect CodeGen {
     }
 
     public void Function.llvmGen(PrintStream out) {
+        Program.resetCounter();
+
         out.print("define ");
         getName().getType().type().llvmGen(out);
         out.print(" ");
@@ -50,6 +70,7 @@ aspect CodeGen {
 
         // TODO: make sure the last statement is a return
         // OPT:  make sure all code paths return a value
+        // decent, causes llvm compile errors if non-void functions dont return anything
         if (getName().type().equals(new VoidType()))
             out.println("ret void");
 
@@ -106,6 +127,52 @@ aspect CodeGen {
         out.println("");
     }
 
+    public void AssignStmt.llvmGen(PrintStream out) {
+        String r_var = getAssignExpr().llvmGen(out);
+        out.print("store ");
+        getName().type().llvmGen(out);
+        out.print(" ");
+        out.print(r_var);
+        out.print(", ");
+        getName().type().llvmGen(out);
+        out.print("* %");
+        out.println(getName().getID());
+    }
+
+    public void IfStmt.llvmGen(PrintStream out) {
+        String if_id = Program.nextIf();
+        String cond_var = getCondition().llvmGen(out);
+
+        // if cond_var == 1
+        out.print("br i1 ");
+        out.print(cond_var);
+
+        // then goto
+        out.print(", label %");
+        out.print(if_id + "_then");
+
+        // else goto 
+        out.print(", label %");
+        if (hasElse())
+            out.println(if_id + "_else");
+        else
+            out.println(if_id + "_end");
+
+        // then
+        out.println(if_id + "_then:");
+        getThen().llvmGen(out);
+        out.println("br label %" + if_id + "_end");
+
+        // else
+        if (hasElse()) {
+            out.println(if_id + "_else:");
+            getElse().llvmGen(out);
+            out.println("br label %" + if_id + "_end");
+        }
+
+        out.println(if_id + "_end:");
+    }
+
     /*
      * Expressions
      *
@@ -127,7 +194,7 @@ aspect CodeGen {
         out.print(" = ");
         out.print(instr());
         out.print(" ");
-        type().llvmGen(out);
+        getLeft().type().llvmGen(out);
         out.print(" ");
         out.print(a);
         out.print(", ");
@@ -172,10 +239,10 @@ aspect CodeGen {
     syn String NotEqualsExpr.instr() = "icmp ne";
 
     // reversed order
-    syn String GreaterEqualExpr.instr() = "icmp sle";
-    syn String LessEqualExpr.instr() = "icmp sge";
-    syn String LessExpr.instr() = "icmp sgt";
-    syn String GreaterExpr.instr() = "icmp slt";
+    syn String GreaterEqualExpr.instr() = "icmp sge";
+    syn String LessEqualExpr.instr() = "icmp sle";
+    syn String LessExpr.instr() = "icmp slt";
+    syn String GreaterExpr.instr() = "icmp sgt";
 
     public String FuncExpr.llvmGen(PrintStream out) {
         // parameter expressions

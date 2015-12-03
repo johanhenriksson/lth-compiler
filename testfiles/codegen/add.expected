@@ -4,12 +4,13 @@ declare i64 @read()
 declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
+declare void @except(i1)
 
 define i64 @main() {
 %f = alloca double
-%tmp.1 = fadd double 3.5, 3.0
-store double %tmp.1, double* %f
-%tmp.2 = add i64 1, 2
-ret i64 %tmp.2
+%_t1 = fadd double 3.5, 3.0
+store double %_t1, double* %f
+%_t2 = add i64 1, 2
+ret i64 %_t2
 }
 

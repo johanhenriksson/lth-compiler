@@ -1,0 +1,15 @@
+int main() {
+    int a = 1;
+    if (1 == 0 + 1) {
+        a = 3 - 3;
+    }
+    else {
+        a = 1 + 2;
+    }
+    return a;
+}
+
+void f() {
+    if (true) {
+    }
+}

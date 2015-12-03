@@ -1,5 +1,7 @@
 int main() {
     float i = promote(5);
+    i = i + 1.25; // i = 6.25
+
     float f = 0.56;
-    return truncate(f); // returns 0
+    return truncate(f) + truncate(i) - 6; // returns 0
 }

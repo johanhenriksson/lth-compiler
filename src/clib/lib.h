@@ -4,6 +4,7 @@
 
 // assert
 void assert(bool v);
+void except(bool v);
 
 // io
 void print(int64_t v);

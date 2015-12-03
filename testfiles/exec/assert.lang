@@ -1,11 +1,24 @@
 int main() {
     assert(1 == 1);
     assert(1 != 0);
-    assert(1 > 0);
     assert(0 < 1);
+    assert(1 > 0);
     assert(1 >= 0);
     assert(0 >= 0);
     assert(1 <= 1);
     assert(0 <= 1);
+
+    assert(true);
+    assert(true || true);
+    assert(true || false);
+    assert(false || true);
+    assert(true && true);
+
+    except(false);
+    except(false || false);
+    except(true && false);
+    except(false && true);
+    except(false && false);
+
     return 0;
 }

@@ -27,3 +27,8 @@ void assert(bool v) {
     if (v == false)
         exit(1);
 }
+
+void except(bool v) {
+    if (v != false)
+        exit(1);
+}

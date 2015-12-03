@@ -4,15 +4,16 @@ declare i64 @read()
 declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
+declare void @except(i1)
 
 define i64 @main() {
 %i = alloca double
-%tmp.14 = call double @promote(i64 5)
-store double %tmp.14, double* %i
+%_t1 = call double @promote(i64 5)
+store double %_t1, double* %i
 %f = alloca double
 store double 0.56, double* %f
-%tmp.15 = load double, double* %f
-%tmp.16 = call i64 @truncate(double %tmp.15)
-ret i64 %tmp.16
+%_t2 = load double, double* %f
+%_t3 = call i64 @truncate(double %_t2)
+ret i64 %_t3
 }
 

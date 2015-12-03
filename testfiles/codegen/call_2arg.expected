@@ -4,13 +4,14 @@ declare i64 @read()
 declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
+declare void @except(i1)
 
 define i64 @f(i64 %a, i64 %b) {
 ret i64 %a
 }
 
 define void @main() {
-%tmp.3 = call i64 @f(i64 1, i64 2)
+%_t1 = call i64 @f(i64 1, i64 2)
 ret void
 }
 

@@ -4,24 +4,31 @@ declare i64 @read()
 declare i64 @truncate(double)
 declare double @promote(i64)
 declare void @assert(i1)
+declare void @except(i1)
 
 define i64 @main() {
-%tmp.3 = icmp eq i1 1, 1
-call void @assert(i1 %tmp.3)
-%tmp.4 = icmp ne i1 1, 0
-call void @assert(i1 %tmp.4)
-%tmp.5 = icmp sgt i1 1, 0
-call void @assert(i1 %tmp.5)
-%tmp.6 = icmp slt i1 0, 1
-call void @assert(i1 %tmp.6)
-%tmp.7 = icmp sge i1 1, 0
-call void @assert(i1 %tmp.7)
-%tmp.8 = icmp sge i1 0, 0
-call void @assert(i1 %tmp.8)
-%tmp.9 = icmp sle i1 1, 1
-call void @assert(i1 %tmp.9)
-%tmp.10 = icmp sle i1 0, 1
-call void @assert(i1 %tmp.10)
+%_t1 = icmp eq i64 1, 1
+call void @assert(i1 %_t1)
+%_t2 = icmp ne i64 1, 0
+call void @assert(i1 %_t2)
+%_t3 = icmp slt i64 0, 1
+call void @assert(i1 %_t3)
+%_t4 = icmp sgt i64 1, 0
+call void @assert(i1 %_t4)
+%_t5 = icmp sge i64 1, 0
+call void @assert(i1 %_t5)
+%_t6 = icmp sge i64 0, 0
+call void @assert(i1 %_t6)
+%_t7 = icmp sle i64 1, 1
+call void @assert(i1 %_t7)
+%_t8 = icmp sle i64 0, 1
+call void @assert(i1 %_t8)
+%_t9 = or i1 1, 0
+call void @assert(i1 %_t9)
+%_t10 = or i1 0, 1
+call void @assert(i1 %_t10)
+%_t11 = and i1 1, 1
+call void @assert(i1 %_t11)
 ret i64 0
 }
 

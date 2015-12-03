@@ -45,6 +45,21 @@ aspect Functions
         }
     }
 
+    class ExceptFunction extends Function {
+        public ExceptFunction() {
+            super(
+                new IdDecl(new TypeId("void"), "except"),
+                new List<Argument>(
+                    new Argument(new IdDecl(new TypeId("bool"), "expr"))
+                ),
+                new Block()
+            );
+        }
+        public void llvmGen(PrintStream out) {
+            out.println("declare void @except(i1)");
+        }
+    }
+
     // truncate float to int
     class TruncFunction extends Function {
         public TruncFunction() {
@@ -87,6 +102,7 @@ aspect Functions
         functions.add(new TruncFunction());
         functions.add(new PromoteFunction());
         functions.add(new AssertFunction());
+        functions.add(new ExceptFunction());
 
         return functions;
     }
