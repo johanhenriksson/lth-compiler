@@ -7,26 +7,40 @@ struct node {
     bool has_right;
 }
 
-node new_node() {
-    print(1);
+node new_node(int val) {
     node n;
+    n.value = val;
     n.has_left = false;
     n.has_right = false;
+
     return n;
 }
 
-bool append(node n) {
-    print(2);
+bool add(int val, node root, int depth) {
+    if (append(val, root)) {
+        return true;
+    }
+
+    if (depth > 0) {
+        if (add(val, root.left, depth - 1)) {
+            return true;
+        }
+        if (add(val, root.right, depth - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool append(int val, node n) {
     if (!n.has_left) {
-        print(31);
-        n.left = new_node();
+        n.left = new_node(val);
         n.left.parent = n;
         n.has_left = true;
         return true;
     }
     if (!n.has_right) {
-        print(32);
-        n.right = new_node();
+        n.right = new_node(val);
         n.right.parent = n;
         n.has_right = true;
         return true;
@@ -34,10 +48,54 @@ bool append(node n) {
     return false;
 }
 
-int main() {
-    node root = new_node();
+void write(node n) {
+    print(n.value);
+    if (n.has_left) {
+        write(n.left);
+    }
+    if (n.has_right) {
+        write(n.right);
+    }
+}
 
-    assert(append(root));
-    assert(append(root));
+int nodes(node n) {
+    int i = 1;
+    if (n.has_left) {
+        i = i + nodes(n.left);
+    }
+    if (n.has_right) {
+        i = i + nodes(n.right);
+    }
+    return i;
+}
+
+void destroy(node n) {
+    if (n.has_left) {
+        destroy(n.left);
+    }
+    if (n.has_right) {
+        destroy(n.right);
+    }
+    delete n;
+}
+
+int main() {
+    int count = 1000;
+
+    node root = new_node(1);
+    int i = 2;
+    int depth = 0;
+    while(i <= count) {
+        bool success = add(i, root, depth);
+        if (!success) {
+            depth = depth + 1;
+            continue;
+        }
+        i = i + 1;
+    }
+
+    assert(nodes(root) == count);
+
+    destroy(root);
     return 0;
 }

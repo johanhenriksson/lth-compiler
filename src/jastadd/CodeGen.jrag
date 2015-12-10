@@ -55,10 +55,13 @@ aspect CodeGen {
         out.print(" = global ");
         id.type().llvmType(out);
         out.print(" ");
+
+        // dangerous - has to be a constant
         if (getDeclareStmt().hasAssignExpr())
             out.print(getDeclareStmt().getAssignExpr().llvmGen(out));
         else
             out.print("0");
+
         out.println("\n");
     }
 
@@ -88,11 +91,8 @@ aspect CodeGen {
 
     public void Field.llvmGen(PrintStream out) {
         Type t = getIdDecl().type();
-        t.llvmGen(out); 
-        if (t.isStruct())
-            out.print("*");
+        t.llvmType(out); 
     }
-
 
     /** functions */
 
@@ -141,20 +141,20 @@ aspect CodeGen {
         throw new RuntimeException("Not implemented yet");
     }
 
+    // clusterfuck
     public void DeclareStmt.llvmGen(PrintStream out) {
         String name = "%" + getName().getID();
         Type t = getName().type();
-
 
         // allocate struct
         if (t.isStruct() && !hasAssignExpr()) {
             String sz_ptr = Program.nextTemp();
             String sz_i = Program.nextTemp();
 
-        out.print(name);
-        out.print(" = alloca ");
-        t.llvmGen(out);
-        out.println("*");
+            out.print(name);
+            out.print(" = alloca ");
+            t.llvmGen(out);
+            out.println("*");
 
             //%Size = getelementptr %T* null, i32 1
             //%SizeI = ptrtoint %T* %Size to i32
@@ -320,8 +320,16 @@ aspect CodeGen {
         out.println(if_id + "_end:");
     }
 
+    inh int Statement.getStatementIndex();
+    eq Program.getChild().getStatementIndex() { throw new RuntimeException("Not implemented"); }
+    eq Block.getStatement(int idx).getStatementIndex() = idx;
+
+    public String WhileStmt.llvmLabel() {
+        return "while" + getStatementIndex();
+    }
+
     public void WhileStmt.llvmGen(PrintStream out) {
-        String w_id = Program.nextWhile();
+        String w_id = llvmLabel();
 
         out.println("br label %" + w_id); // required to allow placing a label here
         out.println(w_id + ":");
@@ -342,6 +350,21 @@ aspect CodeGen {
         getLoop().llvmGen(out);
         out.println("br label %" + w_id);
         out.println(w_id + "_end:");
+    }
+
+    inh String Statement.llvmLoopLabel();
+    eq Program.getChild().llvmLoopLabel() { throw new RuntimeException("Not implemented"); }
+    eq WhileStmt.getLoop().llvmLoopLabel() = llvmLabel();
+
+    public void ContinueStmt.llvmGen(PrintStream out) {
+        out.print("br label %");
+        out.println(llvmLoopLabel());
+    }
+
+    public void BreakStmt.llvmGen(PrintStream out) {
+        out.print("br label %");
+        out.print(llvmLoopLabel());
+        out.println("_end");
     }
 
     /*

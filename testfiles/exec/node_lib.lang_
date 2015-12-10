@@ -1,0 +1,28 @@
+
+struct node {
+    int value;
+    node parent;
+    node left;
+    node right;
+    bool has_left;
+    bool has_right;
+}
+
+node new_node(int val) {
+    node n;
+    n.value = val;
+    n.has_left = false;
+    n.has_right = false;
+    return n;
+}
+
+int nodes(node n) {
+    int i = 1;
+    if (n.has_left) {
+        i = i + nodes(n.left);
+    }
+    if (n.has_right) {
+        i = i + nodes(n.right);
+    }
+    return i;
+}
