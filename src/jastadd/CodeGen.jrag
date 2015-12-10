@@ -47,6 +47,25 @@ aspect CodeGen {
         throw new RuntimeException("Not yet implemented");
     }
 
+    /** globals */
+    public void Global.llvmGen(PrintStream out) {
+        IdDecl id = getDeclareStmt().getName();
+        out.print("@");
+        out.print(id.getID());
+        out.print(" = global ");
+        id.type().llvmType(out);
+        out.print(" ");
+        if (getDeclareStmt().hasAssignExpr())
+            out.print(getDeclareStmt().getAssignExpr().llvmGen(out));
+        else
+            out.print("0");
+        out.println("\n");
+    }
+
+    inh boolean IdDecl.isGlobal();
+    eq Program.getChild().isGlobal() = false;
+    eq Global.getChild().isGlobal() = true;
+
     /** structs */
 
     public void Struct.llvmGen(PrintStream out) {
@@ -81,7 +100,7 @@ aspect CodeGen {
         Program.resetCounter();
 
         out.print("define ");
-        getName().getType().type().llvmGen(out);
+        getName().getType().type().llvmType(out);
         out.print(" ");
         out.print(llvmName());
         out.print("(");
@@ -89,7 +108,7 @@ aspect CodeGen {
         // print args
         for(int i = 0; i < getNumArgument(); i++) {
             Argument a = getArgument(i);
-            a.getName().getType().type().llvmGen(out);
+            a.getName().getType().type().llvmType(out);
             out.print(" %");
             out.print(a.getName().getID());
             
@@ -128,7 +147,7 @@ aspect CodeGen {
 
 
         // allocate struct
-        if (t.isStruct()) {
+        if (t.isStruct() && !hasAssignExpr()) {
             String sz_ptr = Program.nextTemp();
             String sz_i = Program.nextTemp();
 
@@ -185,16 +204,17 @@ aspect CodeGen {
         else {
             out.print(name);
             out.print(" = alloca ");
-            t.llvmGen(out);
+            t.llvmType(out);
             out.println();
+
             if (hasAssignExpr()) {
                 String r_var = getAssignExpr().llvmGen(out);
                 out.print("store ");
-                t.llvmGen(out);
+                t.llvmType(out);
                 out.print(" ");
                 out.print(r_var);
                 out.print(", ");
-                t.llvmGen(out);
+                t.llvmType(out);
                 out.print("* ");
                 out.println(name);
             }
@@ -212,7 +232,7 @@ aspect CodeGen {
             ret_var = getReturnExpr().llvmGen(out);
 
         out.print("ret ");
-        expectedType().llvmGen(out);
+        expectedType().llvmType(out);
         if (hasReturnExpr()) {
             out.print(" ");
             out.print(ret_var);
@@ -444,13 +464,13 @@ aspect CodeGen {
         }
 
         out.print("call ");
-        getName().type().llvmGen(out);
+        getName().type().llvmType(out);
         out.print(" @");
         out.print(getName());
         out.print("(");
 
         for(int i = 0; i < arg_vars.length; i++) {
-            getArgument(i).type().llvmGen(out);
+            getArgument(i).type().llvmType(out);
             out.print(" ");
             out.print(arg_vars[i]);
             if (i < arg_vars.length - 1)
@@ -509,6 +529,8 @@ aspect CodeGen {
     }
 
     public String IdUse.llvmGenAddress(PrintStream out) {
+        if (decl().isGlobal())
+            return "@" + getID();
         return "%" + getID();
     }
 

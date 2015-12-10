@@ -1,0 +1,17 @@
+struct obj {
+    int a;
+}
+
+obj factory() {
+    obj o;
+    o.a = 5;
+    return o;
+}
+
+int main() {
+    obj c;
+    c.a = 1;
+    c = factory();
+    assert(c.a == 5);
+    return 0;
+}

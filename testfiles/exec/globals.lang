@@ -1,0 +1,8 @@
+int glob;
+int other = 1;
+
+int main() {
+    glob = 5;
+    assert(glob == 5);
+    return 0;
+}

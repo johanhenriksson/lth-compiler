@@ -1,0 +1,43 @@
+struct node {
+    int value;
+    node parent;
+    node left;
+    node right;
+    bool has_left;
+    bool has_right;
+}
+
+node new_node() {
+    print(1);
+    node n;
+    n.has_left = false;
+    n.has_right = false;
+    return n;
+}
+
+bool append(node n) {
+    print(2);
+    if (!n.has_left) {
+        print(31);
+        n.left = new_node();
+        n.left.parent = n;
+        n.has_left = true;
+        return true;
+    }
+    if (!n.has_right) {
+        print(32);
+        n.right = new_node();
+        n.right.parent = n;
+        n.has_right = true;
+        return true;
+    }
+    return false;
+}
+
+int main() {
+    node root = new_node();
+
+    assert(append(root));
+    assert(append(root));
+    return 0;
+}
