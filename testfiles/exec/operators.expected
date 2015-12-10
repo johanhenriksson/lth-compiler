@@ -1,4 +1,6 @@
 ; Library Functions
+declare i8* @__malloc(i32)
+declare void @__delete(i8*)
 declare void @print(i64)
 declare i64 @read()
 declare i64 @truncate(double)
@@ -8,17 +10,17 @@ declare void @except(i1)
 
 define i64 @main() {
 %a = alloca i64
-%_t4 = sub i64 22, 3
-%_t3 = mul i64 %_t4, 2
-%_t2 = sdiv i64 %_t3, 2
-%_t1 = srem i64 %_t2, 3
-store i64 %_t1, i64* %a
+%_4 = sub i64 22, 3
+%_3 = mul i64 %_4, 2
+%_2 = sdiv i64 %_3, 2
+%_1 = srem i64 %_2, 3
+store i64 %_1, i64* %a
 %b = alloca double
-%_t8 = fsub double 22.0, 3.5
-%_t7 = fmul double %_t8, 2.1
-%_t6 = fdiv double %_t7, 2.3
-%_t5 = fdiv double %_t6, 3.75
-store double %_t5, double* %b
+%_8 = fsub double 22.0, 3.5
+%_7 = fmul double %_8, 2.1
+%_6 = fdiv double %_7, 2.3
+%_5 = fdiv double %_6, 3.75
+store double %_5, double* %b
 ret i64 0
 }
 

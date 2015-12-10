@@ -1,0 +1,48 @@
+Program 
+  List 3 item(s)
+    Struct st
+      TypeDecl st
+      List 2 item(s)
+        Field 
+          IdDecl int a
+            TypeId int
+        Field 
+          IdDecl st2 b
+            TypeId st2
+    Struct st2
+      TypeDecl st2
+      List 1 item(s)
+        Field 
+          IdDecl int c
+            TypeId int
+    Function main()
+      IdDecl int main
+        TypeId int
+      List 0 item(s)
+      Block body
+        List 6 item(s)
+          DeclareStmt st a;
+            IdDecl st a
+              TypeId st
+            Opt ?
+          DeclareStmt st2 b;
+            IdDecl st2 b
+              TypeId st2
+            Opt ?
+          AssignStmt a = 5;
+            StructIdUse a.a
+              IdUse a
+            IntLiteral 5
+          AssignStmt b = b;
+            StructIdUse a.b
+              IdUse a
+            IdExpr b
+              IdUse b
+          AssignStmt c = 3;
+            StructIdUse a.b.c
+              StructIdUse a.b
+                IdUse a
+            IntLiteral 3
+          ReturnStmt return 0;
+            Opt ?
+              IntLiteral 0

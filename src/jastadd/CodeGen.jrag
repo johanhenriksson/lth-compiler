@@ -13,7 +13,7 @@ aspect CodeGen {
     }
 
     public static String Program.nextTemp() {
-        return "%_t" + Program.nextCounter();
+        return "%_" + Program.nextCounter();
     }
 
     public static String Program.nextIf() {
@@ -31,6 +31,9 @@ aspect CodeGen {
 
         // TODO: only used functions?
         out.println("; Library Functions");
+        out.println("declare i8* @__malloc(i32)"); // malloc
+        out.println("declare void @__delete(i8*)"); // free
+
         for(Function f : predefinedFunctions())
             f.llvmGen(out);
 
@@ -43,6 +46,36 @@ aspect CodeGen {
     public void Unit.llvmGen(PrintStream out) {
         throw new RuntimeException("Not yet implemented");
     }
+
+    /** structs */
+
+    public void Struct.llvmGen(PrintStream out) {
+        out.print("%");
+        out.print(getName().getID());
+        out.println(" = type {");
+        for(int i = 0; i < getNumStructDecl(); i++) {
+            out.print("  ");
+            getStructDecl(i).llvmGen(out);
+            if (i < getNumStructDecl() - 1)
+                out.print(",");
+            out.println();
+        }
+        out.println("}\n");
+    }
+
+    public void StructDecl.llvmGen(PrintStream out) {
+        throw new RuntimeException("Not yet implemented");
+    }
+
+    public void Field.llvmGen(PrintStream out) {
+        Type t = getIdDecl().type();
+        t.llvmGen(out); 
+        if (t.isStruct())
+            out.print("*");
+    }
+
+
+    /** functions */
 
     public void Function.llvmGen(PrintStream out) {
         Program.resetCounter();
@@ -83,28 +116,88 @@ aspect CodeGen {
         }
     }
 
+    /** statements */
+
     public void Statement.llvmGen(PrintStream out) {
         throw new RuntimeException("Not implemented yet");
     }
 
     public void DeclareStmt.llvmGen(PrintStream out) {
         String name = "%" + getName().getID();
+        Type t = getName().type();
+
+
+        // allocate struct
+        if (t.isStruct()) {
+            String sz_ptr = Program.nextTemp();
+            String sz_i = Program.nextTemp();
 
         out.print(name);
         out.print(" = alloca ");
-        getName().type().llvmGen(out);
-        out.println("");
+        t.llvmGen(out);
+        out.println("*");
 
-        if (hasAssignExpr()) {
-            String r_var = getAssignExpr().llvmGen(out);
-            out.print("store ");
-            getName().type().llvmGen(out);
-            out.print(" ");
-            out.print(r_var);
+            //%Size = getelementptr %T* null, i32 1
+            //%SizeI = ptrtoint %T* %Size to i32
+            
+            // trick to calculate size of a struct
+            out.print(sz_ptr);
+            out.print(" = getelementptr ");
+            t.llvmGen(out);
             out.print(", ");
-            getName().type().llvmGen(out);
+            t.llvmGen(out);
+            out.println("* null, i32 1");
+
+            // cast to int
+            out.print(sz_i);
+            out.print(" = ptrtoint ");
+            t.llvmGen(out);
             out.print("* ");
+            out.print(sz_ptr);
+            out.println(" to i32");
+            
+            // malloc sizeof(struct) bytes
+            String mem_ptr = Program.nextTemp();
+            String struct_ptr = Program.nextTemp();
+            out.print(mem_ptr);
+            out.print(" = call i8* @__malloc(i32 ");
+            out.print(sz_i);
+            out.println(")");
+
+            // cast to struct ptr
+            out.print(struct_ptr);
+            out.print(" = bitcast i8* ");
+            out.print(mem_ptr);
+            out.print(" to ");
+            t.llvmGen(out);
+            out.println("*");
+
+            // store struct ptr 
+            out.print("store ");
+            t.llvmGen(out);
+            out.print("* ");
+            out.print(struct_ptr);
+            out.print(", ");
+            t.llvmGen(out);
+            out.print("** ");
             out.println(name);
+        }
+        else {
+            out.print(name);
+            out.print(" = alloca ");
+            t.llvmGen(out);
+            out.println();
+            if (hasAssignExpr()) {
+                String r_var = getAssignExpr().llvmGen(out);
+                out.print("store ");
+                t.llvmGen(out);
+                out.print(" ");
+                out.print(r_var);
+                out.print(", ");
+                t.llvmGen(out);
+                out.print("* ");
+                out.println(name);
+            }
         }
     }
 
@@ -127,16 +220,50 @@ aspect CodeGen {
         out.println("");
     }
 
+    syn String IdUse.llvm_struct_field_idx() = "";
+    eq StructIdUse.llvm_struct_field_idx() {
+        int field_idx = struct().fieldIndex(getID());
+        return getStruct().llvm_struct_field_idx() + 
+            ", i32 0, i32 " + String.valueOf(field_idx);
+    }
+
     public void AssignStmt.llvmGen(PrintStream out) {
+        String result_ptr = getName().llvmGenAddress(out);
+        Type t = getName().type();
+
         String r_var = getAssignExpr().llvmGen(out);
         out.print("store ");
-        getName().type().llvmGen(out);
+        getName().type().llvmType(out);
         out.print(" ");
         out.print(r_var);
         out.print(", ");
-        getName().type().llvmGen(out);
-        out.print("* %");
-        out.println(getName().getID());
+        getName().type().llvmType(out);
+        out.print("* ");
+        out.println(result_ptr);
+    }
+
+    public void DeleteStmt.llvmGen(PrintStream out) {
+        IdUse id = getIdUse();
+        if (!id.type().isStruct())
+            throw new RuntimeException("Only structs may be deleted");
+
+        String ptr = id.llvmGen(out);
+
+        // cast to i8*
+        String free_ptr = Program.nextTemp();
+        out.print(free_ptr);
+        out.print(" = bitcast ");
+        id.type().llvmType(out);
+        out.print(" ");
+        out.print(ptr);
+        out.println(" to i8*");
+
+        // call free
+        out.print("call void @__delete(i8* ");
+        out.print(free_ptr);
+        out.println(")");
+
+        // TODO set ptr to zero?
     }
 
     public void IfStmt.llvmGen(PrintStream out) {
@@ -173,6 +300,30 @@ aspect CodeGen {
         out.println(if_id + "_end:");
     }
 
+    public void WhileStmt.llvmGen(PrintStream out) {
+        String w_id = Program.nextWhile();
+
+        out.println("br label %" + w_id); // required to allow placing a label here
+        out.println(w_id + ":");
+        String cond_var = getCondition().llvmGen(out);
+        
+        // if cond_var == 1
+        out.print("br i1 ");
+        out.print(cond_var);
+        // then goto
+        out.print(", label %");
+        out.print(w_id + "_loop");
+        // else goto 
+        out.print(", label %");
+        out.println(w_id + "_end");
+
+        // loop body
+        out.println(w_id + "_loop:");
+        getLoop().llvmGen(out);
+        out.println("br label %" + w_id);
+        out.println(w_id + "_end:");
+    }
+
     /*
      * Expressions
      *
@@ -182,6 +333,16 @@ aspect CodeGen {
 
     public String ParamExpr.llvmGen(PrintStream out) {
         return getExpr().llvmGen(out);
+    }
+
+    public String NotExpr.llvmGen(PrintStream out) {
+        String val = getExpr().llvmGen(out);
+        // invert by comparing with zero
+        String ret = Program.nextTemp();
+        out.print(ret);
+        out.print(" = icmp eq i1 0, ");
+        out.println(val);
+        return ret;
     }
 
     public String BinExpr.instr() { throw new RuntimeException("Not yet implemented"); }
@@ -235,14 +396,38 @@ aspect CodeGen {
     syn String AndExpr.instr() = "and";
     syn String OrExpr.instr() = "or";
 
-    syn String EqualsExpr.instr() = "icmp eq";
-    syn String NotEqualsExpr.instr() = "icmp ne";
+    syn String EqualsExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp oeq";
+        return "icmp eq";
+    }
+    syn String NotEqualsExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp one";
+        return "icmp ne";
+    }
 
     // reversed order
-    syn String GreaterEqualExpr.instr() = "icmp sge";
-    syn String LessEqualExpr.instr() = "icmp sle";
-    syn String LessExpr.instr() = "icmp slt";
-    syn String GreaterExpr.instr() = "icmp sgt";
+    syn String GreaterEqualExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp oge";
+        return "icmp sge";
+    }
+    syn String LessEqualExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp ole";
+        return "icmp sle";
+    }
+    syn String LessExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp olt";
+        return "icmp slt";
+    }
+    syn String GreaterExpr.instr() {
+        if (getLeft().type().equals(new FloatType()))
+            return "fcmp ogt";
+        return "icmp sgt";
+    }
 
     public String FuncExpr.llvmGen(PrintStream out) {
         // parameter expressions
@@ -297,19 +482,71 @@ aspect CodeGen {
     eq Argument.getName().isArgVariable() = true;
 
     public String IdExpr.llvmGen(PrintStream out) {
-        if (getName().decl().isArgVariable()) {
-            return "%" + getName().getID();
+        String v = getName().llvmGen(out);
+        return v;
+    }
+
+    // return a register containing a pointer to a variable
+    public String IdUse.llvmGen(PrintStream out) {
+        // get a pointer to the value
+        String var_ptr = llvmGenAddress(out);
+        if (decl().isArgVariable()) {
+            // no need to dereference function arguments
+            return var_ptr;
         }
 
-        String v = Program.nextTemp();
-        out.print(v);
+        out.println("; IdUse " + getID());
+        String ptr = Program.nextTemp();
+        out.print(ptr);
         out.print(" = load ");
-        getName().type().llvmGen(out);
+        type().llvmType(out);
         out.print(", ");
-        getName().type().llvmGen(out);
-        out.print("* %");
-        out.println(getName().getID());
-        return v;
+        type().llvmType(out);
+        out.print("* ");
+        out.println(var_ptr);
+
+        return ptr;
+    }
+
+    public String IdUse.llvmGenAddress(PrintStream out) {
+        return "%" + getID();
+    }
+
+    public String StructIdUse.llvmGenAddress(PrintStream out) {
+        String struct_ptr = getStruct().llvmGen(out);
+
+        out.println("; StructIdUse " + getID());
+        Type st = getStruct().type();
+        // calculate field address
+        String field_ptr = Program.nextTemp();
+        out.print(field_ptr);
+        out.print(" = getelementptr ");
+        st.llvmGen(out); // struct type
+        out.print(", "); 
+        st.llvmGen(out); // struct pointer type
+        out.print("* ");
+        out.print(struct_ptr);
+        int field_idx = struct().fieldIndex(getID());
+        out.println(", i32 0, i32 " + String.valueOf(field_idx));
+
+        return field_ptr;
+    }
+
+    // load the address of a struct and then return the address to a field
+    public String StructIdUse.llvmGen(PrintStream out) {
+        String field_ptr = llvmGenAddress(out);
+
+        // load field value
+        String value_ptr = Program.nextTemp();
+        out.print(value_ptr);
+        out.print(" = load ");
+        type().llvmType(out); // field type
+        out.print(", ");
+        type().llvmType(out); // field pointer
+        out.print("* ");
+        out.println(field_ptr);
+
+        return value_ptr;
     }
 
     // LLVM type names
@@ -321,4 +558,15 @@ aspect CodeGen {
     public void IntType.llvmGen(PrintStream out) { out.print("i64"); }
     public void FloatType.llvmGen(PrintStream out) { out.print("double"); }
     public void UnknownType.llvmGen(PrintStream out) { out.print("void"); } // kind of a hack
+
+    public void StructType.llvmGen(PrintStream out) {
+        out.print("%");
+        out.print(getName());
+    }
+
+    public void Type.llvmType(PrintStream out) { llvmGen(out); }
+    public void StructType.llvmType(PrintStream out) {
+        llvmGen(out);
+        out.print("*");
+    }
 }

@@ -2,15 +2,19 @@ aspect Names {
     syn IdDecl IdUse.decl() = lookup(getID(), false);
 
     syn IdDecl StructIdUse.decl() { 
-        // lookup parent struct id
-        IdDecl struct_decl = lookup(getStruct().getID(), false);
-
         // find struct type
-        Struct s = structLookup(struct_decl.getType().getID());
+        Struct s = struct();
         if (s.isUnknown())
             return unknownDecl();
 
         return s.find(getID());
+    }
+
+    syn Struct StructIdUse.struct() {
+        // lookup parent struct id
+        IdDecl struct_decl = lookup(getStruct().getID(), false);
+        // find struct type
+        return structLookup(struct_decl.getType().getID());
     }
 
     syn String IdDecl.toString() = getType().getID() + " " + getID();
@@ -40,6 +44,21 @@ aspect Names {
         }
         return unknownDecl();
     }
+
+    syn int Struct.fieldIndex(String field) {
+        for (int i = 0; i < getNumStructDecl(); i++) {
+            IdDecl decl = getStructDecl(i).find(field);
+            if (!decl.isUnknown())
+                return i;
+        }
+        return -1;
+    }
+
+    syn String IdUse.baseName() = getID();
+    eq StructIdUse.baseName() = getStruct().baseName();
+
+    syn Type IdUse.baseType() = type();
+    eq StructIdUse.baseType() = getStruct().baseType();
 
     syn IdDecl StructDecl.find(String name) = unknownDecl();
     eq Field.find(String name) {

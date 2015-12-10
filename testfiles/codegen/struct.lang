@@ -1,0 +1,6 @@
+struct st {
+    int a;
+    int b;
+    float c;
+    bool flag;
+}

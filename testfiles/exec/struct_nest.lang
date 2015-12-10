@@ -1,0 +1,23 @@
+struct outer {
+    int a;
+    inner inner;
+}
+
+struct inner {
+    int b;
+}
+
+int main() {
+    outer o;
+    inner i;
+    o.inner = i;
+    o.inner.b = 5;
+
+    assert(o.inner.b == 5);
+    assert(i.b == 5);
+
+    i.b = 3;
+    assert(o.inner.b == 3);
+
+    return 0;
+}

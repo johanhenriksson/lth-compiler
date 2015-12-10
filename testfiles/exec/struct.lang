@@ -1,0 +1,10 @@
+struct st_type {
+    int field;
+}
+
+int main() {
+    st_type instance; 
+    instance.field = 5;
+    assert(instance.field == 5);
+    return 0;
+}

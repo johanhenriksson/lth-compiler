@@ -1,0 +1,82 @@
+; Library Functions
+declare i8* @__malloc(i32)
+declare void @__delete(i8*)
+declare void @print(i64)
+declare i64 @read()
+declare i64 @truncate(double)
+declare double @promote(i64)
+declare void @assert(i1)
+declare void @except(i1)
+
+%outer = type {
+  i64,
+  %inner*
+}
+
+%inner = type {
+  i64
+}
+
+define i64 @main() {
+%o = alloca %outer*
+%_1 = getelementptr %outer, %outer* null, i32 1
+%_2 = ptrtoint %outer* %_1 to i32
+%_3 = call i8* @__malloc(i32 %_2)
+%_4 = bitcast i8* %_3 to %outer*
+store %outer* %_4, %outer** %o
+%i = alloca %inner*
+%_5 = getelementptr %inner, %inner* null, i32 1
+%_6 = ptrtoint %inner* %_5 to i32
+%_7 = call i8* @__malloc(i32 %_6)
+%_8 = bitcast i8* %_7 to %inner*
+store %inner* %_8, %inner** %i
+; IdUse o
+%_9 = load %outer*, %outer** %o
+; StructIdUse inner
+%_10 = getelementptr %outer, %outer* %_9, i32 0, i32 1
+; IdUse i
+%_11 = load %inner*, %inner** %i
+store %inner* %_11, %inner** %_10
+; IdUse o
+%_12 = load %outer*, %outer** %o
+; StructIdUse inner
+%_13 = getelementptr %outer, %outer* %_12, i32 0, i32 1
+%_14 = load %inner*, %inner** %_13
+; StructIdUse b
+%_15 = getelementptr %inner, %inner* %_14, i32 0, i32 0
+store i64 5, i64* %_15
+; IdUse o
+%_17 = load %outer*, %outer** %o
+; StructIdUse inner
+%_18 = getelementptr %outer, %outer* %_17, i32 0, i32 1
+%_19 = load %inner*, %inner** %_18
+; StructIdUse b
+%_20 = getelementptr %inner, %inner* %_19, i32 0, i32 0
+%_21 = load i64, i64* %_20
+%_16 = icmp eq i64 %_21, 5
+call void @assert(i1 %_16)
+; IdUse i
+%_23 = load %inner*, %inner** %i
+; StructIdUse b
+%_24 = getelementptr %inner, %inner* %_23, i32 0, i32 0
+%_25 = load i64, i64* %_24
+%_22 = icmp eq i64 %_25, 5
+call void @assert(i1 %_22)
+; IdUse i
+%_26 = load %inner*, %inner** %i
+; StructIdUse b
+%_27 = getelementptr %inner, %inner* %_26, i32 0, i32 0
+store i64 3, i64* %_27
+; IdUse o
+%_29 = load %outer*, %outer** %o
+; StructIdUse inner
+%_30 = getelementptr %outer, %outer* %_29, i32 0, i32 1
+%_31 = load %inner*, %inner** %_30
+; StructIdUse b
+%_32 = getelementptr %inner, %inner* %_31, i32 0, i32 0
+%_33 = load i64, i64* %_32
+%_28 = icmp eq i64 %_33, 3
+call void @assert(i1 %_28)
+ret i64 0
+}
+

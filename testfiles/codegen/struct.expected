@@ -8,9 +8,10 @@ declare double @promote(i64)
 declare void @assert(i1)
 declare void @except(i1)
 
-define void @main() {
-%a = alloca i64
-store i64 5, i64* %a
-ret void
+%st = type {
+  i64,
+  i64,
+  double,
+  i1
 }
 

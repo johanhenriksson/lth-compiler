@@ -1,0 +1,12 @@
+struct st_type {
+    int a;
+    int b;
+}
+
+int main() {
+    st_type s;
+    delete s;
+    return s.a; // segfault?
+    delete s; // error?
+    return 0;
+}

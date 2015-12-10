@@ -1,4 +1,6 @@
 ; Library Functions
+declare i8* @__malloc(i32)
+declare void @__delete(i8*)
 declare void @print(i64)
 declare i64 @read()
 declare i64 @truncate(double)
@@ -7,28 +9,40 @@ declare void @assert(i1)
 declare void @except(i1)
 
 define i64 @main() {
-%_t1 = icmp eq i64 1, 1
-call void @assert(i1 %_t1)
-%_t2 = icmp ne i64 1, 0
-call void @assert(i1 %_t2)
-%_t3 = icmp slt i64 0, 1
-call void @assert(i1 %_t3)
-%_t4 = icmp sgt i64 1, 0
-call void @assert(i1 %_t4)
-%_t5 = icmp sge i64 1, 0
-call void @assert(i1 %_t5)
-%_t6 = icmp sge i64 0, 0
-call void @assert(i1 %_t6)
-%_t7 = icmp sle i64 1, 1
-call void @assert(i1 %_t7)
-%_t8 = icmp sle i64 0, 1
-call void @assert(i1 %_t8)
-%_t9 = or i1 1, 0
-call void @assert(i1 %_t9)
-%_t10 = or i1 0, 1
-call void @assert(i1 %_t10)
-%_t11 = and i1 1, 1
-call void @assert(i1 %_t11)
+%_1 = icmp eq i64 1, 1
+call void @assert(i1 %_1)
+%_2 = icmp ne i64 1, 0
+call void @assert(i1 %_2)
+%_3 = icmp slt i64 0, 1
+call void @assert(i1 %_3)
+%_4 = icmp sgt i64 1, 0
+call void @assert(i1 %_4)
+%_5 = icmp sge i64 1, 0
+call void @assert(i1 %_5)
+%_6 = icmp sge i64 0, 0
+call void @assert(i1 %_6)
+%_7 = icmp sle i64 1, 1
+call void @assert(i1 %_7)
+%_8 = icmp sle i64 0, 1
+call void @assert(i1 %_8)
+call void @assert(i1 1)
+%_9 = or i1 1, 1
+call void @assert(i1 %_9)
+%_10 = or i1 1, 0
+call void @assert(i1 %_10)
+%_11 = or i1 0, 1
+call void @assert(i1 %_11)
+%_12 = and i1 1, 1
+call void @assert(i1 %_12)
+call void @except(i1 0)
+%_13 = or i1 0, 0
+call void @except(i1 %_13)
+%_14 = and i1 1, 0
+call void @except(i1 %_14)
+%_15 = and i1 0, 1
+call void @except(i1 %_15)
+%_16 = and i1 0, 0
+call void @except(i1 %_16)
 ret i64 0
 }
 

@@ -1,0 +1,45 @@
+; Library Functions
+declare i8* @__malloc(i32)
+declare void @__delete(i8*)
+declare void @print(i64)
+declare i64 @read()
+declare i64 @truncate(double)
+declare double @promote(i64)
+declare void @assert(i1)
+declare void @except(i1)
+
+%st_type = type {
+  i64
+}
+
+define i64 @main() {
+%one = alloca %st_type*
+%_1 = getelementptr %st_type, %st_type* null, i32 1
+%_2 = ptrtoint %st_type* %_1 to i32
+%_3 = call i8* @__malloc(i32 %_2)
+%_4 = bitcast i8* %_3 to %st_type*
+store %st_type* %_4, %st_type** %one
+%two = alloca %st_type*
+%_5 = getelementptr %st_type, %st_type* null, i32 1
+%_6 = ptrtoint %st_type* %_5 to i32
+%_7 = call i8* @__malloc(i32 %_6)
+%_8 = bitcast i8* %_7 to %st_type*
+store %st_type* %_8, %st_type** %two
+; IdUse two
+%_9 = load %st_type*, %st_type** %two
+store %st_type* %_9, %st_type** %one
+; IdUse one
+%_10 = load %st_type*, %st_type** %one
+; StructIdUse a
+%_11 = getelementptr %st_type, %st_type* %_10, i32 0, i32 0
+store i64 1, i64* %_11
+; IdUse two
+%_13 = load %st_type*, %st_type** %two
+; StructIdUse a
+%_14 = getelementptr %st_type, %st_type* %_13, i32 0, i32 0
+%_15 = load i64, i64* %_14
+%_12 = icmp eq i64 %_15, 1
+call void @assert(i1 %_12)
+ret i64 0
+}
+

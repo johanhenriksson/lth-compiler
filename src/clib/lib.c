@@ -5,6 +5,32 @@
 #include "stdint.h"
 #include "stdbool.h"
 
+int64_t __malloc_counter = 0;
+
+// malloc wrapper
+void* __malloc(int32_t size) {
+    void* ptr = malloc(size);
+    if (ptr == NULL) {
+        exit(1);
+    }
+    __malloc_counter++;
+    return ptr;
+}
+
+// free wrapper
+void __delete(void* ptr) {
+    free(ptr);
+    __malloc_counter--;
+}
+
+void __mem_check() {
+    if (__malloc_counter == 0)
+        return;
+
+    printf("Memory leak\n");
+    exit(1);
+}
+
 void print(int64_t v) {
     printf("%lld\n", v);
 }
