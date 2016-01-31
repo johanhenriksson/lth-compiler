@@ -1,0 +1,126 @@
+/*This program recursively finds the smallest value in a tree.*/
+
+struct Node {
+  Node parent;
+  Node left;
+  Node right;
+  int value;
+  bool leftisleaf;
+  bool rightisleaf;
+}
+
+int main(){
+  Node root = constructtree(300000);
+  int min = findmin(root, root.value);
+  setallto(root, min);
+  return 0;
+}
+
+/*This program instantiates a tree with the number of nodes specified in the
+call to constructtree below. The three is constructed breadth first. Pseudo-
+radnom values are set for all nodes.*/
+
+struct Listnode{
+  Node current;
+  Listnode next;
+}
+
+Node constructtree(int n){
+  int value = 345765;
+  int limit = 9635673;
+  Node root;
+  Listnode head;
+  head.current = root;
+  Listnode last;
+  last = head;
+  int created = 0;
+  while(created < n){
+    Node next1;
+    Node next2;
+    Node current = head.current;
+    current.leftisleaf = true;
+    current.rightisleaf = true;
+    next1.parent = current;
+    next1.leftisleaf = true;
+    next1.rightisleaf = true;
+    next1.value = value;
+    value = value * value % limit;
+    current.left = next1;
+    created = created + 1;
+    Listnode newnode1;
+    newnode1.current = next1;
+    last.next = newnode1;
+    last = newnode1;
+    if(created + 1 < n){
+      next2.parent = current;
+      next2.leftisleaf = true;
+      next2.rightisleaf = true;
+      next2.value = value;
+      value = value * value % limit;
+      current.right = next2;
+      created = created + 1;
+      Listnode newnode2;
+      newnode2.current = next2;
+      last.next = newnode2;
+      last = newnode2;
+    }
+    head = head.next;
+    if(created > 2){
+      if(current.parent.leftisleaf){
+        current.parent.leftisleaf = false;
+      }else{
+        if(created % 2 == 1){
+          if(current.parent.rightisleaf){
+            current.parent.rightisleaf = false;
+          }
+        }
+      }
+    }
+  }
+  return root;
+}
+
+/*This program recursively finds the smallest value in a tree, and sets all
+nodes to this value.*/
+
+int setallto(Node root, int value){
+  if(root.leftisleaf == false){
+    setallto(root.left, value);
+  }
+  if(root.rightisleaf == false){
+    setallto(root.right, value);
+  }
+  root.left.value = value;
+  root.right.value = value;
+  return 0;
+}
+
+int findmin(Node node, int currentmin){
+  int l = currentmin;
+  int r = currentmin;
+  if(node.leftisleaf == false){
+    l = findmin(node.left, currentmin);
+  }
+  else {
+    l = node.left.value;
+  }
+  
+  if(node.rightisleaf == false){
+    r = findmin(node.right, currentmin);
+  }
+  else {
+    r = node.right.value;
+  }
+  int newmin = currentmin;
+  if(l <= r){
+    if(l < currentmin){
+      newmin = l;
+    }else{
+      if(r < currentmin){
+        newmin = r;
+      }
+    }
+    return newmin;
+  }
+  return 0;
+}

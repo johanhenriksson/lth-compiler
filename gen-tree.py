@@ -67,7 +67,34 @@ while i <= count:
     i += 1
 
 # output simplic code
-print "struct node {\n\tint value;\n\tnode parent;\n\tnode left;\n\tnode right;\n\tbool has_left;\n\tbool has_right;\n}\nnode new_node(int val) {\n\tnode n;\n\tn.value = val;\n\tn.has_left = false;\n\tn.has_right = false;\n\treturn n;\n}\nint nodes(node n) {\n\tint i = 1;\n\tif (n.has_left) {\n\t\ti = i + nodes(n.left);\n\t}\n\tif (n.has_right) {\n\t\ti = i + nodes(n.right);\n\t}\n\treturn i;\n}\n"
+
+# "library" code
+print "struct node {"
+print "\tint value;"
+print "\tnode parent;"
+print "\tnode left;"
+print "\tnode right;"
+print "\tbool has_left;"
+print "\tbool has_right;"
+print "}"
+print "node new_node(int val) {"
+print "\tnode n;"
+print "\tn.value = val;"
+print "\tn.has_left = false;"
+print "\tn.has_right = false;"
+print "\treturn n;"
+print "}"
+print "int nodes(node n) {"
+print "\tint i = 1;"
+print "\tif (n.has_left) {"
+print "\t\ti = i + nodes(n.left);"
+print "\t}"
+print "\tif (n.has_right) {"
+print "\t\ti = i + nodes(n.right);"
+print "\t}"
+print "\treturn i;"
+print "}\n"
+
 print "int main() {"
 root.write()
 print "\n\tassert(nodes(n1) == %d);" % count

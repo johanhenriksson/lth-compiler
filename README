@@ -1,0 +1,31 @@
+SimpliC LLVM Compiler
+Johan Henriksson (dat11jhe@student.lu.se)
+
+Requirements:
+    * Built & Tested on OSX 10.10 Mavericks
+    * Requires LLVM 3.8.x
+
+Note: Will not run on school computers out-of-the-box since they havee
+      an older version of LLVM. 
+
+Setup/Usage:
+    1. Compile C library
+        - Go to src/clib
+        - Run make.sh or simply compile lib.c to lib.o
+
+    2. Run tests
+        -  Go to /
+        -  Run "ant test"
+
+    3. Compile JAR
+        - Go to /
+        - Run "ant jar"
+
+    4. Compile and execute files
+        A tool to quickly compile and execute files is included in the JAR
+        and can be used as follows:
+
+        java -jar compiler.jar hello_world.simplic
+
+        Warning: this tool is pretty shitty. It's usually better to use the
+        test system to compile and/or execute programs.
